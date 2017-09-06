@@ -1,0 +1,3 @@
+defmodule TrendFollowingApi do
+  
+end
