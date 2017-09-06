@@ -3,83 +3,64 @@ defmodule TrendFollowing.MarketsTest do
 
   alias TrendFollowing.Markets
 
-  describe "stocks" do
-    alias TrendFollowing.Markets.Stock
+  describe "stock_dayk" do
+    alias TrendFollowing.Markets.StockDayk
 
-    @valid_attrs %{atr: 120.5, close: 120.5, date: ~D[2010-04-17], high: 120.5, low: 120.5, ma: %{}, open: 120.5, pre_close: 120.5, symbol: "some symbol", tr: 120.5, volume: 42}
-    @update_attrs %{atr: 456.7, close: 456.7, date: ~D[2011-05-18], high: 456.7, low: 456.7, ma: %{}, open: 456.7, pre_close: 456.7, symbol: "some updated symbol", tr: 456.7, volume: 43}
-    @invalid_attrs %{atr: nil, close: nil, date: nil, high: nil, low: nil, ma: nil, open: nil, pre_close: nil, symbol: nil, tr: nil, volume: nil}
+    @valid_attrs %{symbol: "AAPL", date: ~D[2017-08-25], open: 159.65, close: 159.86, high: 160.56, low: 159.27, volume: 25015017}
+    @update_attrs %{ma5: 159.22, ma10: 159.39, ma20: 157.72, ma30: 155.47, ma50: 151.32, ma300: 127.42, tr: 1.29, atr: 2.65}
+    @invalid_attrs %{symbol: nil, date: nil, open: nil, close: nil, high: nil, low: nil, volume: nil}
 
-    def stock_fixture(attrs \\ %{}) do
-      {:ok, stock} =
+    def stock_dayk_fixture(attrs \\ %{}) do
+      {:ok, stock_dayk} =
         attrs
         |> Enum.into(@valid_attrs)
-        |> Markets.create_stock()
+        |> Markets.create_stock_dayk()
 
-      stock
+      stock_dayk
     end
 
-    test "list_stocks/0 returns all stocks" do
-      stock = stock_fixture()
-      assert Markets.list_stocks() == [stock]
+    test "list_stock_dayk/0 returns all stocks" do
+      stock_dayk = stock_dayk_fixture()
+      assert Markets.list_stock_dayk("AAPL") == [stock_dayk]
     end
 
-    test "get_stock!/1 returns the stock with given id" do
-      stock = stock_fixture()
-      assert Markets.get_stock!(stock.id) == stock
+    test "get_stock_dayk!/1 returns the stock_dayk with given symbol and date" do
+      stock_dayk = stock_dayk_fixture()
+      assert Markets.get_stock_dayk!(stock_dayk.symbol, stock_dayk.date) == stock_dayk
     end
 
-    test "create_stock/1 with valid data creates a stock" do
-      assert {:ok, %Stock{} = stock} = Markets.create_stock(@valid_attrs)
-      assert stock.atr == 120.5
-      assert stock.close == 120.5
-      assert stock.date == ~D[2010-04-17]
-      assert stock.high == 120.5
-      assert stock.low == 120.5
-      assert stock.ma == %{}
-      assert stock.open == 120.5
-      assert stock.pre_close == 120.5
-      assert stock.symbol == "some symbol"
-      assert stock.tr == 120.5
-      assert stock.volume == 42
+    test "create_stock_dayk/1 with valid data creates a stock_dayk" do
+      assert {:ok, %StockDayk{} = stock_dayk} = Markets.create_stock_dayk(@valid_attrs)
+      assert stock_dayk.symbol == "AAPL"
+      assert stock_dayk.date == ~D[2017-08-25]
+      assert stock_dayk.open == 159.65
+      assert stock_dayk.close == 159.86
+      assert stock_dayk.high == 160.56
+      assert stock_dayk.low == 159.27
+      assert stock_dayk.volume == 25015017
     end
 
-    test "create_stock/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = Markets.create_stock(@invalid_attrs)
+    test "create_stock_dayk/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Markets.create_stock_dayk(@invalid_attrs)
     end
 
-    test "update_stock/2 with valid data updates the stock" do
-      stock = stock_fixture()
-      assert {:ok, stock} = Markets.update_stock(stock, @update_attrs)
-      assert %Stock{} = stock
-      assert stock.atr == 456.7
-      assert stock.close == 456.7
-      assert stock.date == ~D[2011-05-18]
-      assert stock.high == 456.7
-      assert stock.low == 456.7
-      assert stock.ma == %{}
-      assert stock.open == 456.7
-      assert stock.pre_close == 456.7
-      assert stock.symbol == "some updated symbol"
-      assert stock.tr == 456.7
-      assert stock.volume == 43
+    test "update_stock_dayk/2 with valid data updates the stock_dayk" do
+      stock_dayk = stock_dayk_fixture()
+      assert {:ok, %StockDayk{} = stock_dayk} = Markets.update_stock_dayk(stock_dayk, @update_attrs)
+      assert stock_dayk.ma5 == 159.22
+      assert stock_dayk.ma10 == 159.39
+      assert stock_dayk.ma20 == 157.72
+      assert stock_dayk.ma30 == 155.47
+      assert stock_dayk.ma50 == 151.32
+      assert stock_dayk.ma300 == 127.42
+      assert stock_dayk.tr == 1.29
+      assert stock_dayk.atr == 2.65
     end
 
-    test "update_stock/2 with invalid data returns error changeset" do
-      stock = stock_fixture()
-      assert {:error, %Ecto.Changeset{}} = Markets.update_stock(stock, @invalid_attrs)
-      assert stock == Markets.get_stock!(stock.id)
-    end
-
-    test "delete_stock/1 deletes the stock" do
-      stock = stock_fixture()
-      assert {:ok, %Stock{}} = Markets.delete_stock(stock)
-      assert_raise Ecto.NoResultsError, fn -> Markets.get_stock!(stock.id) end
-    end
-
-    test "change_stock/1 returns a stock changeset" do
-      stock = stock_fixture()
-      assert %Ecto.Changeset{} = Markets.change_stock(stock)
+    test "update_stock_dayk/2 with invalid data returns error changeset" do
+      stock_dayk = stock_dayk_fixture()
+      assert {:error, %Ecto.Changeset{}} = Markets.update_stock_dayk(stock_dayk, @invalid_attrs)
+      assert stock_dayk == Markets.get_stock_dayk!(stock_dayk.symbol, stock_dayk.date)
     end
   end
 end
