@@ -1,0 +1,3 @@
+# TrendFollowing
+
+**TODO: Add description**
