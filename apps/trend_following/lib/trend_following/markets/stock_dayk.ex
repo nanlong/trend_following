@@ -19,6 +19,10 @@ defmodule TrendFollowing.Markets.StockDayk do
     field :ma30, :float
     field :ma50, :float
     field :ma300, :float
+    field :high20, :float
+    field :high60, :float
+    field :low10, :float
+    field :low20, :float
     field :tr, :float
     field :atr, :float
 
@@ -26,7 +30,7 @@ defmodule TrendFollowing.Markets.StockDayk do
   end
 
   @required_fields ~w(symbol date open close high low volume)a
-  @optional_fields ~w(pre_close ma5 ma10 ma20 ma30 ma50 ma300 tr atr)a
+  @optional_fields ~w(pre_close ma5 ma10 ma20 ma30 ma50 ma300 high20 high60 low10 low20 tr atr)a
 
   @doc false
   def changeset(%StockDayk{} = stock, attrs) do

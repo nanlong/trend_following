@@ -7,7 +7,7 @@ defmodule TrendFollowing.MarketsTest do
     alias TrendFollowing.Markets.StockDayk
 
     @valid_attrs %{symbol: "AAPL", date: ~D[2017-08-25], open: 159.65, close: 159.86, high: 160.56, low: 159.27, volume: 25015017}
-    @update_attrs %{ma5: 159.22, ma10: 159.39, ma20: 157.72, ma30: 155.47, ma50: 151.32, ma300: 127.42, tr: 1.29, atr: 2.65}
+    @update_attrs %{ma5: 159.22, ma10: 159.39, ma20: 157.72, ma30: 155.47, ma50: 151.32, ma300: 127.42, high20: 162.51, high60: 162.51, low10: 155.11, low20: 148.13, tr: 1.29, atr: 2.65}
     @invalid_attrs %{symbol: nil, date: nil, open: nil, close: nil, high: nil, low: nil, volume: nil}
 
     def stock_dayk_fixture(attrs \\ %{}) do
