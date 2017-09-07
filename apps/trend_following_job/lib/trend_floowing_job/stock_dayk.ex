@@ -28,10 +28,10 @@ defmodule TrendFollowingJob.StockDayk do
     |> dayk_save()
   end
 
-  def dayk_data(market, symbol)
-  def dayk_data(:cn, symbol), do: TrendFollowingApi.Sina.CNStock.get("dayk", symbol: symbol)
-  def dayk_data(:hk, symbol), do: TrendFollowingApi.Sina.HKStock.get("dayk", symbol: symbol)
-  def dayk_data(:us, symbol), do: TrendFollowingApi.Sina.USStock.get("dayk", symbol: symbol)
+  defp dayk_data(market, symbol)
+  defp dayk_data(:cn, symbol), do: TrendFollowingApi.Sina.CNStock.get("dayk", symbol: symbol)
+  defp dayk_data(:hk, symbol), do: TrendFollowingApi.Sina.HKStock.get("dayk", symbol: symbol)
+  defp dayk_data(:us, symbol), do: TrendFollowingApi.Sina.USStock.get("dayk", symbol: symbol)
 
   defp dayk_filter(data, nil), do: data
   defp dayk_filter(data, %{date: date}) do
