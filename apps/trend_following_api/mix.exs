@@ -30,6 +30,8 @@ defmodule TrendFollowingApi.Mixfile do
       # {:sibling_app_in_umbrella, in_umbrella: true},
       {:httpotion, "~> 3.0.2"},
       {:iconv, "~> 1.0"},
+      {:execjs, git: "https://github.com/devinus/execjs.git"},
+      {:floki, "~> 0.18.0"},
     ]
   end
 end
