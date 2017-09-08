@@ -1,16 +1,16 @@
-defmodule TrendFollowingJob.StockDayk do
+defmodule TrendFollowingJob.Dayk do
   @moduledoc """
-    TrendFollowingJob.StockDayk.load(:cn, "sh600036")
-    TrendFollowingJob.StockDayk.load(:hk, "00700")
-    TrendFollowingJob.StockDayk.load(:us, "AAPL")
+    TrendFollowingJob.Dayk.load(:cn_stock, "sh600036")
+    TrendFollowingJob.Dayk.load(:hk_stock, "00700")
+    TrendFollowingJob.Dayk.load(:us_stock, "AAPL")
   """
 
   alias TrendFollowing.Repo
   alias TrendFollowing.Markets
-  alias TrendFollowing.Markets.StockDayk
+  alias TrendFollowing.Markets.Dayk
 
   def load(market, symbol) do
-    history = Markets.list_stock_dayk(symbol)
+    history = Markets.list_dayk(symbol)
     last_dayk = List.last(history)
     %{body: data} = dayk_data(market, symbol)
 
@@ -29,9 +29,9 @@ defmodule TrendFollowingJob.StockDayk do
   end
 
   defp dayk_data(market, symbol)
-  defp dayk_data(:cn, symbol), do: TrendFollowingApi.Sina.CNStock.get("dayk", symbol: symbol)
-  defp dayk_data(:hk, symbol), do: TrendFollowingApi.Sina.HKStock.get("dayk", symbol: symbol)
-  defp dayk_data(:us, symbol), do: TrendFollowingApi.Sina.USStock.get("dayk", symbol: symbol)
+  defp dayk_data(:cn_stock, symbol), do: TrendFollowingApi.Sina.CNStock.get("dayk", symbol: symbol)
+  defp dayk_data(:hk_stock, symbol), do: TrendFollowingApi.Sina.HKStock.get("dayk", symbol: symbol)
+  defp dayk_data(:us_stock, symbol), do: TrendFollowingApi.Sina.USStock.get("dayk", symbol: symbol)
 
   defp dayk_filter(data, nil), do: data
   defp dayk_filter(data, %{date: date}) do
@@ -39,7 +39,7 @@ defmodule TrendFollowingJob.StockDayk do
   end
 
   defp dayk_rename_key(data, market, symbol)
-  defp dayk_rename_key(data, :cn, symbol) do
+  defp dayk_rename_key(data, :cn_stock, symbol) do
     Enum.map(data, fn(x) -> 
       date = x |> Map.get("day") |> Date.from_iso8601!()
       {open, _} = x |> Map.get("open") |> Float.parse()
@@ -61,7 +61,7 @@ defmodule TrendFollowingJob.StockDayk do
       }
     end)
   end
-  defp dayk_rename_key(data, :hk, symbol) do
+  defp dayk_rename_key(data, :hk_stock, symbol) do
     Enum.map(data, fn(x) -> 
       {:ok, datetime, _} = x |> Map.get("date") |> DateTime.from_iso8601()
       date = datetime |> DateTime.to_date()
@@ -84,7 +84,7 @@ defmodule TrendFollowingJob.StockDayk do
       }
     end)
   end
-  defp dayk_rename_key(data, :us, symbol) do
+  defp dayk_rename_key(data, :us_stock, symbol) do
     Enum.map(data, fn(x) -> 
       date = x |> Map.get("d") |> Date.from_iso8601!()
       {open, _} = x |> Map.get("o") |> Float.parse()
@@ -125,7 +125,7 @@ defmodule TrendFollowingJob.StockDayk do
   defp dayk_donchian_channel([]), do: []
   defp dayk_donchian_channel(data), do: dayk_donchian_channel(data, data, [])
   defp dayk_donchian_channel([], _history, results), do: results
-  defp dayk_donchian_channel([{%StockDayk{}, _} = data | rest], history, results), do: dayk_donchian_channel(rest, history, results ++ [data])
+  defp dayk_donchian_channel([{%Dayk{}, _} = data | rest], history, results), do: dayk_donchian_channel(rest, history, results ++ [data])
   defp dayk_donchian_channel([{dayk, index} = data | rest], history, results) do
     %{min: low10} = donchian_channel(data, history, 10)
     %{max: high20, min: low20} = donchian_channel(data, history, 20)
@@ -158,7 +158,7 @@ defmodule TrendFollowingJob.StockDayk do
   defp dayk_moving_average([]), do: []
   defp dayk_moving_average(data), do: dayk_moving_average(data, data, [])
   defp dayk_moving_average([], _history, results), do: results
-  defp dayk_moving_average([{%StockDayk{}, _} = data | rest], history, results), do: dayk_moving_average(rest, history, results ++ [data])
+  defp dayk_moving_average([{%Dayk{}, _} = data | rest], history, results), do: dayk_moving_average(rest, history, results ++ [data])
   defp dayk_moving_average([{dayk, index} = data | rest], history, results) do
     %{value: ma5} = moving_average(data, history, 5)
     %{value: ma10} = moving_average(data, history, 10)
@@ -201,7 +201,7 @@ defmodule TrendFollowingJob.StockDayk do
   defp dayk_true_range([]), do: []
   defp dayk_true_range(data) when is_list(data), do: dayk_true_range(data, [])
   defp dayk_true_range([], results), do: results
-  defp dayk_true_range([{%StockDayk{}, _} = data | rest], results), do: dayk_true_range(rest, results ++ [data])
+  defp dayk_true_range([{%Dayk{}, _} = data | rest], results), do: dayk_true_range(rest, results ++ [data])
   defp dayk_true_range([{dayk, index} | rest], results) do
     max = Enum.max([dayk.pre_close, dayk.high, dayk.low])
     min = Enum.min([dayk.pre_close, dayk.high, dayk.low])
@@ -212,7 +212,7 @@ defmodule TrendFollowingJob.StockDayk do
   defp dayk_average_true_range([]), do: []
   defp dayk_average_true_range(data), do: dayk_average_true_range(data, [])
   defp dayk_average_true_range([], results), do: results
-  defp dayk_average_true_range([{%StockDayk{}, _} = data | rest], results), do: dayk_average_true_range(rest, results ++ [data])
+  defp dayk_average_true_range([{%Dayk{}, _} = data | rest], results), do: dayk_average_true_range(rest, results ++ [data])
   defp dayk_average_true_range([{dayk, index} | rest], results) when index < 20 do
     dayk = Map.put_new(dayk, :atr, dayk.tr)
     dayk_average_true_range(rest, results ++ [{dayk, index}])
@@ -240,7 +240,7 @@ defmodule TrendFollowingJob.StockDayk do
     |> Enum.filter(fn(x) -> not Map.has_key?(x, :__struct__) end)
     |> Enum.chunk_every(2978)
     |> Enum.map(fn(data_chunk) -> 
-      Repo.insert_all(StockDayk, data_chunk, returning: true)
+      Repo.insert_all(Dayk, data_chunk, returning: true)
       # {_num, results} = Repo.insert_all(StockDayk, data_chunk, returning: true)
       # stock_dayk_id = results |> List.last() |> Map.get(:id)
       # Markets.update_stock(stock, %{stock_dayk_id: stock_dayk_id})

@@ -1,8 +1,8 @@
-defmodule TrendFollowing.Repo.Migrations.CreateStockDayk do
+defmodule TrendFollowing.Repo.Migrations.CreateDayk do
   use Ecto.Migration
 
   def change do
-    create table(:stock_dayk) do
+    create table(:dayk) do
       add :symbol, :string
       add :date, :date
       add :open, :float
@@ -27,10 +27,10 @@ defmodule TrendFollowing.Repo.Migrations.CreateStockDayk do
       timestamps()
     end
 
-    create index(:stock_dayk, [:symbol])
-    create index(:stock_dayk, [:date])
-    create index(:stock_dayk, [:ma50])
-    create index(:stock_dayk, [:ma300])
-    create unique_index(:stock_dayk, [:symbol, :date])
+    create index(:dayk, [:symbol])
+    create index(:dayk, [:date])
+    create index(:dayk, [:ma50])
+    create index(:dayk, [:ma300])
+    create unique_index(:dayk, [:symbol, :date])
   end
 end

@@ -1,10 +1,10 @@
-defmodule TrendFollowing.Markets.StockDayk do
+defmodule TrendFollowing.Markets.Dayk do
   use Ecto.Schema
   import Ecto.Changeset
-  alias TrendFollowing.Markets.StockDayk
+  alias TrendFollowing.Markets.Dayk
 
 
-  schema "stock_dayk" do
+  schema "dayk" do
     field :symbol, :string
     field :date, :date
     field :open, :float
@@ -33,7 +33,7 @@ defmodule TrendFollowing.Markets.StockDayk do
   @optional_fields ~w(pre_close ma5 ma10 ma20 ma30 ma50 ma300 high20 high60 low10 low20 tr atr)a
 
   @doc false
-  def changeset(%StockDayk{} = stock, attrs) do
+  def changeset(%Dayk{} = stock, attrs) do
     stock
     |> cast(attrs, @required_fields ++ @optional_fields)
     |> validate_required(@required_fields)
