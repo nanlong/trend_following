@@ -17,10 +17,12 @@ defmodule TrendFollowing.Repo.Migrations.CreateDayk do
       add :ma30, :float
       add :ma50, :float
       add :ma300, :float
+      add :high10, :float
       add :high20, :float
       add :high60, :float
       add :low10, :float
       add :low20, :float
+      add :low60, :float
       add :tr, :float
       add :atr, :float
 

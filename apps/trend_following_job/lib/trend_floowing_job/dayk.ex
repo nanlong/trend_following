@@ -178,16 +178,18 @@ defmodule TrendFollowingJob.Dayk do
   defp dayk_donchian_channel([], _history, results), do: results
   defp dayk_donchian_channel([{%Dayk{}, _} = data | rest], history, results), do: dayk_donchian_channel(rest, history, results ++ [data])
   defp dayk_donchian_channel([{dayk, index} = data | rest], history, results) do
-    %{min: low10} = donchian_channel(data, history, 10)
+    %{max: high10, min: low10} = donchian_channel(data, history, 10)
     %{max: high20, min: low20} = donchian_channel(data, history, 20)
-    %{max: high60} = donchian_channel(data, history, 60)
+    %{max: high60, min: low60} = donchian_channel(data, history, 60)
 
     dayk =
       dayk
+      |> Map.put_new(:high10, high10)
       |> Map.put_new(:high20, high20)
       |> Map.put_new(:high60, high60)
       |> Map.put_new(:low10, low10)
       |> Map.put_new(:low20, low20)
+      |> Map.put_new(:low60, low60)
 
     dayk_donchian_channel(rest, history, results ++ [{dayk, index}])
   end
@@ -289,7 +291,7 @@ defmodule TrendFollowingJob.Dayk do
     data
     |> Enum.map(fn({x, _}) -> x end)
     |> Enum.filter(fn(x) -> not Map.has_key?(x, :__struct__) end)
-    |> Enum.chunk_every(2978)
+    |> Enum.chunk_every(2730)
     |> Enum.map(fn(data_chunk) -> 
       Repo.insert_all(Dayk, data_chunk, returning: true)
       # {_num, results} = Repo.insert_all(StockDayk, data_chunk, returning: true)
