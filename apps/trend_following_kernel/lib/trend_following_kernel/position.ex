@@ -23,6 +23,7 @@ defmodule TrendFollowingKernel.Position do
       break_price: break_price,
       close_price: close_price,
       unit: unit,
+      position_max: position_max,
       positions: Enum.map(1..position_max, fn(p) -> 
         %{
           buy_price: buy_price(trend, break_price, dayk.atr, config.atr_add, p),
