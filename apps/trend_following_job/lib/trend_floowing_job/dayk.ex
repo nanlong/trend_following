@@ -3,6 +3,8 @@ defmodule TrendFollowingJob.Dayk do
     TrendFollowingJob.Dayk.load(:cn_stock, "sh600036")
     TrendFollowingJob.Dayk.load(:hk_stock, "00700")
     TrendFollowingJob.Dayk.load(:us_stock, "AAPL")
+    TrendFollowingJob.Dayk.load(:i_future, "TA0")
+    TrendFollowingJob.Dayk.load(:g_future, "CL")
   """
 
   alias TrendFollowing.Repo
@@ -32,6 +34,8 @@ defmodule TrendFollowingJob.Dayk do
   defp dayk_data(:cn_stock, symbol), do: TrendFollowingApi.Sina.CNStock.get("dayk", symbol: symbol)
   defp dayk_data(:hk_stock, symbol), do: TrendFollowingApi.Sina.HKStock.get("dayk", symbol: symbol)
   defp dayk_data(:us_stock, symbol), do: TrendFollowingApi.Sina.USStock.get("dayk", symbol: symbol)
+  defp dayk_data(:i_future, symbol), do: TrendFollowingApi.Sina.IFuture.get("dayk", symbol: symbol)
+  defp dayk_data(:g_future, symbol), do: TrendFollowingApi.Sina.GFuture.get("dayk", symbol: symbol)
 
   defp dayk_filter(data, nil), do: data
   defp dayk_filter(data, %{date: date}) do
@@ -92,6 +96,50 @@ defmodule TrendFollowingJob.Dayk do
       {high, _} = x |> Map.get("h") |> Float.parse()
       {low, _} = x |> Map.get("l") |> Float.parse()
       {volume, _} = x |> Map.get("v") |> Integer.parse()
+
+      %{
+        symbol: symbol,
+        date: date,
+        open: open,
+        close: close,
+        high: high,
+        low: low,
+        volume: volume,
+        inserted_at: NaiveDateTime.utc_now(),
+        updated_at: NaiveDateTime.utc_now(), 
+      }
+    end)
+  end
+  defp dayk_rename_key(data, :i_future, symbol) do
+    Enum.map(data, fn(x) -> 
+      date = x |> Map.get("d") |> Date.from_iso8601!()
+      {open, _} = x |> Map.get("o") |> Float.parse()
+      {close, _} = x |> Map.get("c") |> Float.parse()
+      {high, _} = x |> Map.get("h") |> Float.parse()
+      {low, _} = x |> Map.get("l") |> Float.parse()
+      {volume, _} = x |> Map.get("v") |> Integer.parse()
+
+      %{
+        symbol: symbol,
+        date: date,
+        open: open,
+        close: close,
+        high: high,
+        low: low,
+        volume: volume,
+        inserted_at: NaiveDateTime.utc_now(),
+        updated_at: NaiveDateTime.utc_now(), 
+      }
+    end)
+  end
+  defp dayk_rename_key(data, :g_future, symbol) do
+    Enum.map(data, fn(x) -> 
+      date = x |> Map.get("date") |> Date.from_iso8601!()
+      {open, _} = x |> Map.get("open") |> Float.parse()
+      {close, _} = x |> Map.get("close") |> Float.parse()
+      {high, _} = x |> Map.get("high") |> Float.parse()
+      {low, _} = x |> Map.get("low") |> Float.parse()
+      {volume, _} = x |> Map.get("volume") |> Integer.parse()
 
       %{
         symbol: symbol,
