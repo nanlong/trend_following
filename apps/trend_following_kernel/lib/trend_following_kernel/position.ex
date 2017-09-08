@@ -112,11 +112,6 @@ defmodule TrendFollowingKernel.Position do
 
   @doc """
   平均价
-
-  Examples:
-
-    iex> TrendFollowingKernel.avg_price("bull", 120.00, 2.0, 0.5, 1)
-    120.00
   """
   def avg_price(trend, break_price, atr, atr_add, position) do
     price = break_price * position

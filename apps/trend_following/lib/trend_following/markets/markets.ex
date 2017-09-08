@@ -1,4 +1,11 @@
 defmodule TrendFollowing.Markets do
+
+  # stock
+  alias TrendFollowing.Markets.Context.Stock
+
+  defdelegate create_stock(attrs), to: Stock, as: :create
+  defdelegate update_stock(stock, attrs), to: Stock, as: :update
+  defdelegate get_stock!(symbol), to: Stock, as: :get!
   
   # stock dayk
   alias TrendFollowing.Markets.Context.Dayk
