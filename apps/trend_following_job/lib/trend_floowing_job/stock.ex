@@ -1,6 +1,6 @@
 defmodule TrendFollowingJob.Stock do
   alias TrendFollowing.Markets
-
+  
   def load(market, page, fun \\ fn(_, _) -> nil end) do
     %{body: data} = stock_data(market, page)
     has_next = has_next?(market, data)
