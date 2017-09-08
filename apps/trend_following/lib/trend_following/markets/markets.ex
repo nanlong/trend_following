@@ -5,6 +5,7 @@ defmodule TrendFollowing.Markets do
 
   defdelegate create_stock(attrs), to: Stock, as: :create
   defdelegate update_stock(stock, attrs), to: Stock, as: :update
+  defdelegate get_stock(symbol), to: Stock, as: :get
   defdelegate get_stock!(symbol), to: Stock, as: :get!
   
   # stock dayk

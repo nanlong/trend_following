@@ -20,7 +20,7 @@ defmodule TrendFollowing.Markets.Stock do
   end
 
   @required_fields ~w(market symbol name cname lot_size)a
-  @optional_fields ~w(category market_cap pe)a
+  @optional_fields ~w(category market_cap pe dayk_id)a
 
   @doc false
   def changeset(%Stock{} = stock, attrs) do

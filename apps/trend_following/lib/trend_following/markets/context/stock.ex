@@ -15,7 +15,6 @@ defmodule TrendFollowing.Markets.Context.Stock do
     |> Repo.update()
   end
 
-  def get!(symbol) do
-    Repo.get_by!(Stock, symbol: symbol)
-  end
+  def get(symbol), do: Repo.get_by(Stock, symbol: symbol)
+  def get!(symbol), do: Repo.get_by!(Stock, symbol: symbol)
 end
