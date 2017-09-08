@@ -1,10 +1,13 @@
 defmodule TrendFollowingJob.Dayk do
   @moduledoc """
-    TrendFollowingJob.Dayk.load(:cn_stock, "sh600036")
-    TrendFollowingJob.Dayk.load(:hk_stock, "00700")
-    TrendFollowingJob.Dayk.load(:us_stock, "AAPL")
-    TrendFollowingJob.Dayk.load(:i_future, "TA0")
-    TrendFollowingJob.Dayk.load(:g_future, "CL")
+
+  Examples:
+  
+    iex> TrendFollowingJob.Dayk.load(:cn_stock, "sh600036")
+    iex> TrendFollowingJob.Dayk.load(:hk_stock, "00700")
+    iex> TrendFollowingJob.Dayk.load(:us_stock, "AAPL")
+    iex> TrendFollowingJob.Dayk.load(:i_future, "TA0")
+    iex> TrendFollowingJob.Dayk.load(:g_future, "CL")
   """
 
   alias TrendFollowing.Repo
