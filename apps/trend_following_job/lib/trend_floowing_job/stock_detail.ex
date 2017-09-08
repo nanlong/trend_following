@@ -1,4 +1,8 @@
 defmodule TrendFollowingJob.StockDetail do
+  @moduledoc """
+    TrendFollowingJob.StockDetail.load(:cn, "sh600419")
+    TrendFollowingJob.StockDetail.load(:hk, "00700")
+  """
   alias TrendFollowing.Markets
 
   def load(market, symbol) do
