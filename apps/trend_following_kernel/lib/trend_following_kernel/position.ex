@@ -18,6 +18,7 @@ defmodule TrendFollowingKernel.Position do
       date: dayk.date,
       symbol: dayk.symbol,
       account_min: account_min(dayk.atr, trade.lot_size, config.atr_rate),
+      trend: trend,
       atr: dayk.atr,
       break_price: break_price,
       close_price: close_price,
