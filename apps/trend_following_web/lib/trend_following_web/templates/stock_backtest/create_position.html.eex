@@ -1,0 +1,28 @@
+<div style="background: blue; color: #fff;  margin: 10px 0;">
+  <p><%= @dayk.date %> <span>建仓</span></p>
+  <p>开盘: <%= @dayk.open %> 收盘: <%= @dayk.close %> 最高: <%= @dayk.high %> 最低: <%= @dayk.low %></p>
+  <table class="table is-bordered is-striped is-narrow is-fullwidth">
+    <tr>
+      <th>头寸单位</th>
+      <th>买入价</th>
+      <th>止损价</th>
+      <th>单位规模</th>
+      <th>单位成本</th>
+    </tr>
+    <%= for {position, index} <- Enum.with_index(@positions, 1) do %>
+    <tr>
+      <td><%= index %></td>
+      <td><%= position.buy_price %></td>
+      <td><%= position.stop_price %></td>
+      <td><%= @cur_state.schema.unit %></td>
+      <td><%= position.buy_price * @cur_state.schema.unit %></td>
+    </tr>
+    <% end %>
+  </table>
+
+  <p>当前持有资金 <%= @before_state.account %></p>
+  <p>原因: 价格突破了<%= if @system == 1, do: 20, else: 60 %>日<%= if @trend == "bull", do: "最高", else: "最低" %>价<%= @price %>元</p>
+  <p>操作: 以<%= @price %>的价格，买入<%= @amount %>股股票<%= if @trend == "bull", do: "做多", else: "做空" %></p>
+  <p>代价: 花费 <%= @price * @amount %> 元</p>
+  <p>账户剩余: <%= @cur_state.account %></p>
+</div>

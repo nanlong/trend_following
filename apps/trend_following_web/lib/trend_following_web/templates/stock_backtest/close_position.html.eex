@@ -1,0 +1,9 @@
+<div style="background: yellow; margin: 10px 0;"> 
+  <p><%= @date %> <span>平仓</span></p>
+  <p>开盘: <%= @dayk.open %> 收盘: <%= @dayk.close %> 最高: <%= @dayk.high %> 最低: <%= @dayk.low %></p>
+  
+  <p>当前资金: <%= @before_state.account %></p>
+  <p>原因: 价格突破了近<%= if @system == 1, do: 10, else: 20 %>日<%= if @trend == "bull", do: "最低", else: "最高" %>价<%= @price %></p>
+  <p>操作: 以<%= @price %>元价格平仓，卖出<%= @amount %>股</p>
+  <p>账户剩余: <%= @cur_state.account %></p>
+</div>

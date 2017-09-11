@@ -1,13 +1,4 @@
 defmodule TrendFollowingKernel.Backtest do
-  @moduledoc """
-  config = %{
-    account: 1000000, 
-    atr_rate: 0.01, 
-    atr_add: 0.5,
-    stop_loss: 0.02,
-    position_max: 4,
-  }
-  """
   alias TrendFollowing.Markets
   alias TrendFollowingKernel.Position
 
@@ -28,7 +19,6 @@ defmodule TrendFollowingKernel.Backtest do
     }
 
     trading(dayk_list, stock, config, state)
-    # |> read_log()
   end
 
   defp trading([], _stock, _config, state), do: state
@@ -64,7 +54,6 @@ defmodule TrendFollowingKernel.Backtest do
         stop_position?(state, dayk) ->
           schema = Map.get(state, :schema)
           cur_position = Enum.at(schema.positions, state.position_num - 1)
-          
           position_amount = schema.unit * state.lot_size * state.position_num
 
           money =
@@ -167,82 +156,64 @@ defmodule TrendFollowingKernel.Backtest do
     schema = Map.get(cur_state, :schema)
     cur_position = Enum.at(schema.positions, cur_state.position_num - 1)
 
-    %{
-      action: "create",
+    [
+      action: "create_position",
       dayk: dayk,
       before_state: before_state,
       cur_state: cur_state,
       system: 1,
       date: dayk.date,
-      trend: schema.trend,
-      price: schema.break_price,
+      price: cur_position.buy_price,
       amount: schema.unit,
-      before_account: before_state.account,
-      cur_account: cur_state.account,
-      schema: schema,
-      cur_position: cur_position,
-      cur_position_num: cur_state.position_num,
-    }
+      trend: schema.trend,
+      positions: schema.positions,
+    ]
   end
 
   defp add_position_log(dayk, before_state, cur_state) do
     schema = Map.get(cur_state, :schema)
-    cur_position = Enum.at(schema.positions, before_state.position_num)
+    cur_position = Enum.at(schema.positions, cur_state.position_num - 1)
 
     %{
-      action: "add",
+      action: "add_position",
       dayk: dayk,
       before_state: before_state,
       cur_state: cur_state,
       date: dayk.date,
-      trend: schema.trend,
       price: cur_position.buy_price,
       amount: schema.unit,
-      before_account: before_state.account,
-      cur_account: cur_state.account,
-      cur_position: cur_position,
-      cur_position_num: cur_state.position_num,
     }
   end
 
   defp stop_position_log(dayk, before_state, cur_state) do
     schema = Map.get(before_state, :schema)
     cur_position = Enum.at(schema.positions, before_state.position_num - 1)
+    position_amount = schema.unit * before_state.lot_size * before_state.position_num
 
     %{
-      action: "stop",
+      action: "stop_position",
       dayk: dayk,
       before_state: before_state,
       cur_state: cur_state,
       date: dayk.date,
-      trend: schema.trend,
       price: cur_position.stop_price,
-      amount: schema.unit * before_state.position_num,
-      before_account: before_state.account,
-      cur_account: cur_state.account,
-      cur_position: cur_position,
-      cur_position_num: cur_state.position_num,
+      avg_price: cur_position.avg_price,
+      amount: position_amount,
     }
   end
 
   defp close_position_log(dayk, before_state, cur_state) do
-    schema = Map.get(before_state, :schema)
-    cur_position = Enum.at(schema.positions, before_state.position_num - 1)
-
     %{
-      action: "close",
+      action: "close_position",
+      system: 1,
       dayk: dayk,
       before_state: before_state,
-      cur_state: cur_state,
+      cur_state: cur_state, 
       system: 1,
       date: dayk.date,
       trend: schema.trend,
       price: schema.close_price,
-      amount: schema.unit * before_state.position_num,
-      before_account: before_state.account,
-      cur_account: cur_state.account,
-      cur_position: cur_position,
-      cur_position_num: cur_state.position_num,
+      amount: before_state.position_num * schema.unit
     }
   end
 
@@ -250,63 +221,5 @@ defmodule TrendFollowingKernel.Backtest do
   defp update_close_price(state, dayk) do
     close_price = Position.close_price(:system1, state.schema.trend, dayk)
     put_in(state, [:schema, :close_price], close_price)
-  end
-
-  defp read_log(state) do
-    create_tmp = """
-      <%= @date %>
-      当前持有资金 <%= @before_account %>,
-      由于价格突破了<%= if @system == 1, do: 20, else: 60 %>日<%= if @trend == "bull", do: "最高", else: "最低" %>价<%= @price %>元,
-      所以以<%= @price %>的价格，买入<%= @amount %>股股票<%= if @trend == "bull", do: "做多", else: "做空" %>
-      花费 <%= @price * @amount %> 元，
-      账户剩余 <%= @cur_account %>
-    """
-
-    add_tmp = """
-      <%= @date %>
-      当前持有资金<%= @before_account %>元，
-      由于价格突破了第<%= @cur_position_num %>头寸的购买价，
-      所以以<%= @price %>元价格加仓，
-      买入<%= @amount %>股，
-      花费<%= @price * @amount %>元，
-      账户剩余<%= @cur_account %>元。
-    """
-
-    stop_tmp = """
-      <%= @date %>
-      当前持有资金<%= @before_account %>元，
-      由于价格突破了当前持有头寸的止损价<%= @price %>元，
-      所以以<%= @price %>元的价格卖出<%= @amount %>股，
-      损失<%= (@price - @cur_position.avg_price) * @amount %>元，
-      账户剩余<%= @cur_account %>元。
-    """
-
-    close_tmp = """
-      <%= @date %>
-      当前持有资金<%= @before_account %>元，
-      由于价格突破了近<%= if @system == 1, do: 10, else: 20 %>日<%= if @trend == "bull", do: "最低", else: "最高" %>价<%= @price %>元，
-      所以以<%= @price %>元价格平仓，卖出<%= @amount %>股，
-      花费成本：<%= @cur_position.avg_price * @amount %>,
-      <%= if @trend == "bull" do %>
-      盈利<%= (@price - @cur_position.avg_price) * @amount %>元，
-      <% else %>
-      盈利<%= (@cur_position.avg_price - @price) * @amount %>元,
-      <% end %>
-      账户剩余<%= @cur_account %>元。
-    """
-
-    Enum.map(state.log, fn(x) ->       
-      case x.action do
-        "create" ->
-          EEx.eval_string(create_tmp, assigns: x)
-        "add" ->
-          EEx.eval_string(add_tmp, assigns: x)
-        "stop" ->
-          EEx.eval_string(stop_tmp, assigns: x)
-        "close" ->
-          EEx.eval_string(close_tmp, assigns: x)
-      end
-
-    end)
   end
 end
