@@ -37,7 +37,8 @@ defmodule TrendFollowing.Mixfile do
   defp deps do
     [
       {:postgrex, ">= 0.0.0"},
-      {:ecto, "~> 2.1"}
+      {:ecto, "~> 2.1"},
+      {:scrivener_ecto, "~> 1.0"},
     ]
   end
 

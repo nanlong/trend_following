@@ -7,6 +7,7 @@ defmodule TrendFollowing.Markets do
   defdelegate update_stock(stock, attrs), to: Stock, as: :update
   defdelegate get_stock(symbol), to: Stock, as: :get
   defdelegate get_stock!(symbol), to: Stock, as: :get!
+  defdelegate stock_paginate(market, params), to: Stock, as: :paginate
   
   # stock dayk
   alias TrendFollowing.Markets.Context.Dayk

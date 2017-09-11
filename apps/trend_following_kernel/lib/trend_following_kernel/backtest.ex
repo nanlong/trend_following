@@ -199,7 +199,7 @@ defmodule TrendFollowingKernel.Backtest do
       date: dayk.date,
       price: cur_position.stop_price,
       avg_price: cur_position.avg_price,
-      lot: schema.unit * before_state.position_num
+      lot: schema.unit * before_state.position_num,
       amount: schema.unit * before_state.position_num * before_state.lot_size,
     }
   end
