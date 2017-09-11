@@ -1,10 +1,23 @@
 defmodule TrendFollowingKernel.Backtest do
+  @moduledoc """
+  config = %{
+    account: 1000000, 
+    atr_rate: 0.01, 
+    atr_add: 0.5,
+    stop_loss: 0.02,
+    position_max: 4,
+  }
+  """
   alias TrendFollowing.Markets
   alias TrendFollowingKernel.Position
 
   def backtest(symbol, config) do
     stock = Markets.get_stock!(symbol)
-    dayk_list = Markets.list_dayk(symbol)
+
+    # 前300个交易日不做任何操作
+    dayk_list = 
+      Markets.list_dayk(symbol)
+      |> Enum.slice(300..-1)
 
     state = %{
       account: config.account,
@@ -51,17 +64,22 @@ defmodule TrendFollowingKernel.Backtest do
           |> Map.update!(:account, &(&1 + cur_position.stop_price * schema.unit * state.position_num))
           |> Map.put(:position_num, 0)
           |> Map.update!(:log, &(&1 ++ [stop_position_log]))
+          |> Map.put(:schema, nil)
 
         close_position?(state, dayk) ->
+          schema = Map.get(state, :schema)
           close_position_log = close_position_log(state, dayk)
 
           state
-          |> Map.update!(:account, &(&1 + state.close_price * schema.unit * state.position_num))
+          |> Map.update!(:account, &(&1 + schema.close_price * schema.unit * state.position_num))
           |> Map.put(:position_num, 0)
           |> Map.update!(:log, &(&1 ++ [close_position_log]))
+          |> Map.put(:schema, nil)
 
         true -> state
       end
+
+    state = update_close_price(state, dayk)
 
     trading(rest, stock, config, state)
   end
@@ -76,6 +94,7 @@ defmodule TrendFollowingKernel.Backtest do
     dayk.low < schema.break_price)
   end
 
+  defp add_position?(%{schema: nil}, _dayk), do: false
   defp add_position?(state, dayk) do
     schema = Map.get(state, :schema)
     next_position = Enum.at(schema.positions, state.position_num)
@@ -91,6 +110,7 @@ defmodule TrendFollowingKernel.Backtest do
     dayk.low < next_position.buy_price)
   end
 
+  defp stop_position?(%{schema: nil}, _dayk), do: false
   defp stop_position?(state, dayk) do
     schema = Map.get(state, :schema)
     cur_position = Enum.at(schema.positions, state.position_num - 1)
@@ -104,6 +124,7 @@ defmodule TrendFollowingKernel.Backtest do
     dayk.high > cur_position.stop_price)
   end
 
+  defp close_position?(%{schema: nil}, _dayk), do: false
   defp close_position?(state, dayk) do
     schema = Map.get(state, :schema)
 
@@ -123,6 +144,7 @@ defmodule TrendFollowingKernel.Backtest do
       trend: schema.trend,
       price: schema.break_price,
       amount: schema.unit,
+      atr: dayk.atr,
     }
   end
 
@@ -162,5 +184,11 @@ defmodule TrendFollowingKernel.Backtest do
       price: schema.close_price,
       amount: schema.unit * state.position_num
     }
+  end
+
+  defp update_close_price(%{schema: nil} = state, _dayk), do: state
+  defp update_close_price(state, dayk) do
+    close_price = Position.close_price(:system1, state.schema.trend, dayk)
+    put_in(state, [:schema, :close_price], close_price)
   end
 end
