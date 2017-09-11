@@ -164,7 +164,8 @@ defmodule TrendFollowingKernel.Backtest do
       system: 1,
       date: dayk.date,
       price: cur_position.buy_price,
-      amount: schema.unit,
+      lot: schema.unit,
+      amount: schema.unit * before_state.lot_size,
       trend: schema.trend,
       positions: schema.positions,
     ]
@@ -181,14 +182,14 @@ defmodule TrendFollowingKernel.Backtest do
       cur_state: cur_state,
       date: dayk.date,
       price: cur_position.buy_price,
-      amount: schema.unit,
+      lot: schema.unit,
+      amount: schema.unit * before_state.lot_size,
     }
   end
 
   defp stop_position_log(dayk, before_state, cur_state) do
     schema = Map.get(before_state, :schema)
     cur_position = Enum.at(schema.positions, before_state.position_num - 1)
-    position_amount = schema.unit * before_state.lot_size * before_state.position_num
 
     %{
       action: "stop_position",
@@ -198,7 +199,8 @@ defmodule TrendFollowingKernel.Backtest do
       date: dayk.date,
       price: cur_position.stop_price,
       avg_price: cur_position.avg_price,
-      amount: position_amount,
+      lot: schema.unit * before_state.position_num
+      amount: schema.unit * before_state.position_num * before_state.lot_size,
     }
   end
 
@@ -215,7 +217,8 @@ defmodule TrendFollowingKernel.Backtest do
       date: dayk.date,
       trend: schema.trend,
       price: schema.close_price,
-      amount: before_state.position_num * schema.unit
+      lot: schema.unit * before_state.position_num,
+      amount: schema.unit * before_state.position_num * before_state.lot_size
     }
   end
 
