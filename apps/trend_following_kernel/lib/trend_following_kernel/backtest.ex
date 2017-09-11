@@ -203,6 +203,8 @@ defmodule TrendFollowingKernel.Backtest do
   end
 
   defp close_position_log(dayk, before_state, cur_state) do
+    schema = Map.get(before_state, :schema)
+    
     %{
       action: "close_position",
       system: 1,

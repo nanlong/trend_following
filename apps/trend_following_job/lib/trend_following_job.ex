@@ -1,18 +1,6 @@
 defmodule TrendFollowingJob do
-  @moduledoc """
-  Documentation for TrendFollowingJob.
-  """
-
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> TrendFollowingJob.hello
-      :world
-
-  """
-  def hello do
-    :world
+  
+  def load_stock(market) do    
+    Exq.enqueue(Exq, "default", TrendFollowingJob.Stock, [market, 1])
   end
 end

@@ -28,6 +28,7 @@ defmodule TrendFollowingJob.Mixfile do
       # {:dep_from_hexpm, "~> 0.3.0"},
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"},
       # {:sibling_app_in_umbrella, in_umbrella: true},
+      {:exq, "~> 0.9.0"},
     ]
   end
 end

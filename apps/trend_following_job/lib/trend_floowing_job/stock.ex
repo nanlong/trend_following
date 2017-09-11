@@ -1,18 +1,37 @@
 defmodule TrendFollowingJob.Stock do
   @moduledoc """
-    TrendFollowingJob.Stock.load(:cn, 1, fn(market, symbol) -> 
+    TrendFollowingJob.Stock.load("cn", 1, fn(market, symbol) -> 
       TrendFollowingJob.StockDetail.load(market, symbol)
     end)
 
-    TrendFollowingJob.Stock.load(:hk, 1, fn(market, symbol) -> 
+    TrendFollowingJob.Stock.load("hk", 1, fn(market, symbol) -> 
       TrendFollowingJob.StockDetail.load(market, symbol)
     end)
 
-    TrendFollowingJob.Stock.load(:us, 1)
+    TrendFollowingJob.Stock.load("us", 1)
   """
   alias TrendFollowing.Markets
-  
-  def load(market, page, fun \\ fn(_, _) -> nil end) do
+
+  def perform(market, page) do
+    job = 
+      case market do
+        "us" -> TrendFollowingJob.Dayk
+        _ -> TrendFollowingJob.StockDetail
+      end
+
+    callback = 
+      fn(market, symbol) -> 
+        Exq.enqueue(Exq, "default", job, [market, symbol])
+      end
+
+    %{has_next: has_next} = load(market, page, callback)
+
+    if has_next do
+      Exq.enqueue(Exq, "default", TrendFollowingJob.Stock, [market, page + 1])
+    end
+  end
+    
+  def load(market, page, fun) do
     %{body: data} = stock_data(market, page)
     has_next = has_next?(market, data)
     data = data_handler(market, data)
@@ -29,19 +48,19 @@ defmodule TrendFollowingJob.Stock do
     %{has_next: has_next}
   end
 
-  defp stock_data(:cn, page), do: TrendFollowingApi.Sina.CNStock.get("list", page: page)
-  defp stock_data(:hk, page), do: TrendFollowingApi.Sina.HKStock.get("list", page: page)
-  defp stock_data(:us, page), do: TrendFollowingApi.Sina.USStock.get("list", page: page)
+  defp stock_data("cn", page), do: TrendFollowingApi.Sina.CNStock.get("list", page: page)
+  defp stock_data("hk", page), do: TrendFollowingApi.Sina.HKStock.get("list", page: page)
+  defp stock_data("us", page), do: TrendFollowingApi.Sina.USStock.get("list", page: page)
 
-  defp has_next?(:cn, data) do
+  defp has_next?("cn", data) do
     page_cur = get_in(data, ["result", "data", "pageCur"])
     page_num = get_in(data, ["result", "data", "pageNum"])
     page_cur + 1 <= page_num
   end
-  defp has_next?(:hk, data), do: not is_nil(data)
-  defp has_next?(:us, data), do: length(Map.get(data, "data")) > 0
+  defp has_next?("hk", data), do: not is_nil(data)
+  defp has_next?("us", data), do: length(Map.get(data, "data")) > 0
 
-  defp data_handler(:cn, data) do
+  defp data_handler("cn", data) do
     data = get_in(data, ["result", "data", "data"])
     
     Enum.map(data, fn(x) -> 
@@ -54,7 +73,7 @@ defmodule TrendFollowingJob.Stock do
       }  
     end)
   end
-  defp data_handler(:hk, data) do
+  defp data_handler("hk", data) do
     Enum.map(data, fn(x) -> 
       %{
         market: "HK",
@@ -65,7 +84,7 @@ defmodule TrendFollowingJob.Stock do
       }
     end)
   end
-  defp data_handler(:us, data) do
+  defp data_handler("us", data) do
     data = Map.get(data, "data")
 
     Enum.map(data, fn(x) -> 

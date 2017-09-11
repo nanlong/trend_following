@@ -3,18 +3,21 @@ defmodule TrendFollowingJob.Dayk do
 
   Examples:
   
-    iex> TrendFollowingJob.Dayk.load(:cn_stock, "sh600036")
-    iex> TrendFollowingJob.Dayk.load(:hk_stock, "00700")
-    iex> TrendFollowingJob.Dayk.load(:us_stock, "AAPL")
-    iex> TrendFollowingJob.Dayk.load(:i_future, "TA0")
-    iex> TrendFollowingJob.Dayk.load(:g_future, "CL")
+    iex> TrendFollowingJob.Dayk.load("cn"_stock, "sh600036")
+    iex> TrendFollowingJob.Dayk.load("hk"_stock, "00700")
+    iex> TrendFollowingJob.Dayk.load("us"_stock, "AAPL")
+    iex> TrendFollowingJob.Dayk.load("i"_future, "TA0")
+    iex> TrendFollowingJob.Dayk.load("g"_future, "CL")
   """
 
   alias TrendFollowing.Repo
   alias TrendFollowing.Markets
   alias TrendFollowing.Markets.Dayk
 
+  def perform(market, symbol), do: load(market, symbol)
+
   def load(market, symbol) do
+    stock = Markets.get_stock(symbol)
     history = Markets.list_dayk(symbol)
     last_dayk = List.last(history)
     %{body: data} = dayk_data(market, symbol)
@@ -30,15 +33,15 @@ defmodule TrendFollowingJob.Dayk do
     |> dayk_moving_average()
     |> dayk_true_range()
     |> dayk_average_true_range()
-    |> dayk_save()
+    |> dayk_save(stock)
   end
 
   defp dayk_data(market, symbol)
-  defp dayk_data(:cn_stock, symbol), do: TrendFollowingApi.Sina.CNStock.get("dayk", symbol: symbol)
-  defp dayk_data(:hk_stock, symbol), do: TrendFollowingApi.Sina.HKStock.get("dayk", symbol: symbol)
-  defp dayk_data(:us_stock, symbol), do: TrendFollowingApi.Sina.USStock.get("dayk", symbol: symbol)
-  defp dayk_data(:i_future, symbol), do: TrendFollowingApi.Sina.IFuture.get("dayk", symbol: symbol)
-  defp dayk_data(:g_future, symbol), do: TrendFollowingApi.Sina.GFuture.get("dayk", symbol: symbol)
+  defp dayk_data("cn", symbol), do: TrendFollowingApi.Sina.CNStock.get("dayk", symbol: symbol)
+  defp dayk_data("hk", symbol), do: TrendFollowingApi.Sina.HKStock.get("dayk", symbol: symbol)
+  defp dayk_data("us", symbol), do: TrendFollowingApi.Sina.USStock.get("dayk", symbol: symbol)
+  defp dayk_data("i", symbol), do: TrendFollowingApi.Sina.IFuture.get("dayk", symbol: symbol)
+  defp dayk_data("g", symbol), do: TrendFollowingApi.Sina.GFuture.get("dayk", symbol: symbol)
 
   defp dayk_filter(data, nil), do: data
   defp dayk_filter(data, %{date: date}) do
@@ -46,7 +49,7 @@ defmodule TrendFollowingJob.Dayk do
   end
 
   defp dayk_rename_key(data, market, symbol)
-  defp dayk_rename_key(data, :cn_stock, symbol) do
+  defp dayk_rename_key(data, "cn", symbol) do
     Enum.map(data, fn(x) -> 
       date = x |> Map.get("day") |> Date.from_iso8601!()
       {open, _} = x |> Map.get("open") |> Float.parse()
@@ -68,7 +71,7 @@ defmodule TrendFollowingJob.Dayk do
       }
     end)
   end
-  defp dayk_rename_key(data, :hk_stock, symbol) do
+  defp dayk_rename_key(data, "hk", symbol) do
     Enum.map(data, fn(x) -> 
       {:ok, datetime, _} = x |> Map.get("date") |> DateTime.from_iso8601()
       date = datetime |> DateTime.to_date()
@@ -91,7 +94,7 @@ defmodule TrendFollowingJob.Dayk do
       }
     end)
   end
-  defp dayk_rename_key(data, :us_stock, symbol) do
+  defp dayk_rename_key(data, "us", symbol) do
     Enum.map(data, fn(x) -> 
       date = x |> Map.get("d") |> Date.from_iso8601!()
       {open, _} = x |> Map.get("o") |> Float.parse()
@@ -113,7 +116,7 @@ defmodule TrendFollowingJob.Dayk do
       }
     end)
   end
-  defp dayk_rename_key(data, :i_future, symbol) do
+  defp dayk_rename_key(data, "i", symbol) do
     Enum.map(data, fn(x) -> 
       date = x |> Map.get("d") |> Date.from_iso8601!()
       {open, _} = x |> Map.get("o") |> Float.parse()
@@ -135,7 +138,7 @@ defmodule TrendFollowingJob.Dayk do
       }
     end)
   end
-  defp dayk_rename_key(data, :g_future, symbol) do
+  defp dayk_rename_key(data, "g", symbol) do
     Enum.map(data, fn(x) -> 
       date = x |> Map.get("date") |> Date.from_iso8601!()
       {open, _} = x |> Map.get("open") |> Float.parse()
@@ -287,16 +290,15 @@ defmodule TrendFollowingJob.Dayk do
     dayk_average_true_range(rest, results ++ [{dayk, index}])
   end
 
-  defp dayk_save(data) do
+  defp dayk_save(data, stock) do
     data
     |> Enum.map(fn({x, _}) -> x end)
     |> Enum.filter(fn(x) -> not Map.has_key?(x, :__struct__) end)
     |> Enum.chunk_every(2730)
     |> Enum.map(fn(data_chunk) -> 
-      Repo.insert_all(Dayk, data_chunk, returning: true)
-      # {_num, results} = Repo.insert_all(StockDayk, data_chunk, returning: true)
-      # stock_dayk_id = results |> List.last() |> Map.get(:id)
-      # Markets.update_stock(stock, %{stock_dayk_id: stock_dayk_id})
+      {_num, results} = Repo.insert_all(Dayk, data_chunk, returning: true)
+      dayk_id = results |> List.last() |> Map.get(:id)
+      Markets.update_stock(stock, %{dayk_id: dayk_id})
     end)
   end
 end
