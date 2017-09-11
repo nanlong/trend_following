@@ -23,6 +23,7 @@ defmodule TrendFollowingKernel.Backtest do
       account: config.account,
       position_num: 0,
       schema: nil,
+      lot_size: stock.lot_size,
       log: []
     }
 
@@ -59,19 +60,34 @@ defmodule TrendFollowingKernel.Backtest do
           schema = Map.get(state, :schema)
           cur_position = Enum.at(schema.positions, state.position_num - 1)
           stop_position_log = stop_position_log(state, dayk)
+          position_amount = schema.unit * state.lot_size * state.position_num
+
+          money =
+            case schema.trend do
+              "bull" -> cur_position.stop_price * position_amount
+              "bear" -> cur_position.avg_price * position_amount + (cur_position.avg_price - cur_position.stop_price) * position_amount
+            end
 
           state
-          |> Map.update!(:account, &(&1 + cur_position.stop_price * schema.unit * state.position_num))
+          |> Map.update!(:account, &(&1 + money))
           |> Map.put(:position_num, 0)
           |> Map.update!(:log, &(&1 ++ [stop_position_log]))
           |> Map.put(:schema, nil)
 
         close_position?(state, dayk) ->
           schema = Map.get(state, :schema)
+          cur_position = Enum.at(schema.positions, state.position_num - 1)
           close_position_log = close_position_log(state, dayk)
+          position_amount = schema.unit * state.lot_size * state.position_num
+          
+          money =
+            case schema.trend do
+              "bull" -> schema.close_price * position_amount
+              "bear" -> cur_position.avg_price * position_amount + (cur_position.avg_price - schema.close_price) * position_amount
+            end
 
           state
-          |> Map.update!(:account, &(&1 + schema.close_price * schema.unit * state.position_num))
+          |> Map.update!(:account, &(&1 + money))
           |> Map.put(:position_num, 0)
           |> Map.update!(:log, &(&1 ++ [close_position_log]))
           |> Map.put(:schema, nil)
@@ -143,8 +159,7 @@ defmodule TrendFollowingKernel.Backtest do
       date: dayk.date,
       trend: schema.trend,
       price: schema.break_price,
-      amount: schema.unit,
-      atr: dayk.atr,
+      amount: schema.unit
     }
   end
 
