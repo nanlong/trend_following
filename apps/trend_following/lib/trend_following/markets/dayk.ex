@@ -11,7 +11,7 @@ defmodule TrendFollowing.Markets.Dayk do
     field :close, :float
     field :high, :float
     field :low, :float
-    field :volume, :integer
+    field :volume, :string
     field :pre_close, :float
     field :ma5, :float
     field :ma10, :float

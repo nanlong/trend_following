@@ -10,7 +10,7 @@ defmodule TrendFollowing.Repo.Migrations.CreateDayk do
       add :high, :float
       add :low, :float
       add :pre_close, :float
-      add :volume, :integer
+      add :volume, :string
       add :ma5, :float
       add :ma10, :float
       add :ma20, :float

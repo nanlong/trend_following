@@ -56,7 +56,7 @@ defmodule TrendFollowingJob.Dayk do
       {close, _} = x |> Map.get("close") |> Float.parse()
       {high, _} = x |> Map.get("high") |> Float.parse()
       {low, _} = x |> Map.get("low") |> Float.parse()
-      {volume, _} = x |> Map.get("volume") |> Integer.parse()
+      volume = x |> Map.get("volume")
 
       %{
         symbol: symbol,
@@ -79,7 +79,7 @@ defmodule TrendFollowingJob.Dayk do
       {close, _} = x |> Map.get("close") |> to_string() |> Float.parse()
       {high, _} = x |> Map.get("high") |> to_string() |> Float.parse()
       {low, _} = x |> Map.get("low") |> to_string() |> Float.parse()
-      {volume, _} = x |> Map.get("volume") |> to_string() |> Integer.parse()
+      volume = x |> Map.get("volume") |> to_string()
 
       %{
         symbol: symbol,
@@ -101,7 +101,7 @@ defmodule TrendFollowingJob.Dayk do
       {close, _} = x |> Map.get("c") |> Float.parse()
       {high, _} = x |> Map.get("h") |> Float.parse()
       {low, _} = x |> Map.get("l") |> Float.parse()
-      {volume, _} = x |> Map.get("v") |> Integer.parse()
+      volume = x |> Map.get("v")
 
       %{
         symbol: symbol,
@@ -123,7 +123,7 @@ defmodule TrendFollowingJob.Dayk do
       {close, _} = x |> Map.get("c") |> Float.parse()
       {high, _} = x |> Map.get("h") |> Float.parse()
       {low, _} = x |> Map.get("l") |> Float.parse()
-      {volume, _} = x |> Map.get("v") |> Integer.parse()
+      volume = x |> Map.get("v")
 
       %{
         symbol: symbol,
@@ -145,7 +145,7 @@ defmodule TrendFollowingJob.Dayk do
       {close, _} = x |> Map.get("close") |> Float.parse()
       {high, _} = x |> Map.get("high") |> Float.parse()
       {low, _} = x |> Map.get("low") |> Float.parse()
-      {volume, _} = x |> Map.get("volume") |> Integer.parse()
+      volume = x |> Map.get("volume")
 
       %{
         symbol: symbol,
