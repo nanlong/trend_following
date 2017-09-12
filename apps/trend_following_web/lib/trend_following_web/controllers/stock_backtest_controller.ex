@@ -14,7 +14,7 @@ defmodule TrendFollowingWeb.StockBacktestController do
       position_max: 4,
     }
 
-    results = TrendFollowingKernel.backtest(symbol, config)
+    results = TrendFollowingKernel.backtest(:system1, symbol, config)
     
     conn
     |> assign(:title, "回测")

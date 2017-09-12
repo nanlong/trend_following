@@ -15,7 +15,7 @@
       <td><%= position.buy_price %></td>
       <td><%= position.stop_price %></td>
       <td><%= @cur_state.schema.unit %></td>
-      <td><%= position.buy_price * @cur_state.schema.unit %></td>
+      <td><%= position.buy_price * @cur_state.lot_size * @cur_state.schema.unit %></td>
     </tr>
     <% end %>
   </table>
