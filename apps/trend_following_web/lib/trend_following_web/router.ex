@@ -18,6 +18,8 @@ defmodule TrendFollowingWeb.Router do
 
     get "/", PageController, :index
 
+    resources "/markets", MarketController, singleton: true, only: [:show]
+
     get "/stocks/:symbol/backtest", StockBacktestController, :show
   end
 
