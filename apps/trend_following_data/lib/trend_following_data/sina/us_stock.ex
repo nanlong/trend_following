@@ -1,9 +1,9 @@
-defmodule TrendFollowingApi.Sina.USStock do
+defmodule TrendFollowingData.Sina.USStock do
   @moduledoc """
-  TrendFollowingApi.Sina.USStock.get("list", page: 1)
-  TrendFollowingApi.Sina.USStock.get("dayk", symbol: "AAPL")
-  TrendFollowingApi.Sina.USStock.get("mink", symbol: "AAPL", type: 5)
-  TrendFollowingApi.Sina.USStock.get("detail", symbol: "AAPL")
+  TrendFollowingData.Sina.USStock.get("list", page: 1)
+  TrendFollowingData.Sina.USStock.get("dayk", symbol: "AAPL")
+  TrendFollowingData.Sina.USStock.get("mink", symbol: "AAPL", type: 5)
+  TrendFollowingData.Sina.USStock.get("detail", symbol: "AAPL")
   """
   use HTTPotion.Base
 

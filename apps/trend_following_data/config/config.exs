@@ -10,11 +10,11 @@ use Mix.Config
 
 # You can configure your application as:
 #
-#     config :trend_following_api, key: :value
+#     config :trend_following_data, key: :value
 #
 # and access this configuration in your application as:
 #
-#     Application.get_env(:trend_following_api, :key)
+#     Application.get_env(:trend_following_data, :key)
 #
 # You can also configure a 3rd-party app:
 #

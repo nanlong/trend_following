@@ -48,9 +48,9 @@ defmodule TrendFollowingJob.Stock do
     %{has_next: has_next}
   end
 
-  defp stock_data("cn", page), do: TrendFollowingApi.Sina.CNStock.get("list", page: page)
-  defp stock_data("hk", page), do: TrendFollowingApi.Sina.HKStock.get("list", page: page)
-  defp stock_data("us", page), do: TrendFollowingApi.Sina.USStock.get("list", page: page)
+  defp stock_data("cn", page), do: TrendFollowingData.Sina.CNStock.get("list", page: page)
+  defp stock_data("hk", page), do: TrendFollowingData.Sina.HKStock.get("list", page: page)
+  defp stock_data("us", page), do: TrendFollowingData.Sina.USStock.get("list", page: page)
 
   defp has_next?("cn", data) do
     page_cur = get_in(data, ["result", "data", "pageCur"])

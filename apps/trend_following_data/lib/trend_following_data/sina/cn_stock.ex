@@ -1,10 +1,10 @@
-defmodule TrendFollowingApi.Sina.CNStock do
+defmodule TrendFollowingData.Sina.CNStock do
   @moduledoc """
-  TrendFollowingApi.Sina.CNStock.get("list", page: 1)
-  TrendFollowingApi.Sina.CNStock.get("dayk", symbol: "sh600036")
-  TrendFollowingApi.Sina.CNStock.get("mink", symbol: "sh600036", scale: 5)
-  TrendFollowingApi.Sina.CNStock.get("mink", symbol: "sh600036", scale: 60)
-  TrendFollowingApi.Sina.CNStock.get("detail", symbol: "sh600036")
+  TrendFollowingData.Sina.CNStock.get("list", page: 1)
+  TrendFollowingData.Sina.CNStock.get("dayk", symbol: "sh600036")
+  TrendFollowingData.Sina.CNStock.get("mink", symbol: "sh600036", scale: 5)
+  TrendFollowingData.Sina.CNStock.get("mink", symbol: "sh600036", scale: 60)
+  TrendFollowingData.Sina.CNStock.get("detail", symbol: "sh600036")
   """
   use HTTPotion.Base
 

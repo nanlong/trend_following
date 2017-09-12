@@ -1,14 +1,14 @@
-defmodule TrendFollowingApi.Sina.HKStock do
+defmodule TrendFollowingData.Sina.HKStock do
   @moduledoc """
-  TrendFollowingApi.Sina.HKStock.get("list", page: 1)
-  TrendFollowingApi.Sina.HKStock.get("dayk", symbol: "00700")
-  TrendFollowingApi.Sina.HKStock.get("lotSize", symbol: "00700")
-  TrendFollowingApi.Sina.HKStock.get("detail", symbol: "00700")
+  TrendFollowingData.Sina.HKStock.get("list", page: 1)
+  TrendFollowingData.Sina.HKStock.get("dayk", symbol: "00700")
+  TrendFollowingData.Sina.HKStock.get("lotSize", symbol: "00700")
+  TrendFollowingData.Sina.HKStock.get("detail", symbol: "00700")
   """
 
   use HTTPotion.Base
-  alias TrendFollowingApi.Sina.Decode
-  alias TrendFollowingApi.Sina.HKStock
+  alias TrendFollowingData.Sina.Decode
+  alias TrendFollowingData.Sina.HKStock
 
   @list_api "http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHKStockData"
   @dayk_api "http://finance.sina.com.cn/stock/hkstock/<%= @symbol %>/klc_kl.js"

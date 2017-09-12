@@ -1,12 +1,12 @@
-defmodule TrendFollowingApi.Sina.GFuture do
+defmodule TrendFollowingData.Sina.GFuture do
   @moduledoc """
-  TrendFollowingApi.Sina.GFuture.get("list")
-  TrendFollowingApi.Sina.GFuture.get("dayk", symbol: "CL")
-  TrendFollowingApi.Sina.GFuture.get("detail", symbol: "CL")
-  TrendFollowingApi.Sina.GFuture.get("info", symbol: "CL")
+  TrendFollowingData.Sina.GFuture.get("list")
+  TrendFollowingData.Sina.GFuture.get("dayk", symbol: "CL")
+  TrendFollowingData.Sina.GFuture.get("detail", symbol: "CL")
+  TrendFollowingData.Sina.GFuture.get("info", symbol: "CL")
   """
   use HTTPotion.Base
-  alias TrendFollowingApi.Sina.GFuture
+  alias TrendFollowingData.Sina.GFuture
 
   @list_api "http://gu.sina.cn/hq/api/openapi.php/FuturesService.getGlobal"
   @dayk_api "http://stock2.finance.sina.com.cn/futures/api/jsonp.php/data/GlobalFuturesService.getGlobalFuturesDailyKLine"

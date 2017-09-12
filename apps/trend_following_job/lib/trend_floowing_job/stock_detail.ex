@@ -17,8 +17,8 @@ defmodule TrendFollowingJob.StockDetail do
     Markets.update_stock(stock, attrs)
   end
 
-  def detail_data("cn", symbol), do: TrendFollowingApi.Sina.CNStock.get("detail", symbol: symbol)
-  def detail_data("hk", symbol), do: TrendFollowingApi.Sina.HKStock.get("detail", symbol: symbol)
+  def detail_data("cn", symbol), do: TrendFollowingData.Sina.CNStock.get("detail", symbol: symbol)
+  def detail_data("hk", symbol), do: TrendFollowingData.Sina.HKStock.get("detail", symbol: symbol)
 
   def data_handler("cn", data) do
     %{

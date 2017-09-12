@@ -1,9 +1,9 @@
-defmodule TrendFollowingApi.Mixfile do
+defmodule TrendFollowingData.Mixfile do
   use Mix.Project
 
   def project do
     [
-      app: :trend_following_api,
+      app: :trend_following_data,
       version: "0.1.0",
       build_path: "../../_build",
       config_path: "../../config/config.exs",

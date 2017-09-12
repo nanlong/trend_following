@@ -1,6 +1,6 @@
-defmodule TrendFollowingApiTest.IFutureTest do
+defmodule TrendFollowingDataTest.IFutureTest do
   use ExUnit.Case
-  alias TrendFollowingApi.Sina.IFuture
+  alias TrendFollowingData.Sina.IFuture
 
   test "list" do
     assert %{status_code: 200, body: data} = IFuture.get("list")

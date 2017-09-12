@@ -1,6 +1,6 @@
-defmodule TrendFollowingApiTest.GFutureTest do
+defmodule TrendFollowingDataTest.GFutureTest do
   use ExUnit.Case
-  alias TrendFollowingApi.Sina.GFuture
+  alias TrendFollowingData.Sina.GFuture
 
   test "list" do
     assert %{status_code: 200, body: %{"result" => %{"data" => %{"global_good" => [data | _]}}}} = GFuture.get("list")

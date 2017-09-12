@@ -1,6 +1,6 @@
-defmodule TrendFollowingApiTest.CNStockTest do
+defmodule TrendFollowingDataTest.CNStockTest do
   use ExUnit.Case
-  alias TrendFollowingApi.Sina.CNStock
+  alias TrendFollowingData.Sina.CNStock
   
   test "list" do
     assert %{status_code: 200, body: data} = CNStock.get("list", page: 1)
