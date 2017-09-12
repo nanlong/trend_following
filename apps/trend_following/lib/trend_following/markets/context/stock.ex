@@ -130,7 +130,7 @@ defmodule TrendFollowing.Markets.Context.Stock do
   end
 
   defp query_order_by(query) do
-    order_by(query, [stock], desc: stock.market_cap)
+    order_by(query, [stock], desc: fragment("to_number(market_cap,'9999999999999.99')"))
   end
 
   defp query_paginate(query, params) do

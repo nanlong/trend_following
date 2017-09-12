@@ -7,8 +7,17 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Hello TrendFollowing!</title>
+    <title>趋势跟踪系统<%= assigns[:title] && " - " <> assigns[:title] %></title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
+
+    <script>
+      var CONFIG = {};
+      <%= if assigns[:js_config] do %>
+      <%= for {key, value} <- @js_config do %>
+      CONFIG["<%= key %>"] = <%= raw Poison.encode!(value) %>;
+      <% end %>
+      <% end %>
+    </script>
   </head>
 
   <body>

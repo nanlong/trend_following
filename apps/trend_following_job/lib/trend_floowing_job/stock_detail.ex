@@ -21,15 +21,25 @@ defmodule TrendFollowingJob.StockDetail do
   def detail_data("hk", symbol), do: TrendFollowingData.Sina.HKStock.get("detail", symbol: symbol)
 
   def data_handler("cn", data) do
+    market_cap =
+      data
+      |> Map.get("market_cap", 0.0)
+      |> :erlang.float_to_binary(decimals: 2)
+      
     %{
-      market_cap: Map.get(data, "market_cap") |> to_string(),
-      pe: Map.get(data, "pe") |> to_string()
+      market_cap: market_cap,
+      pe: Map.get(data, "pe", 0) |> to_string()
     }
   end
   def data_handler("hk", data) do
+    market_cap =
+      data
+      |> Map.get("hk_market_cap", 0.0)
+      |> :erlang.float_to_binary(decimals: 2)
+
     %{
-      market_cap: Map.get(data, "hk_market_cap") |> to_string(),
-      pe: Map.get(data, "pe") |> to_string(),
+      market_cap: market_cap,
+      pe: Map.get(data, "pe", 0) |> to_string(),
       lot_size: Map.get(data, "lot_size")
     }
   end
