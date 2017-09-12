@@ -18,7 +18,11 @@ defmodule TrendFollowingKernel.Backtest do
       log: []
     }
 
-    trading(system, dayk_list, stock, config, state)
+    if stock.lot_size == 0 do
+      state
+    else
+      trading(system, dayk_list, stock, config, state)
+    end
   end
 
   defp trading(_system, [], _stock, _config, state), do: state
@@ -32,11 +36,11 @@ defmodule TrendFollowingKernel.Backtest do
           
           cur_state =
             state
-            |> Map.update!(:account, &(&1 - cur_position.buy_price * schema.unit))
+            |> Map.update!(:account, &(&1 - cur_position.buy_price * state.lot_size * schema.unit))
             |> Map.update!(:position_num, &(&1 + 1))
             |> Map.put(:schema, schema)
           
-          log = create_position_log(dayk, state, cur_state)
+          log = create_position_log(system, dayk, state, cur_state)
           Map.update!(cur_state, :log, &(&1 ++ [log]))
 
         add_position?(state, dayk) ->
@@ -45,16 +49,16 @@ defmodule TrendFollowingKernel.Backtest do
           
           cur_state =
             state
-            |> Map.update!(:account, &(&1 - cur_position.buy_price * schema.unit))
+            |> Map.update!(:account, &(&1 - cur_position.buy_price * state.lot_size * schema.unit))
             |> Map.update!(:position_num, &(&1 + 1))
           
-          log = add_position_log(dayk, state, cur_state)
+          log = add_position_log(system, dayk, state, cur_state)
           Map.update!(cur_state, :log, &(&1 ++ [log]))
 
         stop_position?(state, dayk) ->
           schema = Map.get(state, :schema)
           cur_position = Enum.at(schema.positions, state.position_num - 1)
-          position_amount = schema.unit * state.lot_size * state.position_num
+          position_amount = state.lot_size * schema.unit * state.position_num
 
           money =
             case schema.trend do
@@ -68,13 +72,13 @@ defmodule TrendFollowingKernel.Backtest do
             |> Map.put(:position_num, 0)
             |> Map.put(:schema, nil)
           
-          log = stop_position_log(dayk, state, cur_state)
+          log = stop_position_log(system, dayk, state, cur_state)
           Map.update!(cur_state, :log, &(&1 ++ [log]))
 
         close_position?(state, dayk) ->
           schema = Map.get(state, :schema)
           cur_position = Enum.at(schema.positions, state.position_num - 1)
-          position_amount = schema.unit * state.lot_size * state.position_num
+          position_amount = state.lot_size * schema.unit * state.position_num
           
           money =
             case schema.trend do
@@ -88,23 +92,25 @@ defmodule TrendFollowingKernel.Backtest do
             |> Map.put(:position_num, 0)
             |> Map.put(:schema, nil)
 
-          log = close_position_log(dayk, state, cur_state)
+          log = close_position_log(system, dayk, state, cur_state)
           Map.update!(cur_state, :log, &(&1 ++ [log]))
 
         true -> state
       end
 
-    state = update_close_price(state, dayk)
+    state = update_close_price(system, state, dayk)
 
     trading(system, rest, stock, config, state)
   end
 
   defp create_position?(state, dayk, schema) do
-    (state.position_num == 0 && 
+    (state.account > 0 &&
+    state.position_num == 0 && 
     schema.trend == "bull" && 
     dayk.high > schema.break_price)
     or
-    (state.position_num == 0 && 
+    (state.account > 0 &&
+    state.position_num == 0 && 
     schema.trend == "bear" && 
     dayk.low < schema.break_price)
   end
@@ -114,15 +120,25 @@ defmodule TrendFollowingKernel.Backtest do
     schema = Map.get(state, :schema)
     next_position = Enum.at(schema.positions, state.position_num)
 
-    (state.position_num > 0 &&
-    state.position_num < schema.position_max &&
-    schema.trend == "bull" &&
-    dayk.high > next_position.buy_price)
-    or
-    (state.position_num > 0 &&
-    state.position_num < schema.position_max &&
-    schema.trend == "bear" &&
-    dayk.low < next_position.buy_price)
+    if is_nil(next_position) do
+      false
+    else
+      position_price = next_position.buy_price *  state.lot_size * schema.unit
+      
+      (state.account > 0 &&
+      state.account > position_price &&
+      state.position_num > 0 &&
+      state.position_num < schema.position_max &&
+      schema.trend == "bull" &&
+      dayk.high > next_position.buy_price)
+      or
+      (state.account > 0 &&
+      state.account > position_price &&
+      state.position_num > 0 &&
+      state.position_num < schema.position_max &&
+      schema.trend == "bear" &&
+      dayk.low < next_position.buy_price)
+    end
   end
 
   defp stop_position?(%{schema: nil}, _dayk), do: false
@@ -152,79 +168,81 @@ defmodule TrendFollowingKernel.Backtest do
     dayk.high > schema.close_price)
   end
 
-  defp create_position_log(dayk, before_state, cur_state) do
+  defp create_position_log(system, dayk, before_state, cur_state) do
     schema = Map.get(cur_state, :schema)
     cur_position = Enum.at(schema.positions, cur_state.position_num - 1)
 
     [
       action: "create_position",
+      system: system,
       dayk: dayk,
-      before_state: before_state,
-      cur_state: cur_state,
+      before_state: Map.delete(before_state, :log),
+      cur_state: Map.delete(cur_state, :log),
       system: 1,
       date: dayk.date,
       price: cur_position.buy_price,
       lot: schema.unit,
-      amount: schema.unit * before_state.lot_size,
+      amount: before_state.lot_size * schema.unit,
       trend: schema.trend,
       positions: schema.positions,
     ]
   end
 
-  defp add_position_log(dayk, before_state, cur_state) do
+  defp add_position_log(system, dayk, before_state, cur_state) do
     schema = Map.get(cur_state, :schema)
     cur_position = Enum.at(schema.positions, cur_state.position_num - 1)
 
     %{
       action: "add_position",
+      system: system,
       dayk: dayk,
-      before_state: before_state,
-      cur_state: cur_state,
+      before_state: Map.delete(before_state, :log),
+      cur_state: Map.delete(cur_state, :log),
       date: dayk.date,
       price: cur_position.buy_price,
       lot: schema.unit,
-      amount: schema.unit * before_state.lot_size,
+      amount: before_state.lot_size * schema.unit,
     }
   end
 
-  defp stop_position_log(dayk, before_state, cur_state) do
+  defp stop_position_log(system, dayk, before_state, cur_state) do
     schema = Map.get(before_state, :schema)
     cur_position = Enum.at(schema.positions, before_state.position_num - 1)
 
     %{
       action: "stop_position",
+      system: system,
       dayk: dayk,
-      before_state: before_state,
-      cur_state: cur_state,
+      before_state: Map.delete(before_state, :log),
+      cur_state: Map.delete(cur_state, :log),
       date: dayk.date,
       price: cur_position.stop_price,
       avg_price: cur_position.avg_price,
       lot: schema.unit * before_state.position_num,
-      amount: schema.unit * before_state.position_num * before_state.lot_size,
+      amount: before_state.lot_size * schema.unit * before_state.position_num,
     }
   end
 
-  defp close_position_log(dayk, before_state, cur_state) do
+  defp close_position_log(system, dayk, before_state, cur_state) do
     schema = Map.get(before_state, :schema)
     
     %{
       action: "close_position",
-      system: 1,
+      system: system,
       dayk: dayk,
-      before_state: before_state,
-      cur_state: cur_state, 
-      system: 1,
+      before_state: Map.delete(before_state, :log),
+      cur_state: Map.delete(cur_state, :log), 
       date: dayk.date,
       trend: schema.trend,
       price: schema.close_price,
       lot: schema.unit * before_state.position_num,
-      amount: schema.unit * before_state.position_num * before_state.lot_size
+      amount: before_state.lot_size * schema.unit * before_state.position_num 
     }
   end
 
-  defp update_close_price(%{schema: nil} = state, _dayk), do: state
-  defp update_close_price(state, dayk) do
-    close_price = Position.close_price(:system1, state.schema.trend, dayk)
+  defp update_close_price(_system, %{schema: nil} = state, _dayk), do: state
+  defp update_close_price(system, state, dayk) do
+    close_price = Position.close_price(system, state.schema.trend, dayk)
     put_in(state, [:schema, :close_price], close_price)
   end
 end

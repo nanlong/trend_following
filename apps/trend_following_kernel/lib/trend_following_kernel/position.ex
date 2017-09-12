@@ -12,9 +12,10 @@ defmodule TrendFollowingKernel.Position do
     # 头寸单位规模
     unit = position_unit(config.account, config.atr_rate, dayk.atr, trade.lot_size)
     # 当前资金可操作的最大头寸规模
-    position_max = position_max(trend, dayk, config, break_price, unit)
+    position_max = position_max(trend, dayk, config, break_price, trade.lot_size * unit)
 
     %{
+      system: system,
       date: dayk.date,
       symbol: dayk.symbol,
       account_min: account_min(dayk.atr, trade.lot_size, config.atr_rate),

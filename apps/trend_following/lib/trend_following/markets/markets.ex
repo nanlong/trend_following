@@ -16,4 +16,5 @@ defmodule TrendFollowing.Markets do
   defdelegate update_dayk(stock_dayk, attrs), to: Dayk, as: :update
   defdelegate get_dayk!(symbok, date), to: Dayk, as: :get!
   defdelegate list_dayk(symbol), to: Dayk, as: :list
+  defdelegate list_dayk(symbol, limit), to: Dayk, as: :list
 end

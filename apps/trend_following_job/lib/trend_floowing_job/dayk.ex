@@ -18,7 +18,7 @@ defmodule TrendFollowingJob.Dayk do
 
   def load(market, symbol) do
     stock = Markets.get_stock(symbol)
-    history = Markets.list_dayk(symbol)
+    history = Markets.list_dayk(symbol, 400)
     last_dayk = List.last(history)
     %{body: data} = dayk_data(market, symbol)
 

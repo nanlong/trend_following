@@ -1,5 +1,6 @@
 defmodule TrendFollowingKernel do
   @moduledoc """
+  TrendFollowingKernel.backtest(:system1, "00700", config)
   system: [:system1 | :system2]
   """
   alias TrendFollowingKernel.Position

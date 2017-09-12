@@ -41,7 +41,7 @@ defmodule TrendFollowingApi.Sina.HKStock do
 
   def process_url("detail", query) do
     rn = (System.system_time() / 1_000_000_000) |> round()
-    list = "hk#{query[:symbol]},hk#{query[:symbol]}_i"
+    list = "rt_hk#{query[:symbol]},hk#{query[:symbol]}_i"
     @detail_api <> "/?_=#{rn}&list=#{list}"
   end
 
@@ -64,7 +64,7 @@ defmodule TrendFollowingApi.Sina.HKStock do
     |> Decode.decode()
   end
 
-  def decode("var hq_str_hk" <> _ = data) do
+  def decode("var hq_str" <> _ = data) do
     %{"symbol" => symbol} = Regex.named_captures(~r/hk(?<symbol>\d+)=/, data)
     [[_, d1], [_, d2]] = Regex.scan(~r/"(.*)"/, data)
 
@@ -97,15 +97,15 @@ defmodule TrendFollowingApi.Sina.HKStock do
       # 周息率
       {dividend_yield, _} = elem(d2, 10) |> Float.parse()
       # 振幅
-      amplitude = ((highest - lowest) / pre_close * 100) |> Float.round(3)
+      amplitude = if pre_close == 0, do: 0.0, else: ((highest - lowest) / pre_close * 100) |> Float.round(3)
       # 港股市值
       hk_market_cap = (price * hk_capital) |> Float.round(3)
       datetime = "#{elem(d1, 17)} #{elem(d1, 18)}"
 
       lot_size = 
         HKStock.get("lotSize", symbol: symbol) 
-        |> Map.get(:body) 
-        |> Map.get("lot_size")
+        |> Map.get(:body)
+        |> Map.get("lot_size", 0)
 
       %{
         "symbol" => symbol,
@@ -148,7 +148,7 @@ defmodule TrendFollowingApi.Sina.HKStock do
 
   def decode(data) do
     try do
-      data =  String.replace(data, "\\'", "\'")
+      data = String.replace(data, "\\'", "\'")
 
       {:ok, data} =
         ~r/(?<={|,)\w+(?=:)/
@@ -157,7 +157,7 @@ defmodule TrendFollowingApi.Sina.HKStock do
 
       data
     rescue
-      _ -> []
+      _ -> %{}
     end
   end
 end

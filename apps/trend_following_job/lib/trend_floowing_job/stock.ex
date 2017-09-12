@@ -60,6 +60,8 @@ defmodule TrendFollowingJob.Stock do
   defp has_next?("hk", data), do: not is_nil(data)
   defp has_next?("us", data), do: length(Map.get(data, "data")) > 0
 
+  defp data_handler(market, data)
+  defp data_handler(_market, nil), do: []
   defp data_handler("cn", data) do
     data = get_in(data, ["result", "data", "data"])
     

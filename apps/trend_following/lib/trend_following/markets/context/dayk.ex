@@ -25,4 +25,13 @@ defmodule TrendFollowing.Markets.Context.Dayk do
     |> order_by([d], asc: d.date)
     |> Repo.all()
   end
+
+  def list(symbol, limit) do
+    Dayk
+    |> where([d], d.symbol == ^symbol)
+    |> order_by([d], desc: d.date)
+    |> limit(^limit)
+    |> Repo.all()
+    |> Enum.reverse()
+  end
 end
