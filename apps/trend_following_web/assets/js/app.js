@@ -24,6 +24,8 @@ import { ApolloProvider } from 'react-apollo'
 import ReactDOM from 'react-dom';
 import client from './lib/apollo_client'
 import StockChart from './components/stock_chart'
+import StockDetailHK from './components/stock_detail.hk'
+
 
 if (document.getElementById('stock-chart')) {
   ReactDOM.render(
@@ -31,5 +33,14 @@ if (document.getElementById('stock-chart')) {
       <StockChart />
     </ApolloProvider>,
     document.getElementById('stock-chart'),
+  )
+}
+
+if (document.getElementById('stock-detail-hk')) {
+  ReactDOM.render(
+    <ApolloProvider client={client}>
+      <StockDetailHK />
+    </ApolloProvider>,
+    document.getElementById('stock-detail-hk'),
   )
 }

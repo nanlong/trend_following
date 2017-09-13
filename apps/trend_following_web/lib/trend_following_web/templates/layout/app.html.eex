@@ -9,7 +9,6 @@
 
     <title>趋势跟踪系统<%= assigns[:title] && " - " <> assigns[:title] %></title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
-
     <script>
       var CONFIG = {};
       <%= if assigns[:js_config] do %>
@@ -56,5 +55,6 @@
 
     </div> <!-- /container -->
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
+    <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
   </body>
 </html>

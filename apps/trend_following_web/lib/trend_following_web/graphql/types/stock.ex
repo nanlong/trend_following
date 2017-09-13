@@ -2,7 +2,7 @@ defmodule TrendFollowingWeb.Graphql.Types.Stock do
   use Absinthe.Schema.Notation
   use Absinthe.Ecto, repo: TrendFollowing.Repo
 
-  
+
   object :hk_stock do
     field :symbol, :string
     field :name, :string
@@ -26,5 +26,6 @@ defmodule TrendFollowingWeb.Graphql.Types.Stock do
     field :hk_market_cap, :float
     field :dividend_yield, :float
     field :datetime, :string
+    field :timestamp, :integer
   end
 end

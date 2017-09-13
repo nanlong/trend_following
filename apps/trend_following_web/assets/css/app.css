@@ -8,3 +8,9 @@ html {
 table {
   width: 100%;
 }
+.bull {
+  color: Red;
+}
+.bear {
+  color: Green;
+}

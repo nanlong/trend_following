@@ -24,6 +24,6 @@
     <div id="slider"></div>
   </div>
   <div class="column is-3">
-    <div id="hk-stock-detail"></div>
+    <div id="stock-detail-hk"></div>
   </div>
 </div>
