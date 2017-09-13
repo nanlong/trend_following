@@ -1,0 +1,9 @@
+<div class="tabs">
+  <ul>
+    <%= for {name, caption, href} <- @data do %>
+    <li<%= if Map.get(@params, "tab", "all") == caption, do: raw(" class=\"is-active\"") %>>
+      <a href="<%= href %>"><%= name %></a>
+    </li>
+    <% end %>
+  </ul>
+</div>

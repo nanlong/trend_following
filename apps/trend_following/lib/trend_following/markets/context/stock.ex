@@ -86,9 +86,7 @@ defmodule TrendFollowing.Markets.Context.Stock do
   end
 
   defp query_with_market(query, market) do
-    query
-    |> where([stock], stock.market in ^market)
-    |> join(:inner, [stock], state in assoc(stock, :dayk), state.atr > 0.1)
+    where(query, [stock], stock.market in ^market)
   end
 
   defp query_filter(query, params) do
@@ -100,11 +98,11 @@ defmodule TrendFollowing.Markets.Context.Stock do
   end
 
   defp query_bull(query) do
-    join(query, :inner, [stock], state in assoc(stock, :dayk), state.ma50 > state.ma300)
+    join(query, :inner, [stock], dayk in assoc(stock, :dayk), dayk.ma50 > dayk.ma300 and dayk.atr > 0.1)
   end
 
   defp query_bear(query) do
-    join(query, :inner, [stock], state in assoc(stock, :dayk), state.ma50 < state.ma300)
+    join(query, :inner, [stock], dayk in assoc(stock, :dayk), dayk.ma50 < dayk.ma300 and dayk.atr > 0.1)
   end
 
   defp query_exclude_blacklist(query, user_id) when is_nil(user_id), do: query
@@ -121,7 +119,6 @@ defmodule TrendFollowing.Markets.Context.Stock do
   defp query_include_star(query, user_id) do
     join(query, :inner, [stock], star in Stocktar, star.user_id == ^user_id and star.symbol == stock.symbol)
   end
-
 
   defp query_load_dayk(query) do
     query

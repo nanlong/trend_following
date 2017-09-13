@@ -40,8 +40,9 @@ defmodule TrendFollowingWeb do
       import TrendFollowingWeb.Router.Helpers
       import TrendFollowingWeb.ErrorHelpers
       import TrendFollowingWeb.Gettext
-
+      
       import Scrivener.HTML
+      import TrendFollowingWeb.TemplateHelpers
     end
   end
 

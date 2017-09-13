@@ -1,0 +1,14 @@
+<nav class="panel">
+  <p class="panel-heading">
+    市场
+  </p>
+
+  <%= for {name, caption, href} <- panel(@conn) do %>
+    <%= if controller_module(@conn) == caption do %>
+      <%= link name, to: href, class: "panel-block is-active" %>
+    <% else %>
+      <%= link name, to: href, class: "panel-block" %>
+    <% end %>
+  <% end %>
+
+</nav>

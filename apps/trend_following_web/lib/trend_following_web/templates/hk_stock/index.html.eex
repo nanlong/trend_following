@@ -1,8 +1,37 @@
 <div class="columns">
   <div class="column is-2">
-    
+    <%= render TrendFollowingWeb.MarketView, "panel.html", assigns %>
   </div>
   <div class="column">
+    <%= render TrendFollowingWeb.MarketView, "tabs.html", data: tabs_data(@conn), params: @params %>
+    <div class="columns">
+      <div class="column">
+        <nav class="breadcrumb" aria-label="breadcrumbs">
+          <ul>
+            <li><a>共 <%= @page.total_entries %> 条记录</a></li>
+            <li><a>共 <%= @page.total_pages %> 页</a></li>
+            <li><a>当前第 <%= @page.page_number %> 页</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="column">
+        <form>
+          <div class="field has-addons has-addons-right">
+            <%= if Map.get(@params, "tab") do %>
+            <input type="hidden" name="tab" value="<%= Map.get(@params, "tab") %>">
+            <% end %>
+            <p class="control">
+              <input class="input" type="text" name="q" placeholder="股票代码或公司名称" value="<%= Map.get(@params, "q", "")%>">
+            </p>
+            <p class="control">
+              <button class="button is-primary">
+                搜索
+              </button>
+            </p>
+          </div>
+        </form>
+      </div>
+    </div>
     <div>
       <table class="table is-bordered is-striped is-narrow is-fullwidth">
         <tr>
