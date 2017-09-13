@@ -1,9 +1,9 @@
-defmodule TrendFollowingWeb.StockBacktestController do
+defmodule TrendFollowingWeb.BacktestController do
   use TrendFollowingWeb, :controller
 
   alias TrendFollowing.Markets
 
-  def show(conn, %{"symbol" => symbol}) do
+  def show(conn, %{"hk_stock_symbol" => symbol}) do
     stock = Markets.get_stock!(symbol)
 
     config = %{

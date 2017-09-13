@@ -1,0 +1,4 @@
+
+<%= for item <- @results.log do %>
+  <%= render(TrendFollowingWeb.BacktestView, item[:action] <> ".html", item) %>
+<% end %>

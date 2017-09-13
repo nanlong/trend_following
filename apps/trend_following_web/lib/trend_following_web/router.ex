@@ -18,11 +18,11 @@ defmodule TrendFollowingWeb.Router do
 
     get "/", PageController, :index
 
-    resources "/markets", MarketController, singleton: true, only: [:show] do
-      resources "/HK_Stocks", HKStockController, param: "symbol", only: [:index, :show]
+    resources "/market", MarketController, singleton: true, only: [:show] do
+      resources "/HK_Stocks", HKStockController, param: "symbol", only: [:index, :show] do
+        get "/backtest", BacktestController, :show
+      end
     end
-
-    get "/stocks/:symbol/backtest", StockBacktestController, :show
   end
 
   scope "/api" do
