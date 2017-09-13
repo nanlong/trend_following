@@ -40,7 +40,7 @@ defmodule TrendFollowing.MarketsTest do
     @tag trend_following_markets: true
     test "get" do
       stock = stock_fixture()
-      assert Markets.get_stock!(stock.symbol) == stock
+      assert Markets.get_stock(stock.symbol) == stock
     end
 
     @tag trend_following_markets: true

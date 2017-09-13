@@ -1,7 +1,8 @@
 defmodule TrendFollowingWeb.Graphql.Types.Dayk do
   use Absinthe.Schema.Notation
-  use Absinthe.Ecto, repo: TradingSystem.Repo
+  use Absinthe.Ecto, repo: TrendFollowing.Repo
 
+  
   object :dayk do
     field :symbol, :string
     field :date, :string
