@@ -21,18 +21,34 @@
   </head>
 
   <body>
-    <div class="container">
-      <header class="header">
-        <nav role="navigation">
-          <ul class="nav nav-pills pull-right">
-            <li><a href="http://www.phoenixframework.org/docs">Get Started</a></li>
-          </ul>
-        </nav>
-        <span class="logo"></span>
-      </header>
+    <div class="container" style="margin-bottom: 20px;">
+      <nav class="navbar ">
+        <div class="navbar-brand">
+          <%= link to: page_path(@conn, :index), class: "navbar-item logo" do %>
+            <strong class="title is-5">
+              趋势跟踪系统
+              <span style="font-size: 12px;">Beta</span>
+            </strong>
+          <% end %>
+        </div>
 
-      <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
-      <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
+        <div class="navbar-menu">
+          <div class="navbar-start">
+            <%= link "市场", to: market_path(@conn, :show), class: "navbar-item" %>
+
+          </div>
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+      <%= if get_flash(@conn, :info) do %>
+      <p class="notification is-info"><%= get_flash(@conn, :info) %></p>
+      <% end %>
+
+      <%= if get_flash(@conn, :error) do %>
+      <p class="notification is-danger"><%= get_flash(@conn, :error) %></p>
+      <% end %>
 
       <main role="main">
         <%= render @view_module, @view_template, assigns %>

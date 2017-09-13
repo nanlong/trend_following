@@ -1,2 +1,10 @@
 /* This file is for your main application css. */
 @import "~bulma";
+
+html {
+  font-size: 87.5%;
+}
+
+table {
+  width: 100%;
+}
