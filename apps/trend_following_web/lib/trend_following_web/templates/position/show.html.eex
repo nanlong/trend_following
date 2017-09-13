@@ -116,7 +116,7 @@
       </tr>
       <%= for {p, n} <- @position.positions |> Enum.with_index(1) do %>
       <tr>
-        <td><%= n %>(<%= if n == 1, do: "建仓", else: "加仓" %>)</td>
+        <td>第 <%= n %> 单位(<%= if n == 1, do: "建仓", else: "加仓" %>)</td>
         <td><%= p.buy_price |> float_to_string(2) %></td>
         <td><%= p.stop_price |> float_to_string(2) %></td>
         <td><%= @position.unit %>手 (<%= @position.unit_share %>股)</td>

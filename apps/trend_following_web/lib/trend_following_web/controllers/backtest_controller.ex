@@ -14,12 +14,12 @@ defmodule TrendFollowingWeb.BacktestController do
       position_max: 4,
     }
 
-    results = TrendFollowingKernel.backtest(:system1, symbol, config)
+    backtest = TrendFollowingKernel.backtest(:system1, symbol, config)
     
     conn
-    |> assign(:title, "回测")
+    |> assign(:title, stock.cname <> "回测情况")
     |> assign(:stock, stock)
-    |> assign(:results, results)
+    |> assign(:backtest, backtest)
     |> render(:show)
   end
 

@@ -1,4 +1,27 @@
 
-<%= for item <- @results.log do %>
-  <%= render(TrendFollowingWeb.BacktestView, item[:action] <> ".html", item) %>
-<% end %>
+<div class="columns">
+  <div class="column is-3">
+    <ul>
+      <li>净盈</li>
+      <li>交易数量</li>
+      <li>持仓天数</li>
+      <li>最大回调值</li>
+      <li>最大回调持续时间</li>
+      <li>最大连续亏损次数</li>
+      <li>盈利与最大回调之比</li>
+      <li>盈利亏损比</li>
+      <li>胜率</li>
+      <li>时间百分比</li>
+    </ul>
+  </div>
+  <div class="column">
+    <div>资金曲线</div>
+    <div>持仓曲线</div>
+    <div>收益率</div>
+    <div>
+      <%= for item <- @backtest.log do %>
+        <%= render(TrendFollowingWeb.BacktestView, item[:action] <> ".html", item) %>
+      <% end %>
+    </div>
+  </div>
+</div>

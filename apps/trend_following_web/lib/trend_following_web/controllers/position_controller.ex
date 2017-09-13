@@ -31,7 +31,7 @@ defmodule TrendFollowingWeb.PositionController do
     position = TrendFollowingKernel.position(system, stock, dayk, config)
     
     conn
-    |> assign(:title, "头寸")
+    |> assign(:title, stock.cname <> "头寸方案")
     |> assign(:stock, stock)
     |> assign(:dayk, dayk)
     |> assign(:config, config)
