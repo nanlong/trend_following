@@ -1,0 +1,27 @@
+
+<div class="columns">
+  <div class="column is-8">
+    <div>
+      <strong style="font-size: 24px;">
+        <%= @stock.cname %> 
+        <%= @stock.symbol %>
+      </strong>
+      <span><%= @stock.name %></span>
+    </div>
+  </div>
+  <div class="column" style="padding-top: 20px;"> 
+    <span id="stock-star-btn" class="is-pulled-right"></span>
+    <span id="stock-backlist-btn" class="is-pulled-right" style="margin-right: 20px;"></span>
+  </div>
+</div>
+
+<div class="columns">
+  <div class="column is-9">
+    <!-- React Component: StockChart  -->
+    <div id="stock-chart"></div>
+    <div id="slider"></div>
+  </div>
+  <div class="column is-3">
+    <div id="hk-stock-detail"></div>
+  </div>
+</div>

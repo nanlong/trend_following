@@ -21,8 +21,10 @@ defmodule TrendFollowingWeb.HKStockController do
   end
 
   def show(conn, %{"symbol" => symbol}) do
-    
+    stock = Markets.get_stock!(symbol)
+
     conn
+    |> assign(:stock, stock)
     |> render(:show)
   end
 end
