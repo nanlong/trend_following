@@ -19,3 +19,17 @@ import "phoenix_html"
 // paths "./socket" or full ones "web/static/js/socket".
 
 // import socket from "./socket"
+import React from 'react'
+import { ApolloProvider } from 'react-apollo'
+import ReactDOM from 'react-dom';
+import client from './lib/apollo_client'
+import StockChart from './components/stock_chart'
+
+if (document.getElementById('stock-chart')) {
+  ReactDOM.render(
+    <ApolloProvider client={client}>
+      <StockChart />
+    </ApolloProvider>,
+    document.getElementById('stock-chart'),
+  )
+}
