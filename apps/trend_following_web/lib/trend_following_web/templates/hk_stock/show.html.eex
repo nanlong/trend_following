@@ -7,6 +7,8 @@
         <%= @stock.symbol %>
       </strong>
       <span><%= @stock.name %></span>
+      <%= link "头寸方案", to: market_hk_stock_position_path(@conn, :show, @stock.symbol), class: "button is-small is-primary", target: "_blank" %>
+      <%= link "回测情况", to: market_hk_stock_backtest_path(@conn, :show, @stock.symbol), class: "button is-small is-info", target: "_blank" %>
     </div>
   </div>
   <div class="column" style="padding-top: 20px;"> 

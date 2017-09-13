@@ -11,9 +11,11 @@ defmodule TrendFollowingKernel.Position do
     atr_stop = config.stop_loss / config.atr_rate
     # 头寸单位规模
     unit = position_unit(config.account, config.atr_rate, dayk.atr, trade.lot_size)
+    # 头寸单位股数
+    unit_share = unit * trade.lot_size
     # 当前资金可操作的最大头寸规模
     position_max = position_max(trend, dayk, config, break_price, trade.lot_size * unit)
-
+    total_avg_price = avg_price(trend, break_price, dayk.atr, config.atr_add, position_max)
     %{
       system: system,
       date: dayk.date,
@@ -24,14 +26,22 @@ defmodule TrendFollowingKernel.Position do
       break_price: break_price,
       close_price: close_price,
       unit: unit,
+      unit_share: unit_share,
       position_max: position_max,
       positions: Enum.map(1..position_max, fn(p) -> 
+        buy_price = buy_price(trend, break_price, dayk.atr, config.atr_add, p)
+        avg_price = avg_price(trend, break_price, dayk.atr, config.atr_add, p)
+        stop_price = stop_price(trend, break_price, dayk.atr, config.atr_add, atr_stop, p)
         %{
-          buy_price: buy_price(trend, break_price, dayk.atr, config.atr_add, p),
-          avg_price: avg_price(trend, break_price, dayk.atr, config.atr_add, p),
-          stop_price: stop_price(trend, break_price, dayk.atr, config.atr_add, atr_stop, p),
+          buy_price: buy_price,
+          avg_price: avg_price,
+          stop_price: stop_price,
+          unit_cost: buy_price * unit_share,
         }
-      end)
+      end),
+      total_unit: unit * position_max,
+      total_unit_share: unit_share * position_max,
+      total_unit_cost: total_avg_price * position_max * unit_share
     }
   end
 

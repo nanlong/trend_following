@@ -21,6 +21,7 @@ defmodule TrendFollowingWeb.Router do
     resources "/market", MarketController, singleton: true, only: [:show] do
       resources "/HK_Stocks", HKStockController, param: "symbol", only: [:index, :show] do
         get "/backtest", BacktestController, :show
+        get "/position", PositionController, :show
       end
     end
   end

@@ -1,0 +1,137 @@
+<div class="columns">
+  <div class="column is-3">
+    <div class="field is-horizontal">
+      <span class="field-label" style="flex-grow: 2">
+        <%= @stock.symbol %>
+      </span>
+      <span class="field-body">
+        <%= @stock.cname %>
+      </span>
+    </div>
+    <div class="field is-horizontal">
+      <span class="field-label" style="flex-grow: 2">
+        参考日期:
+      </span>
+      <span class="field-body">
+        <%= @dayk.date %>
+      </span>
+    </div>
+    <div class="field is-horizontal">
+      <span class="field-label" style="flex-grow: 2">
+        突破价:
+      </span>
+      <span class="field-body">
+        <%= @position.break_price |> float_to_string(2) %>
+      </span>
+    </div>
+    <div class="field is-horizontal">
+      <span class="field-label" style="flex-grow: 2">
+        平仓价:
+      </span>
+      <span class="field-body">
+        <%= @position.close_price |> float_to_string(2) %>
+      </span>
+    </div>
+    <div class="field is-horizontal">
+      <span class="field-label" style="flex-grow: 2">
+        每手:
+      </span>
+      <span class="field-body">
+        <%= @stock.lot_size %>股
+      </span>
+    </div>
+    <div class="field is-horizontal">
+      <span class="field-label" style="flex-grow: 2">
+        账户资金:
+      </span>
+      <span class="field-body">
+        <%= @config.account %>港币
+      </span>
+    </div>
+    <div class="field is-horizontal">
+      <span class="field-label" style="flex-grow: 2">
+        最低资金:
+      </span>
+      <span class="field-body">
+        <%= @position.account_min %>港币
+      </span>
+    </div>
+    <div class="field is-horizontal">
+      <span class="field-label" style="flex-grow: 2">
+        交易方向:
+      </span>
+      <span class="field-body">
+        <%= if @position.trend == "bull", do: "做多", else: "做空" %>
+      </span>
+    </div>
+  </div>
+  <div class="column">
+    <div class="columns">
+      <div class="column is-4">
+        <form action="">
+          <div class="field has-addons">
+            <p class="control">
+              <span class="select">
+                <select name="system">
+                  <%= for {value, text} <- [{:system1, "系统1"}, {:system2, "系统2"}] do %>
+                  <option 
+                    value="<%= value %>"
+                    <%= if @position.system == value, do: " selected" %>>
+                    <%= text %>
+                  </option>
+                  <% end %>
+                </select>
+              </span>
+            </p>
+            <p class="control">
+              <span class="select">
+                <select name="date">
+                  <%= for item <- @history |> Enum.reverse() do %>
+                  <option 
+                    value="<%= item.date %>"
+                    <%= if @dayk.date == item.date, do: " selected" %>>
+                    <%= item.date %>
+                  </option>
+                  <% end %>
+                </select>
+              </span>
+            </p>
+            <p class="control">
+              <button class="button" type="submit">
+                确定
+              </button>
+            </p>
+          </div>
+        </form>
+      </div>
+    </div>
+    
+    <table class="table">
+      <tr>
+        <th>头寸单位</th>
+        <th>买入价</th>
+        <th>止损价</th>
+        <th>买入数量</th>
+        <th>买入成本</th>
+      </tr>
+      <%= for {p, n} <- @position.positions |> Enum.with_index(1) do %>
+      <tr>
+        <td><%= n %>(<%= if n == 1, do: "建仓", else: "加仓" %>)</td>
+        <td><%= p.buy_price |> float_to_string(2) %></td>
+        <td><%= p.stop_price |> float_to_string(2) %></td>
+        <td><%= @position.unit %>手 (<%= @position.unit_share %>股)</td>
+        <td><%= p.unit_cost |> float_to_string(2) %></td>
+      </tr>
+      <% end %>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td><%= @position.total_unit %>手(<%= @position.total_unit_share %>股)</td>
+        <td><%= @position.total_unit_cost |> float_to_string(2) %></td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+

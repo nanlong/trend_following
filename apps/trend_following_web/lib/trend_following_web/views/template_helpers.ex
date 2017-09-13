@@ -64,4 +64,8 @@ defmodule TrendFollowingWeb.TemplateHelpers do
   def to_keyword(data) when is_map(data) do
     Enum.map(data, fn({key, value}) -> {String.to_atom(key), value} end)
   end
+
+  def float_to_string(float, precision \\ 2) do
+    :erlang.float_to_binary(float, decimals: precision)
+  end
 end

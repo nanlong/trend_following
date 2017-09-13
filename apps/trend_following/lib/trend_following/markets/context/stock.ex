@@ -20,7 +20,7 @@ defmodule TrendFollowing.Markets.Context.Stock do
   end
 
   def get(symbol), do: Repo.get_by(Stock, symbol: symbol)
-  def get!(symbol), do: Repo.get_by!(Stock, symbol: symbol)
+  def get!(symbol), do: Repo.get_by!(Stock, symbol: symbol) |> Repo.preload(:dayk)
 
   def paginate(:cn, params), do: query_all_with_market(@cn_markets, params) |> query_paginate(params)
   def paginate(:cn_bull, params), do: query_bull_with_market(@cn_markets, params) |> query_paginate(params)
