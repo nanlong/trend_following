@@ -131,6 +131,13 @@
         <td><%= @position.total_unit_cost |> float_to_string(2) %></td>
       </tr>
     </table>
+
+    <div>
+      <p class="help">*系统1 - 采用20天突破，10天平仓。</p>
+      <p class="help">*系统2 - 采用60天突破，20天平仓。</p>
+      <p class="help">*突破价 - 价格达到N天内最高(做多)或最低(做空)</p>
+      <p class="help">*平仓价 - 价格达到N天内最低(做多)或最高(做空)</p>
+    </div>
   </div>
 </div>
 
