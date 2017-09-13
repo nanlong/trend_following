@@ -46,6 +46,9 @@ defmodule TrendFollowingWeb.Mixfile do
       {:trend_following, in_umbrella: true},
       {:cowboy, "~> 1.0"},
       {:scrivener_html, "~> 1.7"},
+      {:absinthe, "~> 1.3.1"},
+      {:absinthe_plug, "~> 1.3.0"},
+      {:absinthe_ecto, git: "https://github.com/absinthe-graphql/absinthe_ecto.git"},
     ]
   end
 

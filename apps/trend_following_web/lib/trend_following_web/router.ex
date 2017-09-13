@@ -25,6 +25,18 @@ defmodule TrendFollowingWeb.Router do
     get "/stocks/:symbol/backtest", StockBacktestController, :show
   end
 
+  scope "/api" do
+    # pipe_through [:graphql]
+
+    forward "/", Absinthe.Plug,
+      schema: TrendFollowingWeb.Graphql.Schema
+  end
+
+  scope "/graphiql" do
+    forward "/", Absinthe.Plug.GraphiQL,
+      schema: TrendFollowingWeb.Graphql.Schema
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", TrendFollowingWeb do
   #   pipe_through :api
