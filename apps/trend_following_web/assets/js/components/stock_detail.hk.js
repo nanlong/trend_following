@@ -6,7 +6,7 @@ class StockDetailHK extends React.Component {
   componentDidUpdate({data: {refetch}}, state) {
     setTimeout(() => refetch(), 1000)
   }
-  
+
   dataHandler(data) {
     let result = {}
     result['lot_size'] = data['lot_size']
@@ -74,6 +74,10 @@ class StockDetailHK extends React.Component {
   }
 
   render() {
+    if (this.props.data.loading) {
+      return (<div></div>)
+    }
+    
     const data = this.dataHandler(this.props.data.hkStock ? this.props.data.hkStock : {})
 
     return (

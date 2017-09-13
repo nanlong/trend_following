@@ -288,9 +288,18 @@ class StockChart extends React.Component {
   }
 
   render() {
-    return(
-      <div ref="stockChart" style={{width: '100%', height: '500px'}}></div>
-    )
+    if (this.props.data.loading) {
+      return (
+        <div style={{width: '100%', height: '500px'}}>
+          加载中……
+        </div>
+      )
+    }
+    else {
+      return (
+        <div ref="stockChart" style={{width: '100%', height: '500px'}}></div>
+      )
+    }
   }
 }
 
