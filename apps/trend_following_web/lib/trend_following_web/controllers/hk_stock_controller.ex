@@ -28,6 +28,7 @@ defmodule TrendFollowingWeb.HKStockController do
     }
 
     conn
+    |> assign(:title, stock.cname)
     |> assign(:stock, stock)
     |> assign(:js_config, js_config)
     |> render(:show)

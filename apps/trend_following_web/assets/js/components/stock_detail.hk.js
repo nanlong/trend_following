@@ -3,10 +3,6 @@ import { gql, graphql } from 'react-apollo'
 
 class StockDetailHK extends React.Component {
 
-  componentDidUpdate({data: {refetch}}, state) {
-    setTimeout(() => refetch(), 1000)
-  }
-
   dataHandler(data) {
     let result = {}
     result['lot_size'] = data['lot_size']
@@ -74,6 +70,8 @@ class StockDetailHK extends React.Component {
   }
 
   render() {
+    setTimeout(() => this.props.data.refetch(), 5000)
+
     if (this.props.data.loading) {
       return (<div></div>)
     }
