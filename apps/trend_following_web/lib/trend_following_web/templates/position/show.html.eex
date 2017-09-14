@@ -110,6 +110,7 @@
       <tr>
         <th>头寸单位</th>
         <th>买入价</th>
+        <th>成本价</th>
         <th>止损价</th>
         <th>买入数量</th>
         <th>买入成本</th>
@@ -118,6 +119,7 @@
       <tr>
         <td>第 <%= n %> 单位(<%= if n == 1, do: "建仓", else: "加仓" %>)</td>
         <td><%= p.buy_price |> float_to_string(2) %></td>
+        <td><%= p.avg_price |> float_to_string(2) %></td>
         <td><%= p.stop_price |> float_to_string(2) %></td>
         <td><%= @position.unit %>手 (<%= @position.unit_share %>股)</td>
         <td><%= p.unit_cost |> float_to_string(2) %></td>
