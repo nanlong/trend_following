@@ -10,6 +10,11 @@ defmodule TrendFollowingWeb.Graphql.Schema do
       resolve &TrendFollowingWeb.Graphql.Resolver.Dayk.all/2
     end
 
+    field :cn_stock, :cn_stock do
+      arg :symbol, non_null(:string), description: "股票代码"
+      resolve &TrendFollowingWeb.Graphql.Resolver.Stock.cn_stock/2
+    end
+
     field :hk_stock, :hk_stock do
       arg :symbol, non_null(:string), description: "股票代码"
       resolve &TrendFollowingWeb.Graphql.Resolver.Stock.hk_stock/2
