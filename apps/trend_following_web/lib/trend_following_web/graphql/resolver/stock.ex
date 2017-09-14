@@ -1,6 +1,7 @@
 defmodule TrendFollowingWeb.Graphql.Resolver.Stock do
   alias TrendFollowingData.Sina.CNStock
   alias TrendFollowingData.Sina.HKStock
+  alias TrendFollowingData.Sina.USStock
 
 
   def cn_stock(%{symbol: symbol}, _info) do
@@ -16,6 +17,17 @@ defmodule TrendFollowingWeb.Graphql.Resolver.Stock do
 
   def hk_stock(%{symbol: symbol}, _info) do
     %{status_code: 200, body: data} = HKStock.get("detail", symbol: symbol)
+
+    data = 
+      data
+      |> map_keys_string_to_atom()
+      |> Map.put(:timestamp, timestamp())
+
+    {:ok, data}
+  end
+
+  def us_stock(%{symbol: symbol}, _info) do
+    %{status_code: 200, body: data} = USStock.get("detail", symbol: symbol)
 
     data = 
       data
