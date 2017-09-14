@@ -23,6 +23,11 @@ defmodule TrendFollowingWeb.Router do
         get "/backtest", BacktestController, :show
         get "/position", PositionController, :show
       end
+
+      resources "/CN_Stocks", CNStockController, param: "symbol", only: [:index, :show] do
+        get "/backtest", BacktestController, :show
+        get "/position", PositionController, :show
+      end
     end
   end
 

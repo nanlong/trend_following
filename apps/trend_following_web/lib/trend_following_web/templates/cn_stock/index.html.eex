@@ -1,0 +1,82 @@
+<div class="columns">
+  <div class="column is-2">
+    <%= render TrendFollowingWeb.MarketView, "panel.html", assigns %>
+  </div>
+  <div class="column">
+    <%= render TrendFollowingWeb.MarketView, "tabs.html", data: tabs_data(@conn), params: @params %>
+    <div class="columns">
+      <div class="column">
+        <nav class="breadcrumb" aria-label="breadcrumbs">
+          <ul>
+            <li><a>共 <%= @page.total_entries %> 条记录</a></li>
+            <li><a>共 <%= @page.total_pages %> 页</a></li>
+            <li><a>当前第 <%= @page.page_number %> 页</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="column">
+        <form>
+          <div class="field has-addons has-addons-right">
+            <%= if Map.get(@params, "tab") do %>
+            <input type="hidden" name="tab" value="<%= Map.get(@params, "tab") %>">
+            <% end %>
+            <p class="control">
+              <input class="input" type="text" name="q" placeholder="股票代码或公司名称" value="<%= Map.get(@params, "q", "")%>">
+            </p>
+            <p class="control">
+              <button class="button is-primary">
+                搜索
+              </button>
+            </p>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div>
+      <table class="table is-bordered is-striped is-narrow is-fullwidth">
+        <tr>
+          <th>代码</th>
+          <th>名称</th>
+          <th>最新价</th>
+          <th>涨跌额</th>
+          <th>涨跌幅</th>
+          <th>振幅</th>
+          <th>昨收/今开盘</th>
+          <th>最高价/最低价</th>
+          <th>成交量</th>
+          <th>市值</th>
+          <th>市盈率</th>
+          <th>ATR</th>
+        </tr>
+        <%= for stock <- @page do %>
+        <tr>
+          <td>
+            <%= link to: market_cn_stock_path(@conn, :show, stock.symbol), target: "_blank" do %>
+              <%= stock.symbol %>
+            <% end %>
+          </td>
+          <td>
+            <%= link to: market_cn_stock_path(@conn, :show, stock.symbol), target: "_blank" do %>
+              <%= stock.cname |> truncate(length: 14) %>
+            <% end %>
+          </td>
+          <td><%= stock.dayk.close %></td>
+          <td><%= stock.dayk |> diff() %></td>
+          <td><%= stock.dayk |> chg() %>%</td>
+          <td><%= stock.dayk |> amplitude() %>%</td>
+          <td><%= stock.dayk.pre_close %>/<%= stock.dayk.open %></td>
+          <td><%= stock.dayk.high %>/<%= stock.dayk.low %></td>
+          <td><%= stock.dayk |> number_human(:volume) %></td>
+          <td><%= stock |> number_human(:market_cap) %></td>
+          <td><%= stock.pe |> number_round() %></td>
+          <td><%= stock.dayk.atr |> number_round() %></td>
+        </tr>
+        <% end %>
+      </table>
+      <%= if @page.total_pages > 1 do %>
+        <%= pagination_links @page, to_keyword(@params) |> Keyword.drop([:page]) %>
+      <% end %>
+    </div>
+  </div>
+</div>
+

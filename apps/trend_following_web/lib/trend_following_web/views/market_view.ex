@@ -3,7 +3,7 @@ defmodule TrendFollowingWeb.MarketView do
 
   def panel(conn) do
     [
-      {"沪深", "", ""},
+      {"沪深", "CNStockController", market_cn_stock_path(conn, :index)},
       {"港股", "HKStockController", market_hk_stock_path(conn, :index)},
       {"美股", "", ""},
       {"国内期货", "if", ""},

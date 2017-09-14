@@ -1,0 +1,28 @@
+
+<div class="columns">
+  <div class="column is-8">
+    <div>
+      <strong style="font-size: 24px;">
+        <%= @stock.cname %> 
+        <%= @stock.symbol %>
+      </strong>
+      <%= link "头寸方案", to: market_hk_stock_position_path(@conn, :show, @stock.symbol), class: "button is-small is-primary", target: "_blank" %>
+      <%= link "回测情况", to: market_hk_stock_backtest_path(@conn, :show, @stock.symbol), class: "button is-small is-info", target: "_blank" %>
+    </div>
+  </div>
+  <div class="column" style="padding-top: 20px;"> 
+    <span id="stock-star-btn" class="is-pulled-right"></span>
+    <span id="stock-backlist-btn" class="is-pulled-right" style="margin-right: 20px;"></span>
+  </div>
+</div>
+
+<div class="columns">
+  <div class="column is-9">
+    <!-- React Component: StockChart  -->
+    <div id="stock-chart"></div>
+    <div id="slider"></div>
+  </div>
+  <div class="column is-3">
+    <div id="stock-detail-cn"></div>
+  </div>
+</div>
