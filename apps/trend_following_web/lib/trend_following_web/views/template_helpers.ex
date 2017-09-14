@@ -43,11 +43,12 @@ defmodule TrendFollowingWeb.TemplateHelpers do
   end
 
   def number_round(value, precision \\ 2)
+  def number_round("null", _precision), do: "--"
   def number_round(value, precision) when is_bitstring(value) do
     {value, _} = Float.parse(value)
     number_round(value, precision)
   end
-  def number_round(value, _precision) when value == 0, do: "--"
+  def number_round(0, _precision), do: "--"
   def number_round(value, precision), do: Float.round(value, precision)
 
   def truncate(text, options \\ []) do

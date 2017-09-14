@@ -5,7 +5,7 @@ defmodule TrendFollowingWeb.MarketView do
     [
       {"沪深", "CNStockController", market_cn_stock_path(conn, :index)},
       {"港股", "HKStockController", market_hk_stock_path(conn, :index)},
-      {"美股", "", ""},
+      {"美股", "USStockController", market_us_stock_path(conn, :index)},
       {"国内期货", "if", ""},
       {"外盘期货", "gf", ""},
     ]
