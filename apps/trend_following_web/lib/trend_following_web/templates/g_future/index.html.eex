@@ -1,0 +1,47 @@
+<div class="columns">
+  <div class="column is-2">
+    <%= render TrendFollowingWeb.MarketView, "panel.html", assigns %>
+  </div>
+  <div class="column">
+    <div>
+      <table class="table is-bordered is-striped is-narrow is-fullwidth">
+        <tr>
+          <th>代码</th>
+          <th>名称</th>
+          <th>最新价</th>
+          <th>涨跌额</th>
+          <th>涨跌幅</th>
+          <th>振幅</th>
+          <th>昨收/今开盘</th>
+          <th>最高价/最低价</th>
+          <th>成交量</th>
+          <th>ATR</th>
+        </tr>
+        <%= for future <- @data do %>
+        <tr>
+          <td>
+            <%= link to: market_g_future_path(@conn, :show, future.symbol), target: "_blank" do %>
+              <%= future.symbol %>
+            <% end %>
+          </td>
+          <td>
+            <%= link to: market_g_future_path(@conn, :show, future.symbol), target: "_blank" do %>
+              <%= future.name |> truncate(length: 14) %>
+            <% end %>
+          </td>
+          <td><%= future.dayk.close %></td>
+          <td><%= future.dayk |> diff() %></td>
+          <td><%= future.dayk |> chg() %>%</td>
+          <td><%= future.dayk |> amplitude() %>%</td>
+          <td><%= future.dayk.pre_close %>/<%= future.dayk.open %></td>
+          <td><%= future.dayk.high %>/<%= future.dayk.low %></td>
+          <td><%= future.dayk |> number_human(:volume) %></td>
+          <td><%= future.dayk.atr |> number_round() %></td>
+        </tr>
+        <% end %>
+      </table>
+
+    </div>
+  </div>
+</div>
+

@@ -38,6 +38,11 @@ defmodule TrendFollowingWeb.Router do
         get "/position", PositionController, :show
         get "/backtest", BacktestController, :show
       end
+
+      resources "/G_Futures", GFutureController, param: "symbol", only: [:index, :show] do
+        get "/position", PositionController, :show
+        get "/backtest", BacktestController, :show
+      end
     end
   end
 
