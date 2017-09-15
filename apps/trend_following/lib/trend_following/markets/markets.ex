@@ -8,6 +8,13 @@ defmodule TrendFollowing.Markets do
   defdelegate get_stock(symbol), to: Stock, as: :get
   defdelegate get_stock!(symbol), to: Stock, as: :get!
   defdelegate stock_paginate(market, params), to: Stock, as: :paginate
+
+  # future
+  alias TrendFollowing.Markets.Context.Future
+
+  defdelegate create_future(attrs), to: Future, as: :create
+  defdelegate update_future(future, attrs), to: Future, as: :update
+  defdelegate get_future(symbol), to: Future, as: :get
   
   # stock dayk
   alias TrendFollowing.Markets.Context.Dayk

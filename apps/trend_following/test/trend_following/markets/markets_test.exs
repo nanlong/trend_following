@@ -49,6 +49,52 @@ defmodule TrendFollowing.MarketsTest do
     end
   end
 
+  describe "future" do
+    alias TrendFollowing.Markets.Future
+
+    @valid_attrs %{symbol: "CL", name: "NYMEX原油", market: "GLOBAL"}
+    @update_attrs %{lot_size: 1000, trading_unit: "美元", price_quote: "桶", minimum_price_change: "0.01美元"}
+    @invalid_attrs %{symbol: nil, name: nil, market: nil}
+
+    def future_fixture(attrs \\ %{}) do
+      {:ok, future} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Markets.create_future()
+
+      future
+    end
+
+    @tag trend_following_markets: true
+    test "create with valid_attrs" do
+      assert {:ok, %Future{} = future} = Markets.create_future(@valid_attrs)
+      assert future.symbol == "CL"
+      assert future.name == "NYMEX原油"
+      assert future.market == "GLOBAL"
+    end
+
+    @tag trend_following_markets: true
+    test "create with invalid_attrs" do
+      assert {:error, %Ecto.Changeset{}} = Markets.create_future(@invalid_attrs)
+    end
+
+    @tag trend_following_markets: true
+    test "get" do
+      future = future_fixture()
+      assert Markets.get_future(future.symbol) == future
+    end
+
+    @tag trend_following_markets: true
+    test "update" do
+      future = future_fixture()
+      assert {:ok, %Future{} = future} = Markets.update_future(future, @update_attrs)
+      assert future.lot_size == 1000
+      assert future.trading_unit == "美元"
+      assert future.price_quote == "桶"
+      assert future.minimum_price_change == "0.01美元"
+    end
+  end
+
   describe "dayk" do
     alias TrendFollowing.Markets.Dayk
 
