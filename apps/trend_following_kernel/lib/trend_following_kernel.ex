@@ -6,6 +6,6 @@ defmodule TrendFollowingKernel do
   alias TrendFollowingKernel.Position
   alias TrendFollowingKernel.Backtest
 
-  defdelegate position(system, trade, dayk, config), to: Position
+  defdelegate position(system, product, dayk, config), to: Position
   defdelegate backtest(system, symbol, config), to: Backtest
 end

@@ -3,11 +3,11 @@ defmodule TrendFollowingJob.Dayk do
 
   Examples:
   
-    iex> TrendFollowingJob.Dayk.load("cn"_stock, "sh600036")
-    iex> TrendFollowingJob.Dayk.load("hk"_stock, "00700")
-    iex> TrendFollowingJob.Dayk.load("us"_stock, "AAPL")
-    iex> TrendFollowingJob.Dayk.load("i"_future, "TA0")
-    iex> TrendFollowingJob.Dayk.load("g"_future, "CL")
+    iex> TrendFollowingJob.Dayk.load("cn", "sh600036")
+    iex> TrendFollowingJob.Dayk.load("hk", "00700")
+    iex> TrendFollowingJob.Dayk.load("us", "AAPL")
+    iex> TrendFollowingJob.Dayk.load("i", "TA0")
+    iex> TrendFollowingJob.Dayk.load("g", "CL")
   """
 
   alias TrendFollowing.Repo
@@ -17,7 +17,6 @@ defmodule TrendFollowingJob.Dayk do
   def perform(market, symbol), do: load(market, symbol)
 
   def load(market, symbol) do
-    stock = Markets.get_stock(symbol)
     history = Markets.list_dayk(symbol, 400)
     last_dayk = List.last(history)
     %{body: data} = dayk_data(market, symbol)
@@ -33,7 +32,7 @@ defmodule TrendFollowingJob.Dayk do
     |> dayk_moving_average()
     |> dayk_true_range()
     |> dayk_average_true_range()
-    |> dayk_save(stock)
+    |> dayk_save(market, symbol)
   end
 
   defp dayk_data(market, symbol)
@@ -290,7 +289,7 @@ defmodule TrendFollowingJob.Dayk do
     dayk_average_true_range(rest, results ++ [{dayk, index}])
   end
 
-  defp dayk_save(data, stock) do
+  defp dayk_save(data, market, symbol) do
     data
     |> Enum.map(fn({x, _}) -> x end)
     |> Enum.filter(fn(x) -> not Map.has_key?(x, :__struct__) end)
@@ -298,7 +297,16 @@ defmodule TrendFollowingJob.Dayk do
     |> Enum.map(fn(data_chunk) -> 
       {_num, results} = Repo.insert_all(Dayk, data_chunk, returning: true)
       dayk_id = results |> List.last() |> Map.get(:id)
-      Markets.update_stock(stock, %{dayk_id: dayk_id})
+      update_dayk_id(market, symbol, dayk_id)
     end)
+  end
+
+  defp update_dayk_id(market, symbol, dayk_id) when market in ["cn", "hk", "us"] do
+    stock = Markets.get_stock(symbol)
+    Markets.update_stock(stock, %{dayk_id: dayk_id})
+  end
+  defp update_dayk_id(market, symbol, dayk_id) do
+    future = Markets.get_future(symbol)
+    Markets.update_future(future, %{dayk_id: dayk_id})
   end
 end

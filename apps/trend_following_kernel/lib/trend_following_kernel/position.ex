@@ -1,6 +1,6 @@
 defmodule TrendFollowingKernel.Position do
   
-  def position(system, trade, dayk, config) do
+  def position(system, product, dayk, config) do
     # 操作方向
     trend = if dayk.ma50 > dayk.ma300, do: "bull", else: "bear"
     # 突破价
@@ -10,17 +10,19 @@ defmodule TrendFollowingKernel.Position do
     # 止损ATR幅度
     atr_stop = config.stop_loss / config.atr_rate
     # 头寸单位规模
-    unit = position_unit(config.account, config.atr_rate, dayk.atr, trade.lot_size)
+    unit = position_unit(config.account, config.atr_rate, dayk.atr, product.lot_size)
     # 头寸单位股数
-    unit_share = unit * trade.lot_size
+    unit_share = unit * product.lot_size
     # 当前资金可操作的最大头寸规模
-    position_max = position_max(trend, dayk, config, break_price, trade.lot_size * unit)
+    position_max = position_max(trend, dayk, config, break_price, product.lot_size * unit)
+    # 成本价
     total_avg_price = avg_price(trend, break_price, dayk.atr, config.atr_add, position_max)
+    
     %{
       system: system,
       date: dayk.date,
       symbol: dayk.symbol,
-      account_min: account_min(dayk.atr, trade.lot_size, config.atr_rate),
+      account_min: account_min(dayk.atr, product.lot_size, config.atr_rate),
       trend: trend,
       atr: dayk.atr,
       break_price: break_price,
@@ -28,10 +30,14 @@ defmodule TrendFollowingKernel.Position do
       unit: unit,
       unit_share: unit_share,
       position_max: position_max,
+      total_unit: unit * position_max,
+      total_unit_share: unit_share * position_max,
+      total_unit_cost: total_avg_price * position_max * unit_share,
       positions: Enum.map(1..position_max, fn(p) -> 
         buy_price = buy_price(trend, break_price, dayk.atr, config.atr_add, p)
         avg_price = avg_price(trend, break_price, dayk.atr, config.atr_add, p)
         stop_price = stop_price(trend, break_price, dayk.atr, config.atr_add, atr_stop, p)
+        
         %{
           buy_price: buy_price,
           avg_price: avg_price,
@@ -39,9 +45,6 @@ defmodule TrendFollowingKernel.Position do
           unit_cost: buy_price * unit_share,
         }
       end),
-      total_unit: unit * position_max,
-      total_unit_share: unit_share * position_max,
-      total_unit_cost: total_avg_price * position_max * unit_share
     }
   end
 
