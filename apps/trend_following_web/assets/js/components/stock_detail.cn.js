@@ -3,10 +3,6 @@ import { gql, graphql } from 'react-apollo'
 
 class StockDetailCN extends React.Component {
 
-  componentDidUpdate({data: {refetch}}, state) {
-    setTimeout(() => refetch(), 5000)
-  }
-
   dataHandler(data) {
     let result = {}
     result['price'] = this.currency(data['price'])
@@ -68,6 +64,12 @@ class StockDetailCN extends React.Component {
   }
 
   render() {
+    setTimeout(() => this.props.data.refetch(), 5000)
+    
+    if (this.props.data.loading) {
+      return (<div></div>)
+    }
+
     const data = this.dataHandler(this.props.data.cnStock ? this.props.data.cnStock : {})
 
     return (

@@ -20,7 +20,7 @@ defmodule TrendFollowingWeb.Graphql.Schema do
       resolve &TrendFollowingWeb.Graphql.Resolver.Stock.hk_stock/2
     end
 
-    field :us_stock, :hk_stock do
+    field :us_stock, :us_stock do
       arg :symbol, non_null(:string), description: "股票代码"
       resolve &TrendFollowingWeb.Graphql.Resolver.Stock.us_stock/2
     end
