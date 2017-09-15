@@ -17,6 +17,6 @@ defmodule TrendFollowingJob do
   end
 
   def load_future(market) do
-    
+    Exq.enqueue(Exq, "default", TrendFollowingJob.Future, [market])
   end
 end

@@ -5,18 +5,28 @@ defmodule TrendFollowingJob.Future do
   """
   alias TrendFollowing.Markets
 
-  def load(market) do
+  def perform(market) do
+    callback = 
+      fn(market, symbol) -> 
+        Exq.enqueue(Exq, "default", TrendFollowingJob.FutureDetail, [market, symbol])
+      end
+
+    load(market, callback)
+  end
+
+  def load(market, fun \\ fn(_market, _symbol) -> nil end) do
     %{status_code: 200, body: data} = future_data(market)
     
     market
     |> data_handler(data)
     |> Enum.map(fn(attrs) -> 
-      future =
+      {:ok, future} =
         case Markets.get_future(attrs.symbol) do
           nil -> Markets.create_future(attrs)
-          future -> future
+          future -> {:ok, future}
         end
-
+      
+      fun.(market, future.symbol)
     end)
   end
 
