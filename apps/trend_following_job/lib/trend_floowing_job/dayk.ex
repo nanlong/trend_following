@@ -127,7 +127,7 @@ defmodule TrendFollowingJob.Dayk do
       %{
         symbol: symbol,
         date: date,
-        open: open,
+        open: (if open <= 0, do: close, else: open),
         close: close,
         high: high,
         low: low,
@@ -149,7 +149,7 @@ defmodule TrendFollowingJob.Dayk do
       %{
         symbol: symbol,
         date: date,
-        open: open,
+        open: (if open <= 0, do: close, else: open),
         close: close,
         high: high,
         low: low,
