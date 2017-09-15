@@ -14,7 +14,7 @@ defmodule TrendFollowingKernel.Position do
     # 头寸单位股数
     unit_share = unit * product.lot_size
     # 当前资金可操作的最大头寸规模
-    position_max = position_max(trend, dayk, config, break_price, product.lot_size * unit)
+    position_max = config.position_max || 4
     # 成本价
     total_avg_price = avg_price(trend, break_price, dayk.atr, config.atr_add, position_max)
     

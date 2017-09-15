@@ -2,10 +2,10 @@
   <div class="column is-3">
     <div class="field is-horizontal">
       <span class="field-label" style="flex-grow: 2">
-        <%= @stock.symbol %>
+        <%= @product.symbol %>
       </span>
       <span class="field-body">
-        <%= @stock.name %>
+        <%= @product.name %>
       </span>
     </div>
     <div class="field is-horizontal">
@@ -22,6 +22,7 @@
       </span>
       <span class="field-body">
         <%= @position.break_price |> float_to_string(2) %>
+        <%= @product.trading_unit %>
       </span>
     </div>
     <div class="field is-horizontal">
@@ -30,6 +31,7 @@
       </span>
       <span class="field-body">
         <%= @position.close_price |> float_to_string(2) %>
+        <%= @product.trading_unit %>
       </span>
     </div>
     <div class="field is-horizontal">
@@ -37,7 +39,8 @@
         每手:
       </span>
       <span class="field-body">
-        <%= @stock.lot_size %>股
+        <%= @product.lot_size %>
+        <%= @product.price_quote %>
       </span>
     </div>
     <div class="field is-horizontal">
@@ -45,7 +48,8 @@
         账户资金:
       </span>
       <span class="field-body">
-        <%= @config.account %>港币
+        <%= @config.account %>
+        <%= @product.trading_unit %>
       </span>
     </div>
     <div class="field is-horizontal">
@@ -53,7 +57,8 @@
         最低资金:
       </span>
       <span class="field-body">
-        <%= @position.account_min %>港币
+        <%= @position.account_min %>
+        <%= @product.trading_unit %>
       </span>
     </div>
     <div class="field is-horizontal">
@@ -113,7 +118,6 @@
         <th>成本价</th>
         <th>止损价</th>
         <th>买入数量</th>
-        <th>买入成本</th>
       </tr>
       <%= for {p, n} <- @position.positions |> Enum.with_index(1) do %>
       <tr>
@@ -121,17 +125,9 @@
         <td><%= p.buy_price |> float_to_string(2) %></td>
         <td><%= p.avg_price |> float_to_string(2) %></td>
         <td><%= p.stop_price |> float_to_string(2) %></td>
-        <td><%= @position.unit %>手 (<%= @position.unit_share %>股)</td>
-        <td><%= p.unit_cost |> float_to_string(2) %></td>
+        <td><%= @position.unit %> 手</td>
       </tr>
       <% end %>
-      <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td><%= @position.total_unit %>手(<%= @position.total_unit_share %>股)</td>
-        <td><%= @position.total_unit_cost |> float_to_string(2) %></td>
-      </tr>
     </table>
 
     <div>
