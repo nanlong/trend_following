@@ -15,6 +15,7 @@ defmodule TrendFollowing.Markets do
   defdelegate create_future(attrs), to: Future, as: :create
   defdelegate update_future(future, attrs), to: Future, as: :update
   defdelegate get_future(symbol), to: Future, as: :get
+  defdelegate list_future(market), to: Future, as: :list
   
   # stock dayk
   alias TrendFollowing.Markets.Context.Dayk
