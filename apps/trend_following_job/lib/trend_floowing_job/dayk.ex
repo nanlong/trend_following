@@ -305,7 +305,7 @@ defmodule TrendFollowingJob.Dayk do
     stock = Markets.get_stock(symbol)
     Markets.update_stock(stock, %{dayk_id: dayk_id})
   end
-  defp update_dayk_id(market, symbol, dayk_id) do
+  defp update_dayk_id(market, symbol, dayk_id) when market in ["i", "g"] do
     future = Markets.get_future(symbol)
     Markets.update_future(future, %{dayk_id: dayk_id})
   end
