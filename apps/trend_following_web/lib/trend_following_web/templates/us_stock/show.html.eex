@@ -7,8 +7,8 @@
         <%= @stock.symbol %>
       </strong>
       <span><%= @stock.name %></span>
-      <%= link "头寸方案", to: market_hk_stock_position_path(@conn, :show, @stock.symbol), class: "button is-small is-primary", target: "_blank" %>
-      <%= link "回测情况", to: market_hk_stock_backtest_path(@conn, :show, @stock.symbol), class: "button is-small is-info", target: "_blank" %>
+      <%= link "头寸方案", to: market_us_stock_position_path(@conn, :show, @stock.symbol), class: "button is-small is-primary", target: "_blank" %>
+      <%= link "回测情况", to: market_us_stock_backtest_path(@conn, :show, @stock.symbol), class: "button is-small is-info", target: "_blank" %>
     </div>
   </div>
   <div class="column" style="padding-top: 20px;"> 
@@ -20,7 +20,7 @@
 <div class="columns">
   <div class="column is-9">
     <!-- React Component: StockChart  -->
-    <div id="stock-chart"></div>
+    <div id="k-chart"></div>
     <div id="slider"></div>
   </div>
   <div class="column is-3">

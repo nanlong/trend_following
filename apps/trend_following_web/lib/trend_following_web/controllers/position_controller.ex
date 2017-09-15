@@ -3,12 +3,29 @@ defmodule TrendFollowingWeb.PositionController do
 
   alias TrendFollowing.Markets
 
-  def show(conn, %{"hk_stock_symbol" => symbol} = params) do
-    stock = Markets.get_stock!(symbol)
+  def show(conn, params) do
+    {symbol, product} = 
+      cond do
+        Map.has_key?(params, "cn_stock_symbol") -> 
+          symbol = Map.get(params, "cn_stock_symbol")
+          {symbol, Markets.get_stock!(symbol)}
+        Map.has_key?(params, "hk_stock_symbol") -> 
+          symbol = Map.get(params, "hk_stock_symbol")
+          {symbol, Markets.get_stock!(symbol)}
+        Map.has_key?(params, "us_stock_symbol") -> 
+          symbol = Map.get(params, "us_stock_symbol")
+          {symbol, Markets.get_stock!(symbol)}
+        Map.has_key?(params, "i_future_symbol") -> 
+          symbol = Map.get(params, "i_future_symbol")
+          {symbol, Markets.get_future(symbol)}
+        Map.has_key?(params, "g_future_symbol") -> 
+          symbol = Map.get(params, "g_future_symbol")
+          {symbol, Markets.get_future(symbol)}
+      end
 
     dayk = 
       case Map.get(params, "date") do
-        nil -> stock.dayk
+        nil -> product.dayk
         date -> Markets.get_dayk!(symbol, date)
       end
 
@@ -28,11 +45,11 @@ defmodule TrendFollowingWeb.PositionController do
 
     history = Markets.list_dayk(symbol, 60)
 
-    position = TrendFollowingKernel.position(system, stock, dayk, config)
+    position = TrendFollowingKernel.position(system, product, dayk, config)
     
     conn
-    |> assign(:title, stock.cname <> "头寸方案")
-    |> assign(:stock, stock)
+    |> assign(:title, product.name <> "头寸方案")
+    |> assign(:stock, product)
     |> assign(:dayk, dayk)
     |> assign(:config, config)
     |> assign(:history, history)

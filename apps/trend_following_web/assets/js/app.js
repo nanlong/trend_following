@@ -23,18 +23,18 @@ import React from 'react'
 import { ApolloProvider } from 'react-apollo'
 import ReactDOM from 'react-dom';
 import client from './lib/apollo_client'
-import StockChart from './components/stock_chart'
+import KChart from './components/stock_chart'
 import StockDetailCN from './components/stock_detail.cn'
 import StockDetailHK from './components/stock_detail.hk'
 import StockDetailUS from './components/stock_detail.us'
 
 
-if (document.getElementById('stock-chart')) {
+if (document.getElementById('k-chart')) {
   ReactDOM.render(
     <ApolloProvider client={client}>
-      <StockChart />
+      <KChart />
     </ApolloProvider>,
-    document.getElementById('stock-chart'),
+    document.getElementById('k-chart'),
   )
 }
 

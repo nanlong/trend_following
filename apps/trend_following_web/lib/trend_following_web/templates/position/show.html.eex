@@ -5,7 +5,7 @@
         <%= @stock.symbol %>
       </span>
       <span class="field-body">
-        <%= @stock.cname %>
+        <%= @stock.name %>
       </span>
     </div>
     <div class="field is-horizontal">

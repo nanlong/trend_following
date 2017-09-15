@@ -6,7 +6,7 @@ defmodule TrendFollowing.Markets.Context.Future do
   @i_markets ~w(CZCE DCE SHFE)
   @g_markets ~w(GLOBAL)
 
-  def get(symbol), do: Repo.get_by(Future, symbol: symbol)
+  def get(symbol), do: Repo.get_by(Future, symbol: symbol) |> Repo.preload(:dayk)
 
   def create(attrs) do
     %Future{}
@@ -23,11 +23,19 @@ defmodule TrendFollowing.Markets.Context.Future do
   def list(:i) do
     Future
     |> where([f], f.market in @i_markets)
+    |> query_load_dayk()
     |> Repo.all()
   end
   def list(:g) do
     Future
     |> where([f], f.market in @g_markets)
+    |> query_load_dayk()
     |> Repo.all()
+  end
+
+  defp query_load_dayk(query) do
+    query
+    |> where([f], not is_nil(f.dayk_id))
+    |> preload([], [:dayk])
   end
 end

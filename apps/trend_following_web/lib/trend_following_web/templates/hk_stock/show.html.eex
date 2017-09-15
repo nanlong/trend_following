@@ -20,7 +20,7 @@
 <div class="columns">
   <div class="column is-9">
     <!-- React Component: StockChart  -->
-    <div id="stock-chart"></div>
+    <div id="k-chart"></div>
     <div id="slider"></div>
   </div>
   <div class="column is-3">

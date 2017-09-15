@@ -1,0 +1,29 @@
+
+<div class="columns">
+  <div class="column is-8">
+    <div>
+      <strong style="font-size: 24px;">
+        <%= @future.name %> 
+        <%= @future.symbol %>
+      </strong>
+      <span><%= @future.name %></span>
+      <%= link "头寸方案", to: market_i_future_position_path(@conn, :show, @future.symbol), class: "button is-small is-primary", target: "_blank" %>
+      <%= link "回测情况", to: market_i_future_backtest_path(@conn, :show, @future.symbol), class: "button is-small is-info", target: "_blank" %>
+    </div>
+  </div>
+  <div class="column" style="padding-top: 20px;"> 
+    <span id="future-star-btn" class="is-pulled-right"></span>
+    <span id="future-backlist-btn" class="is-pulled-right" style="margin-right: 20px;"></span>
+  </div>
+</div>
+
+<div class="columns">
+  <div class="column is-9">
+    <!-- React Component: futureChart  -->
+    <div id="k-chart"></div>
+    <div id="slider"></div>
+  </div>
+  <div class="column is-3">
+    <div id="future-detail-hk"></div>
+  </div>
+</div>
