@@ -13,6 +13,9 @@ defmodule TrendFollowing.Markets.Stock do
     field :market_cap, :string
     field :pe, :string
     field :lot_size, :integer
+    field :trading_unit, :string
+    field :price_quote, :string
+    field :minimum_price_change, :string
 
     belongs_to :dayk, TrendFollowing.Markets.Dayk
 
@@ -20,7 +23,7 @@ defmodule TrendFollowing.Markets.Stock do
   end
 
   @required_fields ~w(market symbol name cname lot_size)a
-  @optional_fields ~w(category market_cap pe dayk_id)a
+  @optional_fields ~w(category market_cap pe trading_unit price_quote minimum_price_change dayk_id)a
 
   @doc false
   def changeset(%Stock{} = stock, attrs) do

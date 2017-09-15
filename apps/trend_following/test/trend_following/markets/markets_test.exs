@@ -6,7 +6,7 @@ defmodule TrendFollowing.MarketsTest do
     alias TrendFollowing.Markets.Stock
 
     @valid_attrs %{market: "NASDAQ", symbol: "AAPL", name: "Apple Inc.", cname: "苹果公司", lot_size: 1}
-    @update_attrs %{category: "计算机", market_cap: "825713683741", pe: "19.19087660"}
+    @update_attrs %{category: "计算机", market_cap: "825713683741", pe: "19.19087660", trading_unit: "美元", price_quote: "股", minimum_price_change: "0.01美元"}
     @invalid_attrs %{market: nil, symbol: nil, name: nil, cname: nil, lot_size: nil}
 
     def stock_fixture(attrs \\ %{}) do
@@ -35,6 +35,9 @@ defmodule TrendFollowing.MarketsTest do
       assert stock.category == "计算机"
       assert stock.market_cap == "825713683741"
       assert stock.pe == "19.19087660"
+      assert stock.trading_unit == "美元"
+      assert stock.price_quote == "股"
+      assert stock.minimum_price_change == "0.01美元"
     end
 
     @tag trend_following_markets: true

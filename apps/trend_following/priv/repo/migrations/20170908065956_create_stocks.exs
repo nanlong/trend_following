@@ -11,6 +11,9 @@ defmodule TrendFollowing.Repo.Migrations.CreateStocks do
       add :pe, :string
       add :market, :string
       add :lot_size, :integer
+      add :trading_unit, :string
+      add :price_quote, :string
+      add :minimum_price_change, :string
       add :dayk_id, references(:dayk, on_delete: :nothing)
 
       timestamps()

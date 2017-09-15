@@ -2,7 +2,6 @@ defmodule TrendFollowingWeb.GFutureController do
   use TrendFollowingWeb, :controller
 
   alias TrendFollowing.Markets
-  alias TrendFollowing.Markets.GFuture
 
   def index(conn, _params) do
     data = Markets.list_future(:g)

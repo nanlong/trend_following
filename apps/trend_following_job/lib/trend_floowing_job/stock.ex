@@ -72,6 +72,9 @@ defmodule TrendFollowingJob.Stock do
         name: get_in(x, ["ext", "name"]),
         cname: get_in(x, ["ext", "name"]),
         lot_size: 100,
+        trading_unit: "元",
+        price_quote: "股",
+        minimum_price_change: "0.01元"
       }  
     end)
   end
@@ -83,6 +86,9 @@ defmodule TrendFollowingJob.Stock do
         name: Map.get(x, "engname"),
         cname: Map.get(x, "name"),
         lot_size: 100,
+        trading_unit: "港币",
+        price_quote: "股",
+        minimum_price_change: "0.01港币"
       }
     end)
   end
@@ -99,6 +105,9 @@ defmodule TrendFollowingJob.Stock do
         market_cap: Map.get(x, "mktcap"),
         pe: Map.get(x, "pe"),
         lot_size: 1,
+        trading_unit: "美元",
+        price_quote: "股",
+        minimum_price_change: "0.01美元"
       }
     end)
   end
