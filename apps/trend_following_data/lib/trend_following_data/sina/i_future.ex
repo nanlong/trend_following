@@ -113,8 +113,8 @@ defmodule TrendFollowingData.Sina.IFuture do
     data = data |> String.split(",") |> List.to_tuple()
 
     {open, _} = elem(data, 2) |> Float.parse()
-    {highest, _} = elem(data, 3) |> Float.parse()
-    {lowest, _} = elem(data, 4) |> Float.parse()
+    {high, _} = elem(data, 3) |> Float.parse()
+    {low, _} = elem(data, 4) |> Float.parse()
     {price, _} = elem(data, 6) |> Float.parse()
     {sell_price, _} = elem(data, 7) |> Float.parse()
     {buy_price, _} = elem(data, 8) |> Float.parse()
@@ -139,8 +139,8 @@ defmodule TrendFollowingData.Sina.IFuture do
       "lot_size" => Map.get(info, "lot_size"),
       "price" => price,
       "open" => open,
-      "highest" => highest,
-      "lowest" => lowest,
+      "high" => high,
+      "low" => low,
       "close" => close,
       "pre_close" => pre_close,
       "volume" => volume,

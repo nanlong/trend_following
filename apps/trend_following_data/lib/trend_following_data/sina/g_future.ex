@@ -132,8 +132,8 @@ defmodule TrendFollowingData.Sina.GFuture do
     {chg, _} = elem(data, 1) |> Float.parse()
     {buy_price, _} = elem(data, 2) |> Float.parse()
     {sell_price, _} = elem(data, 3) |> Float.parse()
-    {highest, _} = elem(data, 4) |> Float.parse()
-    {lowest, _} = elem(data, 5) |> Float.parse()
+    {high, _} = elem(data, 4) |> Float.parse()
+    {low, _} = elem(data, 5) |> Float.parse()
     {pre_close, _} = elem(data, 7) |> Float.parse()
     {open, _} = elem(data, 8) |> Float.parse()
     {open_positions, _} = elem(data, 9) |> Integer.parse()
@@ -150,8 +150,8 @@ defmodule TrendFollowingData.Sina.GFuture do
       "lot_size" => Map.get(info, "lot_size"),
       "price" => price,
       "open" => open,
-      "highest" => highest,
-      "lowest" => lowest,
+      "high" => high,
+      "low" => low,
       "pre_close" => pre_close,
       "diff" => diff,
       "chg" => chg,
