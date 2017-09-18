@@ -10,6 +10,18 @@
     </div>
     <div class="field is-horizontal">
       <span class="field-label" style="flex-grow: 2">
+        交易方向:
+      </span>
+      <span class="field-body">
+        <%= if @position.trend == "bull" do %>
+        <a class="button is-danger is-hovered is-small">做多</a>
+        <% else %>
+        <a class="button is-primary is-hovered is-small">做空</a>
+        <% end %>
+      </span>
+    </div>
+    <div class="field is-horizontal">
+      <span class="field-label" style="flex-grow: 2">
         参考日期:
       </span>
       <span class="field-body">
@@ -59,14 +71,6 @@
       <span class="field-body">
         <%= @position.account_min %>
         <%= @product.trading_unit %>
-      </span>
-    </div>
-    <div class="field is-horizontal">
-      <span class="field-label" style="flex-grow: 2">
-        交易方向:
-      </span>
-      <span class="field-body">
-        <%= if @position.trend == "bull", do: "做多", else: "做空" %>
       </span>
     </div>
   </div>
