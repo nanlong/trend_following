@@ -16,7 +16,7 @@
         <%= if @position.trend == "bull" do %>
         <a class="button is-danger is-hovered is-small">做多</a>
         <% else %>
-        <a class="button is-primary is-hovered is-small">做空</a>
+        <a class="button is-success is-hovered is-small">做空</a>
         <% end %>
       </span>
     </div>
