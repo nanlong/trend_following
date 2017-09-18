@@ -27,6 +27,7 @@ import KChart from './components/k_chart'
 import StockDetailCN from './components/stock_detail.cn'
 import StockDetailHK from './components/stock_detail.hk'
 import StockDetailUS from './components/stock_detail.us'
+import FutureDetailI from './components/future_detail.i'
 
 
 if (document.getElementById('k-chart')) {
@@ -62,5 +63,14 @@ if (document.getElementById('stock-detail-us')) {
       <StockDetailUS />
     </ApolloProvider>,
     document.getElementById('stock-detail-us'),
+  )
+}
+
+if (document.getElementById('future-detail-i')) {
+  ReactDOM.render(
+    <ApolloProvider client={client}>
+      <FutureDetailI />
+    </ApolloProvider>,
+    document.getElementById('future-detail-i'),
   )
 }

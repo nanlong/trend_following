@@ -163,7 +163,7 @@ class StockDetailHK extends React.Component {
 }
 
 const graphqlQuery = gql`
-query HKStockDetail($symbol: String!){
+query stockDetail($symbol: String!){
   hkStock(symbol: $symbol) {
     symbol
     name
