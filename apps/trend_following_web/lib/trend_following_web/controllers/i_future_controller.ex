@@ -3,12 +3,20 @@ defmodule TrendFollowingWeb.IFutureController do
 
   alias TrendFollowing.Markets
 
-  def index(conn, _params) do
-    data = Markets.list_future(:i)
+  def index(conn, params) do
+    market =
+      case Map.get(params, "tab", "all") do
+        "all" -> :i
+        "bull" -> :i_bull
+        "bear" -> :i_bear
+      end
+
+    data = Markets.list_future(market)
 
     conn
     |> assign(:title, "国内期货")
     |> assign(:data, data)
+    |> assign(:params, params)
     |> render(:index)
   end
 

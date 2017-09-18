@@ -94,12 +94,12 @@ defmodule TrendFollowingData.Sina.IFuture do
             |> Floki.find("table#table-futures-basic-data tr:nth-child(2) td:nth-child(2)")
             |> Floki.text() 
       
-          {minimum_price_change, trading_unit} = String.split(minimum_price_change, "/") |> List.to_tuple()
+          {minimum_price_change, price_quote} = String.split(minimum_price_change, "/") |> List.to_tuple()
       
           %{
             "lot_size" => lot_size,
-            "price_quote" => "元",
-            "trading_unit" => trading_unit,
+            "price_quote" => price_quote,
+            "trading_unit" => "元",
             "minimum_price_change" => minimum_price_change
           }
       end

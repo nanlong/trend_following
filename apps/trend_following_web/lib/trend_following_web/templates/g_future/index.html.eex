@@ -3,6 +3,7 @@
     <%= render TrendFollowingWeb.MarketView, "panel.html", assigns %>
   </div>
   <div class="column">
+    <%= render TrendFollowingWeb.MarketView, "tabs.html", data: tabs_data(@conn), params: @params %>
     <div>
       <table class="table is-bordered is-striped is-narrow is-fullwidth">
         <tr>
