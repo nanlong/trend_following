@@ -3,7 +3,7 @@ import { gql, graphql } from 'react-apollo'
 import echarts from 'echarts'
 
 
-class StockChart extends React.Component {
+class KChart extends React.Component {
 
   markPoint(x, y, color) {
     return {
@@ -282,7 +282,7 @@ class StockChart extends React.Component {
 
   componentDidUpdate() {
     const data = this.dataHandler(this.props.data)
-    const chart = echarts.init(this.refs.stockChart)
+    const chart = echarts.init(this.refs.kChart)
     const options = this.setChartOption(data)
     chart.setOption(options)
   }
@@ -297,14 +297,14 @@ class StockChart extends React.Component {
     }
     else {
       return (
-        <div ref="stockChart" style={{width: '100%', height: '500px'}}></div>
+        <div ref="kChart" style={{width: '100%', height: '500px'}}></div>
       )
     }
   }
 }
 
 const graphqlQuery = gql`
-  query StockChart($symbol: String!){
+  query KChart($symbol: String!){
     dayk(symbol: $symbol) {
       date
       open
@@ -336,4 +336,4 @@ const graphqlOptions = {
   }
 }
 
-export default graphql(graphqlQuery, graphqlOptions)(StockChart)
+export default graphql(graphqlQuery, graphqlOptions)(KChart)

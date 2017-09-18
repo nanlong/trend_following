@@ -23,7 +23,7 @@ import React from 'react'
 import { ApolloProvider } from 'react-apollo'
 import ReactDOM from 'react-dom';
 import client from './lib/apollo_client'
-import KChart from './components/stock_chart'
+import KChart from './components/k_chart'
 import StockDetailCN from './components/stock_detail.cn'
 import StockDetailHK from './components/stock_detail.hk'
 import StockDetailUS from './components/stock_detail.us'

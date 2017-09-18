@@ -34,8 +34,8 @@
           <td><%= future.dayk |> diff() %></td>
           <td><%= future.dayk |> chg() %>%</td>
           <td><%= future.dayk |> amplitude() %>%</td>
-          <td><%= future.dayk.pre_close %>/<%= future.dayk.open %></td>
-          <td><%= future.dayk.high %>/<%= future.dayk.low %></td>
+          <td><%= future.dayk.pre_close |> float_to_string(2) %>/<%= future.dayk.open |> float_to_string(2) %></td>
+          <td><%= future.dayk.high |> float_to_string(2) %>/<%= future.dayk.low |> float_to_string(2) %></td>
           <td><%= future.dayk |> number_human(:volume) %></td>
           <td><%= future.dayk.atr |> number_round() %></td>
         </tr>
