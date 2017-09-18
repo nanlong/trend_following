@@ -31,6 +31,7 @@ defmodule TrendFollowing.Markets.Context.Future do
     |> where([f], f.market in @i_markets)
     |> query_load_dayk()
     |> query_bull()
+    |> query_order_by()
     |> Repo.all()
   end
   def list(:i_bear) do
@@ -38,6 +39,7 @@ defmodule TrendFollowing.Markets.Context.Future do
     |> where([f], f.market in @i_markets)
     |> query_load_dayk()
     |> query_bear()
+    |> query_order_by()
     |> Repo.all()
   end
   def list(:g) do
@@ -51,6 +53,7 @@ defmodule TrendFollowing.Markets.Context.Future do
     |> where([f], f.market in @g_markets)
     |> query_load_dayk()
     |> query_bull()
+    |> query_order_by()
     |> Repo.all()
   end
   def list(:g_bear) do
@@ -58,6 +61,7 @@ defmodule TrendFollowing.Markets.Context.Future do
     |> where([f], f.market in @g_markets)
     |> query_load_dayk()
     |> query_bear()
+    |> query_order_by()
     |> Repo.all()
   end
 
@@ -73,5 +77,9 @@ defmodule TrendFollowing.Markets.Context.Future do
 
   defp query_bear(query) do
     join(query, :inner, [future], dayk in assoc(future, :dayk), dayk.ma50 < dayk.ma300)
+  end
+
+  defp query_order_by(query) do
+    order_by(query, [future], desc: fragment("to_number(volume,'9999999999999.99')"))
   end
 end
