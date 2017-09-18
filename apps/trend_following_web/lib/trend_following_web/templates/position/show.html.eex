@@ -2,10 +2,10 @@
   <div class="column is-3">
     <div class="field is-horizontal">
       <span class="field-label" style="flex-grow: 2">
-        <%= @product.symbol %>
+        <%= @product.name %>
       </span>
       <span class="field-body">
-        <%= @product.name %>
+        <%= @product.symbol %>
       </span>
     </div>
     <div class="field is-horizontal">
