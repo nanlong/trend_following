@@ -24,7 +24,8 @@ defmodule TrendFollowingWeb.CNStockController do
     stock = Markets.get_stock!(symbol)
 
     js_config = %{
-      symbol: symbol
+      symbol: symbol,
+      trend: Markets.trend(stock.dayk),
     }
 
     conn
@@ -33,5 +34,4 @@ defmodule TrendFollowingWeb.CNStockController do
     |> assign(:js_config, js_config)
     |> render(:show)
   end
-
 end

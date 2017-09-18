@@ -24,7 +24,8 @@ defmodule TrendFollowingWeb.GFutureController do
     future = Markets.get_future(symbol)
 
     js_config = %{
-      symbol: symbol
+      symbol: symbol,
+      trend: Markets.trend(future.dayk),
     }
 
     conn

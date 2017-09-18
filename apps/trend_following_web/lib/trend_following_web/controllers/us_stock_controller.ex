@@ -24,7 +24,8 @@ defmodule TrendFollowingWeb.USStockController do
     stock = Markets.get_stock!(symbol)
 
     js_config = %{
-      symbol: symbol
+      symbol: symbol,
+      trend: Markets.trend(stock.dayk),
     }
 
     conn

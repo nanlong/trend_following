@@ -33,12 +33,12 @@ class KChart extends React.Component {
       ma30Data: [],
       ma50Data: [],
       ma300Data: [],
-      dcu10Data: [],
-      dcu20Data: [],
-      dcu60Data: [],
-      dcl10Data: [],
-      dcl20Data: [],
-      dcl60Data: [],
+      high10Data: [],
+      high20Data: [],
+      high60Data: [],
+      low10Data: [],
+      low20Data: [],
+      low60Data: [],
       atrData: [],
       pointData: [],
       createPointData: [],
@@ -54,12 +54,12 @@ class KChart extends React.Component {
       source.ma10Data.push(ma10)
       source.ma20Data.push(ma20)
       source.ma30Data.push(ma30)
-      source.dcu10Data.push(high10)
-      source.dcu20Data.push(high20)
-      source.dcu60Data.push(high60)
-      source.dcl10Data.push(low10)
-      source.dcl20Data.push(low20)
-      source.dcl60Data.push(low60)
+      source.high10Data.push(high10)
+      source.high20Data.push(high20)
+      source.high60Data.push(high60)
+      source.low10Data.push(low10)
+      source.low20Data.push(low20)
+      source.low60Data.push(low60)
       source.atrData.push(atr)
     })
 
@@ -158,20 +158,39 @@ class KChart extends React.Component {
     let legendData = ['日K', 'MA5', 'MA10', 'MA20', 'MA30']
     let legendSelected = {}
     
-    legendData.push('20日最高')
-    seriesLine.push({name: '20日最高', data: data['dcu20Data'], color: '#014EA2'})
-
-    legendData.push('10日最低')
-    seriesLine.push({name: '10日最低', data: data['dcl10Data'], color: '#014EA2'})
-
-    legendData.push('60日最高')
-    seriesLine.push({name: '60日最高', data: data['dcu60Data'], color: '#014EA2'})
-
-    legendData.push('20日最低')
-    seriesLine.push({name: '20日最低', data: data['dcl20Data'], color: '#014EA2'})
-
-    legendSelected['60日最高'] = false
-    legendSelected['20日最低'] = false
+    if (CONFIG['trend'] == 'bull') {
+      legendData.push('20日最高')
+      seriesLine.push({name: '20日最高', data: data['high20Data'], color: '#23d160'})
+  
+      legendData.push('10日最低')
+      seriesLine.push({name: '10日最低', data: data['low10Data'], color: '#ff3860'})
+  
+      legendData.push('60日最高')
+      seriesLine.push({name: '60日最高', data: data['high60Data'], color: '#00d1b2'})
+  
+      legendData.push('20日最低')
+      seriesLine.push({name: '20日最低', data: data['low20Data'], color: '#ffdb4a'})
+  
+      legendSelected['60日最高'] = false
+      legendSelected['20日最低'] = false
+    }
+    else {
+      legendData.push('20日最低')
+      seriesLine.push({name: '20日最低', data: data['low20Data'], color: '#23d160'})
+  
+      legendData.push('10日最高')
+      seriesLine.push({name: '10日最高', data: data['high10Data'], color: '#ff3860'})
+  
+      legendData.push('60日最低')
+      seriesLine.push({name: '60日最低', data: data['low60Data'], color: '#00d1b2'})
+  
+      legendData.push('20日最高')
+      seriesLine.push({name: '20日最高', data: data['high20Data'], color: '#ffdb4a'})
+  
+      legendSelected['60日最低'] = false
+      legendSelected['20日最高'] = false
+    }
+    
 
     seriesLine.map(x => {
       const {name, data, color} = x
