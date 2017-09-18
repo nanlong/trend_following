@@ -1,7 +1,7 @@
 import React from 'react'
 import { gql, graphql } from 'react-apollo'
 
-class FutureDetailI extends React.Component {
+class FutureDetailG extends React.Component {
 
   dataHandler(data) {
     let result = {}
@@ -36,7 +36,7 @@ class FutureDetailI extends React.Component {
       return (<div></div>)
     }
 
-    const data = this.dataHandler(this.props.data.iFuture ? this.props.data.iFuture : {})
+    const data = this.dataHandler(this.props.data.gFuture ? this.props.data.gFuture : {})
 
     return (
       <div>
@@ -112,7 +112,7 @@ class FutureDetailI extends React.Component {
 
 const graphqlQuery = gql`
 query FutureDetail($symbol: String!){
-  iFuture(symbol: $symbol) {
+  gFuture(symbol: $symbol) {
     symbol
     name
     lot_size
@@ -146,4 +146,4 @@ const graphqlOptions = {
   }
 }
 
-export default graphql(graphqlQuery, graphqlOptions)(FutureDetailI)
+export default graphql(graphqlQuery, graphqlOptions)(FutureDetailG)
