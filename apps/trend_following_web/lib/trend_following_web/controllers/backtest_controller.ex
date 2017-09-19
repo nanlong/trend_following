@@ -3,8 +3,38 @@ defmodule TrendFollowingWeb.BacktestController do
 
   alias TrendFollowing.Markets
 
-  def show(conn, %{"hk_stock_symbol" => symbol}) do
-    stock = Markets.get_stock!(symbol)
+  def show(conn, params) do
+    {symbol, product} = 
+      cond do
+        Map.has_key?(params, "cn_stock_symbol") -> 
+          symbol = Map.get(params, "cn_stock_symbol")
+          {symbol, Markets.get_stock!(symbol)}
+        Map.has_key?(params, "hk_stock_symbol") -> 
+          symbol = Map.get(params, "hk_stock_symbol")
+          {symbol, Markets.get_stock!(symbol)}
+        Map.has_key?(params, "us_stock_symbol") -> 
+          symbol = Map.get(params, "us_stock_symbol")
+          {symbol, Markets.get_stock!(symbol)}
+        Map.has_key?(params, "i_future_symbol") -> 
+          symbol = Map.get(params, "i_future_symbol")
+          {symbol, Markets.get_future(symbol)}
+        Map.has_key?(params, "g_future_symbol") -> 
+          symbol = Map.get(params, "g_future_symbol")
+          {symbol, Markets.get_future(symbol)}
+      end
+
+    dayk = 
+      case Map.get(params, "date") do
+        nil -> product.dayk
+        date -> Markets.get_dayk!(symbol, date)
+      end
+
+    system =
+      case Map.get(params, "system") do
+        nil -> :system1
+        system -> String.to_atom(system)
+      end
+
 
     config = %{
       account: 1000000, 
@@ -14,11 +44,11 @@ defmodule TrendFollowingWeb.BacktestController do
       position_max: 4,
     }
 
-    backtest = TrendFollowingKernel.backtest(:system1, symbol, config)
+    backtest = TrendFollowingKernel.backtest(system, product, config)
     
     conn
-    |> assign(:title, stock.cname <> "回测情况")
-    |> assign(:stock, stock)
+    |> assign(:title, product.name <> "回测情况")
+    |> assign(:product, product)
     |> assign(:backtest, backtest)
     |> render(:show)
   end

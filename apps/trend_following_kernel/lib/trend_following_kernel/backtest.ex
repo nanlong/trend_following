@@ -2,32 +2,30 @@ defmodule TrendFollowingKernel.Backtest do
   alias TrendFollowing.Markets
   alias TrendFollowingKernel.Position
 
-  def backtest(system, symbol, config) do
-    stock = Markets.get_stock!(symbol)
-
+  def backtest(system, product, config) do
     # 前300个交易日不做任何操作
     dayk_list = 
-      Markets.list_dayk(symbol)
+      Markets.list_dayk(product.symbol)
       |> Enum.slice(300..-1)
 
     state = %{
       account: config.account,
       position_num: 0,
       schema: nil,
-      lot_size: stock.lot_size,
+      lot_size: product.lot_size,
       log: []
     }
 
-    if stock.lot_size == 0 do
+    if product.lot_size == 0 do
       state
     else
-      trading(system, dayk_list, stock, config, state)
+      trading(system, dayk_list, product, config, state)
     end
   end
 
-  defp trading(_system, [], _stock, _config, state), do: state
-  defp trading(system, [dayk | rest], stock, config, state) do
-    schema = Position.position(system, stock, dayk, Map.put(config, :account, state.account))
+  defp trading(_system, [], _product, _config, state), do: state
+  defp trading(system, [dayk | rest], product, config, state) do
+    schema = Position.position(system, product, dayk, Map.put(config, :account, state.account))
 
     state =
       cond do
@@ -100,7 +98,7 @@ defmodule TrendFollowingKernel.Backtest do
 
     state = update_close_price(system, state, dayk)
 
-    trading(system, rest, stock, config, state)
+    trading(system, rest, product, config, state)
   end
 
   defp create_position?(state, dayk, schema) do
