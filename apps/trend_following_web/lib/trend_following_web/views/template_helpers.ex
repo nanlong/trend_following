@@ -21,8 +21,13 @@ defmodule TrendFollowingWeb.TemplateHelpers do
   end
 
   def number_human(data, key, precision \\ 2) do
-    value = Map.get(data, key)
-    {value, _} = Integer.parse(value)
+    value = 
+      case Map.get(data, key) do
+        nil -> 0
+        value -> 
+          {value, _} = Integer.parse(value)
+          value 
+      end
 
     cond do
       value > 100_000_000 -> 
