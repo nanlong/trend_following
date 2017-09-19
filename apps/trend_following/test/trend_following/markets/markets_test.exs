@@ -65,7 +65,7 @@ defmodule TrendFollowing.MarketsTest do
         |> Enum.into(@valid_attrs)
         |> Markets.create_future()
 
-      future
+      future |> Map.put(:dayk, nil)
     end
 
     @tag trend_following_markets: true
