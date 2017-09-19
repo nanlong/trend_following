@@ -44,11 +44,14 @@ defmodule TrendFollowingWeb.Mixfile do
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:gettext, "~> 0.11"},
       {:trend_following, in_umbrella: true},
+      {:trend_following_job, in_umbrella: true},
       {:cowboy, "~> 1.0"},
       {:scrivener_html, "~> 1.7"},
       {:absinthe, "~> 1.3.1"},
       {:absinthe_plug, "~> 1.3.0"},
       {:absinthe_ecto, git: "https://github.com/absinthe-graphql/absinthe_ecto.git"},
+      {:quantum, ">= 2.1.0"},
+      {:timex, "~> 3.0"},
     ]
   end
 

@@ -58,4 +58,20 @@ config :trend_following_web, TrendFollowingWeb.Endpoint,
 
 # Finally import the config/prod.secret.exs
 # which should be versioned separately.
+config :trend_following_web, TrendFollowingWeb.Scheduler,
+  jobs: [
+    # 沪深
+    {"30 15 * * 1-5", {TrendFollowingJob, :load_stock, ["cn"]}},
+    # 港股
+    {"30 16 * * 1-5", {TrendFollowingJob, :load_stock, ["hk"]}},
+    # 美股
+    {"30 5 * * 2-6", {TrendFollowingJob, :load_stock, ["us"]}},
+    # 国内期货 
+    {"30 15 * * 1-5", {TrendFollowingJob, :load_stock, ["i"]}},
+    # 国内期货 夜盘
+    {"00 3 * * 2-6", {TrendFollowingJob, :load_stock, ["i"]}},
+    # 国外期货
+    {"00 6 * * 2-6", {TrendFollowingJob, :load_stock, ["g"]}},
+  ]
+
 import_config "prod.secret.exs"

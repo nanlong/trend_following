@@ -10,6 +10,7 @@ defmodule TrendFollowingWeb.Application do
       supervisor(TrendFollowingWeb.Endpoint, []),
       # Start your own worker by calling: TrendFollowingWeb.Worker.start_link(arg1, arg2, arg3)
       # worker(TrendFollowingWeb.Worker, [arg1, arg2, arg3]),
+      worker(TrendFollowingWeb.Scheduler, []),
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
