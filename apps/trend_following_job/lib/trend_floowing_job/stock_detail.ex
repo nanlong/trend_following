@@ -35,7 +35,7 @@ defmodule TrendFollowingJob.StockDetail do
   def data_handler("hk", data) do
     {market_cap, _} =
       data
-      |> Map.get("market_cap", 0)
+      |> Map.get("hk_market_cap", 0)
       |> to_string()
       |> Float.parse()
 
