@@ -59,6 +59,7 @@ config :trend_following_web, TrendFollowingWeb.Endpoint,
 # Finally import the config/prod.secret.exs
 # which should be versioned separately.
 config :trend_following_web, TrendFollowingWeb.Scheduler,
+  timezone: "Asia/Shanghai",
   jobs: [
     # 沪深
     {"30 15 * * 1-5", fn -> TrendFollowingJob.load_stock("cn") end},
