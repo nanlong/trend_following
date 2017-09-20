@@ -63,15 +63,15 @@ config :trend_following_web, TrendFollowingWeb.Scheduler,
     # 沪深
     {"30 15 * * 1-5", fn -> TrendFollowingJob.load_stock("cn") end},
     # 港股
-    {"30 16 * * 1-5", fn -> TrendFollowingJob.load_stock("hk") end}},
+    {"30 16 * * 1-5", fn -> TrendFollowingJob.load_stock("hk") end},
     # 美股
-    {"30 5 * * 2-6", fn -> TrendFollowingJob.load_stock("us") end}},
+    {"30 5 * * 2-6", fn -> TrendFollowingJob.load_stock("us") end},
     # 国内期货 
-    {"30 15 * * 1-5", fn -> TrendFollowingJob.load_future("i") end}},
+    {"30 15 * * 1-5", fn -> TrendFollowingJob.load_future("i") end},
     # 国内期货 夜盘
-    {"00 3 * * 2-6", fn -> TrendFollowingJob.load_future("i") end}},
+    {"00 3 * * 2-6", fn -> TrendFollowingJob.load_future("i") end},
     # 国外期货
-    {"00 6 * * 2-6", fn -> TrendFollowingJob.load_future("g") end}},
+    {"00 6 * * 2-6", fn -> TrendFollowingJob.load_future("g") end},
   ]
 
 import_config "prod.secret.exs"
