@@ -1,0 +1,43 @@
+<section class="hero is-primary" style="margin-bottom: 20px;">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title">
+        重要的不是交易系统，而是交易者贯彻交易系统的能力。
+      </h1>
+      <h2 class="subtitle">
+        截断亏损，让利润奔跑。
+      </h2>
+      <p>本系统完全基于<a href="https://www.amazon.cn/%E5%9B%BE%E4%B9%A6/dp/B00CDKFCJY/" target="_blank">《海龟交易法则》</a></p>
+      <p>如有需要，请加QQ群交流，516902689</p>
+    </div>
+  </div>
+</section>
+
+<div class="columns">
+  <div class="column">
+    <div class="panel">
+      <div class="panel-heading">一些知识</div>
+      <div class="panel-block">
+        <ul>
+          <li><a href="https://www.amazon.cn/%E5%9B%BE%E4%B9%A6/dp/B00CDKFCJY/" target="_blank">【书籍】《海龟交易法则》</a></li>
+          <li><a href="https://www.zhihu.com/question/38348394/answer/75975240" target="_blank">【问题】《海龟交易法》讲了什么？</a></li>
+          <li><a href="https://www.zhihu.com/question/29539961/answer/58707956" target="_blank">【问题】《海龟交易法则》近期偏好是什么意思？</a></li>
+          <li><a href="https://www.zhihu.com/question/28490009/answer/129011755" target="_blank">【问题】趋势跟踪如果执行得好，真的可以长期稳定盈利吗？</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="column">
+    <div class="panel">
+      <div class="panel-heading">说明</div>
+      <div class="panel-block">
+        <ul>
+          <li>* 股票支持沪深、港股、美股</li>
+          <li>* 期货支持国内期货、外盘期货</li>
+          <li>* 此系统免费，其所产生的后果（包括盈利亏损）由交易者自行承担</li>
+          <li>* 投资有风险，交易需谨慎，使用前建议阅读<a href="https://www.amazon.cn/%E5%9B%BE%E4%B9%A6/dp/B00CDKFCJY/" target="_blank">《海龟交易法则》</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
