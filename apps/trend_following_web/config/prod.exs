@@ -67,11 +67,11 @@ config :trend_following_web, TrendFollowingWeb.Scheduler,
     # 美股
     {"30 5 * * 2-6", {TrendFollowingJob, :load_stock, ["us"]}},
     # 国内期货 
-    {"30 15 * * 1-5", {TrendFollowingJob, :load_stock, ["i"]}},
+    {"30 15 * * 1-5", {TrendFollowingJob, :load_future, ["i"]}},
     # 国内期货 夜盘
-    {"00 3 * * 2-6", {TrendFollowingJob, :load_stock, ["i"]}},
+    {"00 3 * * 2-6", {TrendFollowingJob, :load_future, ["i"]}},
     # 国外期货
-    {"00 6 * * 2-6", {TrendFollowingJob, :load_stock, ["g"]}},
+    {"00 6 * * 2-6", {TrendFollowingJob, :load_future, ["g"]}},
   ]
 
 import_config "prod.secret.exs"
