@@ -42,7 +42,7 @@ defmodule TrendFollowingJob.StockDetail do
     %{
       market_cap: :erlang.float_to_binary(market_cap, decimals: 2),
       pe: Map.get(data, "pe", 0) |> to_string(),
-      lot_size: Map.get(data, "lot_size")
+      lot_size: Map.get(data, "lot_size", 100)
     }
   end
 end

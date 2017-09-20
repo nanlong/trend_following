@@ -2,21 +2,27 @@ defmodule TrendFollowingWeb.TemplateHelpers do
   @doc """
   涨跌额
   """
-  def diff(%{close: close, pre_close: pre_close}, precision \\ 2) do
+  def diff(dayk, precision \\ 2)
+  def diff(%{close: close, pre_close: pre_close}, _precision) when close <= 0 or pre_close <= 0, do: "0.0"
+  def diff(%{close: close, pre_close: pre_close}, precision) do
     close - pre_close |> Float.round(precision)
   end
 
   @doc """
   涨跌幅
   """
-  def chg(%{pre_close: pre_close} = dayk, precision \\ 2) do
+  def chg(dayk, precision \\ 2)
+  def chg(%{pre_close: pre_close}, _precision) when pre_close <= 0, do: "0.0"
+  def chg(%{pre_close: pre_close} = dayk, precision) do
     diff(dayk, precision) / pre_close * 100 |> Float.round(precision)
   end
 
   @doc """
   振幅
   """
-  def amplitude(%{high: high, low: low, pre_close: pre_close}, precision \\ 2) do
+  def amplitude(dayk, precision \\ 2)
+  def amplitude(%{high: high, low: low, pre_close: pre_close}, _precision) when high <= 0 or low <= 0 or pre_close <= 0, do: 0.0
+  def amplitude(%{high: high, low: low, pre_close: pre_close}, precision) do
     (high - low) / pre_close * 100 |> Float.round(precision)
   end
 
