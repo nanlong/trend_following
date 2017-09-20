@@ -112,24 +112,24 @@ defmodule TrendFollowingData.Sina.IFuture do
     %{"data" => data} = Regex.named_captures(~r/"(?<data>.*)"/, data)
     data = data |> String.split(",") |> List.to_tuple()
 
-    {open, _} = elem(data, 2) |> Float.parse()
-    {high, _} = elem(data, 3) |> Float.parse()
-    {low, _} = elem(data, 4) |> Float.parse()
-    {buy_price, _} = elem(data, 6) |> Float.parse()
-    {sell_price, _} = elem(data, 7) |> Float.parse()
-    {price, _} = elem(data, 8) |> Float.parse()
-    {close, _} = elem(data, 9) |> Float.parse()
-    {pre_close, _} = elem(data, 10) |> Float.parse()
-    {buy_positions, _} = elem(data, 11) |> Integer.parse()
-    {sell_positions, _} = elem(data, 12) |> Integer.parse()
-    {open_positions, _} = elem(data, 13) |> Integer.parse()
-    {volume, _} = elem(data, 14) |> Integer.parse()
+    {open, _} = float_parse(data, 2)
+    {high, _} = float_parse(data, 3)
+    {low, _} = float_parse(data, 4)
+    {buy_price, _} = float_parse(data, 6)
+    {sell_price, _} = float_parse(data, 7)
+    {price, _} = float_parse(data, 8)
+    {close, _} = float_parse(data, 9)
+    {pre_close, _} = float_parse(data, 10)
+    {buy_positions, _} = integer_parse(data, 11)
+    {sell_positions, _} = integer_parse(data, 12)
+    {open_positions, _} = integer_parse(data, 13)
+    {volume, _} = integer_parse(data, 14)
 
     time = elem(data, 1) |> String.graphemes() |> Enum.chunk_every(2) |> Enum.map(fn(x) -> Enum.join(x) end) |> Enum.join(":")
     name = elem(data, 0)
     datetime = "#{elem(data, 17)} #{time}"
     diff = price - pre_close |> Float.round(2)
-    chg = diff / pre_close * 100 |> Float.round(2)
+    chg = if pre_close == 0, do: 0, else: diff / pre_close * 100 |> Float.round(2)
     
     info = IFuture.get("info", symbol: symbol, timeout: 10_000) |> Map.get(:body) 
       
@@ -161,4 +161,7 @@ defmodule TrendFollowingData.Sina.IFuture do
   def decode(data) do
     Poison.decode(data)
   end
+
+  defp float_parse(tuple, index), do: "0" <> elem(tuple, index) |> Float.parse()
+  defp integer_parse(tuple, index), do: "0" <> elem(tuple, index) |> Integer.parse()
 end

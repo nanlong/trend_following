@@ -72,37 +72,37 @@ defmodule TrendFollowingData.Sina.CNStock do
       d1 = String.split(d1, ",") |> List.to_tuple()
       d2 = String.split(d2, ",") |> List.to_tuple()
 
-      {open, _} = elem(d1, 1) |> Float.parse()
-      {pre_close, _} = elem(d1, 2) |> Float.parse()
-      {price, _} = elem(d1, 3) |> Float.parse()
-      {highest, _} = elem(d1, 4) |> Float.parse()
-      {lowest, _} = elem(d1, 5) |> Float.parse()
-      {volume, _} = elem(d1, 8) |> Integer.parse()
-      {amount, _} = elem(d1, 9) |> Float.parse()
+      {open, _} = float_parse(d1, 1)
+      {pre_close, _} = float_parse(d1, 2)
+      {price, _} = float_parse(d1, 3)
+      {highest, _} = float_parse(d1, 4)
+      {lowest, _} = float_parse(d1, 5)
+      {volume, _} = integer_parse(d1, 8)
+      {amount, _} = float_parse(d1, 9)
       # 最近报告的每股净资产
-      {navps, _} = elem(d2, 5) |> Float.parse()
+      {navps, _} = float_parse(d2, 5)
       # 最近四个季度净利润
-      {eps, _} = elem(d2, 13) |> Float.parse()
+      {eps, _} = float_parse(d2, 13)
       # 总股本
-      {total_capital, _} = elem(d2, 7) |> Float.parse()
+      {total_capital, _} = float_parse(d2, 7)
       # 流通股本
-      {cur_capital, _} = elem(d2, 8) |> Float.parse()
+      {cur_capital, _} = float_parse(d2, 8)
       # 总市值
       market_cap = (price * total_capital * 10_000) |> round()
       # 流通市值
       cur_market_cap = (price * cur_capital * 10_000) |> round()
       # 市盈率
-      pe = if eps <= 0, do: 0, else: (market_cap / eps / 100_000_000) |> Float.round(2)
+      pe = if eps == 0, do: 0, else: (market_cap / eps / 100_000_000) |> Float.round(2)
       # 市净率
-      pb = (price / navps) |> Float.round(2)
+      pb = if navps == 0, do: 0, else: (price / navps) |> Float.round(2)
       # 换手率
-      turnover = (volume / cur_capital / 100) |> Float.round(2)
+      turnover = if cur_capital == 0, do: 0, else: (volume / cur_capital / 100) |> Float.round(2)
       # 涨跌额
       diff = (price - pre_close) |> Float.round(2)
       # 涨跌幅
-      chg = (diff / pre_close * 100) |> Float.round(2)
+      chg = if pre_close == 0, do: 0, else: (diff / pre_close * 100) |> Float.round(2)
       # 振幅
-      amplitude = ((highest - lowest) / pre_close * 100) |> Float.round(2)
+      amplitude = if pre_close == 0, do: 0, else: ((highest - lowest) / pre_close * 100) |> Float.round(2)
 
       %{
         "symbol" => symbol,
@@ -135,4 +135,7 @@ defmodule TrendFollowingData.Sina.CNStock do
       
     data
   end
+
+  defp float_parse(tuple, index), do: "0" <> elem(tuple, index) |> Float.parse()
+  defp integer_parse(tuple, index), do: "0" <> elem(tuple, index) |> Integer.parse()
 end

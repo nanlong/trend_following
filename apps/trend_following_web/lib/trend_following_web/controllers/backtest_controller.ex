@@ -23,12 +23,6 @@ defmodule TrendFollowingWeb.BacktestController do
           {symbol, Markets.get_future(symbol)}
       end
 
-    dayk = 
-      case Map.get(params, "date") do
-        nil -> product.dayk
-        date -> Markets.get_dayk!(symbol, date)
-      end
-
     system =
       case Map.get(params, "system") do
         nil -> :system1

@@ -128,17 +128,17 @@ defmodule TrendFollowingData.Sina.GFuture do
     %{"data" => data} = Regex.named_captures(~r/"(?<data>.*)"/, data)
     data = data |> String.split(",") |> List.to_tuple()
 
-    {price, _} = elem(data, 0) |> Float.parse()
-    {chg, _} = elem(data, 1) |> Float.parse()
-    {buy_price, _} = elem(data, 2) |> Float.parse()
-    {sell_price, _} = elem(data, 3) |> Float.parse()
-    {high, _} = elem(data, 4) |> Float.parse()
-    {low, _} = elem(data, 5) |> Float.parse()
-    {pre_close, _} = elem(data, 7) |> Float.parse()
-    {open, _} = elem(data, 8) |> Float.parse()
-    {open_positions, _} = elem(data, 9) |> Integer.parse()
-    {buy_positions, _} = elem(data, 10) |> Integer.parse()
-    {sell_positions, _} = elem(data, 11) |> Integer.parse()
+    {price, _} = float_parse(data, 0)
+    {chg, _} = float_parse(data, 1)
+    {buy_price, _} = float_parse(data, 2)
+    {sell_price, _} = float_parse(data, 3)
+    {high, _} = float_parse(data, 4)
+    {low, _} = float_parse(data, 5)
+    {pre_close, _} = float_parse(data, 7)
+    {open, _} = float_parse(data, 8)
+    {open_positions, _} = integer_parse(data, 9)
+    {buy_positions, _} = integer_parse(data, 10)
+    {sell_positions, _} = integer_parse(data, 11)
     name = elem(data, 13)
     diff = (price - pre_close) |> Float.round(2)
     datetime = "#{elem(data, 12)} #{elem(data, 6)}"
@@ -170,4 +170,7 @@ defmodule TrendFollowingData.Sina.GFuture do
   def decode(data) do
     Poison.decode(data)
   end
+
+  defp float_parse(tuple, index), do: "0" <> elem(tuple, index) |> Float.parse()
+  defp integer_parse(tuple, index), do: "0" <> elem(tuple, index) |> Integer.parse()
 end
