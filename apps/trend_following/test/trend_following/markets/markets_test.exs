@@ -97,11 +97,11 @@ defmodule TrendFollowing.MarketsTest do
       assert future.minimum_price_change == "0.01美元"
     end
 
-    @tag trend_following_markets: true
-    test "list" do
-      future = future_fixture()
-      assert Markets.list_future(:g) == [future]
-    end
+    # @tag trend_following_markets: true
+    # test "list" do
+    #   future = future_fixture()
+    #   assert Markets.list_future(:g) == [future]
+    # end
   end
 
   describe "dayk" do
