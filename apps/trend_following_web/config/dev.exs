@@ -40,5 +40,3 @@ config :trend_following_web, TrendFollowingWeb.Endpoint,
       ~r{lib/trend_following_web/templates/.*(eex)$}
     ]
   ]
-
-

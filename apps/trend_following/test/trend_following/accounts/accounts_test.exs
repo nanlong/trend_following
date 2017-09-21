@@ -25,19 +25,19 @@ defmodule TrendFollowing.AccountsTest do
     end
 
     @tag accounts_user: true
-    test "create_user/1 with valid attrs" do
+    test "create_user/1 when data is valid" do
       assert {:ok, %User{} = user} = Accounts.create_user(@valid_attrs)
       assert user.email == "test@trendfollowing.cc"
       assert user.nickname == "test"
     end
 
     @tag accounts_user: true
-    test "create_user/1 with invalid attrs" do
+    test "create_user/1 when data is invalid" do
       assert {:error, %Ecto.Changeset{}} = Accounts.create_user(@invalid_attrs)
     end
 
     @tag accounts_user: true
-    test "update_user/3 for profile with valid attrs" do
+    test "update_user/3 for profile when data is valid" do
       user = user_fixture()
       attrs = %{nickname: "trendfollowing"}
       assert {:ok, user} = Accounts.update_user_profile(user, attrs)
@@ -46,14 +46,14 @@ defmodule TrendFollowing.AccountsTest do
     end
 
     @tag accounts_user: true
-    test "update_user/3 for profile with invalid attrs" do
+    test "update_user/3 for profile when data is invalid" do
       user = user_fixture()
       attrs = %{nickname: nil}
       assert {:error, %Ecto.Changeset{}} = Accounts.update_user_profile(user, attrs)
     end
 
     @tag accounts_user: true
-    test "update_user/3 for password with valid attrs" do
+    test "update_user/3 for password when data is valid" do
       user = user_fixture()
       attrs = %{old_password: "123456", password: "654321", password_confirmation: "654321"}
       assert {:ok, user} = Accounts.update_user_password(user, attrs)
@@ -62,14 +62,14 @@ defmodule TrendFollowing.AccountsTest do
     end
 
     @tag accounts_user: true
-    test "update_user/3 for password with invalid attrs" do
+    test "update_user/3 for password when data is invalid" do
       user = user_fixture()
       attrs = %{old_password: nil, password: nil, password_confirmation: nil}
       assert {:error, %Ecto.Changeset{}} = Accounts.update_user_password(user, attrs)
     end
 
     @tag accounts_user: true
-    test "update_user/3 for password_reset with valid attrs" do
+    test "update_user/3 for password_reset when data is valid" do
       user = user_fixture()
       attrs = %{password: "654321", password_confirmation: "654321"}
       assert {:ok, user} = Accounts.update_user_password_reset(user, attrs)
@@ -77,7 +77,7 @@ defmodule TrendFollowing.AccountsTest do
     end
 
     @tag accounts_user: true
-    test "update_user/3 for password_reset with invalid attrs" do
+    test "update_user/3 for password_reset when data is invalid" do
       user = user_fixture()
       attrs = %{password: nil, password_confirmation: nil}
       assert {:error, %Ecto.Changeset{}} = Accounts.update_user_password_reset(user, attrs)

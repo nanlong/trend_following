@@ -30,6 +30,10 @@ config :scrivener_html,
   routes_helper: TrendFollowingWeb.Router.Helpers,
   view_style: :bulma
 
+config :trend_following_web, TrendFollowingWeb.Helpers.Guardian,
+  issuer: "trend_following_web",
+  secret_key: "QsRsnw/6QHX8qrTgR3T511Go+2rXT4AMCoXgITRo24MgV837JmA3KEt+sbWX2I/5"
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env}.exs"

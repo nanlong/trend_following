@@ -18,6 +18,9 @@ defmodule TrendFollowingWeb.Router do
 
     get "/", PageController, :index
 
+    get "/signup", UserController, :new
+    post "/signup", UserController, :create
+
     resources "/market", MarketController, singleton: true, only: [:show] do
       resources "/CN_Stocks", CNStockController, param: "symbol", only: [:index, :show] do
         get "/position", PositionController, :show

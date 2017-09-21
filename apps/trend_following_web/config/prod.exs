@@ -58,7 +58,7 @@ config :trend_following_web, TrendFollowingWeb.Endpoint,
 
 # Finally import the config/prod.secret.exs
 # which should be versioned separately.
-config :trend_following_web, TrendFollowingWeb.Scheduler,
+config :trend_following_web, TrendFollowingWeb.Helpers.Scheduler,
   timezone: "Asia/Shanghai",
   jobs: [
     # 沪深

@@ -52,6 +52,7 @@ defmodule TrendFollowingWeb.Mixfile do
       {:absinthe_ecto, git: "https://github.com/absinthe-graphql/absinthe_ecto.git"},
       {:quantum, ">= 2.1.0"},
       {:timex, "~> 3.0"},
+      {:guardian, "~> 1.0-beta"},
     ]
   end
 
