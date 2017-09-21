@@ -67,6 +67,7 @@ defmodule TrendFollowing.Markets.Context.Future do
 
   defp query_load_dayk(query) do
     query
+    |> where([future], not is_nil(future.dayk_id))
     |> preload([], [:dayk])
   end
 
