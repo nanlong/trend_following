@@ -11,6 +11,7 @@ defmodule TrendFollowing.Accounts.UserContext do
     if DateTime.compare(now, vip_expire) == :lt, do: true, else: false
   end
 
+  def get_by_id(id), do: Repo.get(User, id)
   def get(email), do: Repo.get_by(User, email: email)
   def get!(email), do: Repo.get_by!(User, email: email)
 

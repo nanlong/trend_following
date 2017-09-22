@@ -1,6 +1,5 @@
 defmodule TrendFollowing.Accounts.SessionContext do
   alias TrendFollowing.Accounts.Session
-  alias TrendFollowing.Accounts.UserContext
 
   def create(attrs \\ %{}) do
     changeset = Session.changeset(%Session{}, attrs)

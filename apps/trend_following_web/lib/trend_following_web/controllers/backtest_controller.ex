@@ -4,7 +4,7 @@ defmodule TrendFollowingWeb.BacktestController do
   alias TrendFollowing.Markets
 
   def show(conn, params) do
-    {symbol, product} = 
+    {_symbol, product} = 
       cond do
         Map.has_key?(params, "cn_stock_symbol") -> 
           symbol = Map.get(params, "cn_stock_symbol")

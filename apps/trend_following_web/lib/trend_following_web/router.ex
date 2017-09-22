@@ -7,19 +7,38 @@ defmodule TrendFollowingWeb.Router do
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug TrendFollowingWeb.Helpers.CurrentUser
+  end
+
+  pipeline :browser_session do
+    plug Guardian.Plug.Pipeline, module: TrendFollowingWeb.Helpers.Guardian,
+      error_handler: TrendFollowingWeb.Helpers.AuthErrorHandler
+    plug Guardian.Plug.VerifySession
+    plug Guardian.Plug.LoadResource
+    plug TrendFollowingWeb.Helpers.CurrentUser
   end
 
   pipeline :api do
     plug :accepts, ["json"]
   end
 
+
   scope "/", TrendFollowingWeb do
-    pipe_through :browser # Use the default browser stack
+    pipe_through [:browser]
 
     get "/", PageController, :index
-
+    
     get "/signup", UserController, :new
     post "/signup", UserController, :create
+
+    get "/signin", SessionController, :new
+    post "/signin", SessionController, :create
+  end
+
+  scope "/", TrendFollowingWeb do
+    pipe_through [:browser, :browser_session] # Use the default browser stack
+
+    delete "/signout", SessionController, :delete
 
     resources "/market", MarketController, singleton: true, only: [:show] do
       resources "/CN_Stocks", CNStockController, param: "symbol", only: [:index, :show] do

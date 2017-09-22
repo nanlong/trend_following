@@ -21,7 +21,7 @@
 
   <body>
     <div class="container" style="margin-bottom: 20px;">
-      <nav class="navbar ">
+      <nav class="navbar">
         <div class="navbar-brand">
           <%= link to: page_path(@conn, :index), class: "navbar-item logo" do %>
             <strong class="title is-5">
@@ -34,6 +34,28 @@
         <div class="navbar-menu">
           <div class="navbar-start">
             <%= link "市场", to: market_path(@conn, :show), class: "navbar-item" %>
+          </div>
+        </div>
+
+        <div class="navbar-end">
+          <div class="navbar-item">
+            <div class="field is-grouped">
+              <%= if @authenticated? do %>
+              <div class="control">
+                <%= link @current_user.nickname, to: "" %>
+              </div>
+              <div class="control">
+                <%= link "退出", to: session_path(@conn, :delete), method: :delete %>
+              </div>
+              <% else %>
+              <div class="control">
+                <%= link "注册", to: user_path(@conn, :new), class: "button" %>
+              </div>
+              <div class="control">
+                <%= link "登录", to: session_path(@conn, :new), class: "button is-info" %>
+              </div>
+              <% end %>
+            </div>
           </div>
         </div>
       </nav>

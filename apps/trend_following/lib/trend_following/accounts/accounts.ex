@@ -2,6 +2,7 @@ defmodule TrendFollowing.Accounts do
   alias TrendFollowing.Accounts.UserContext
 
   defdelegate create_user(attrs), to: UserContext, as: :create
+  defdelegate get_user_by_id(id), to: UserContext, as: :get_by_id
   defdelegate get_user(email), to: UserContext, as: :get
   defdelegate get_user!(email), to: UserContext, as: :get!
   defdelegate update_user_profile(user, attrs), to: UserContext, as: :update_profile
@@ -16,6 +17,4 @@ defmodule TrendFollowing.Accounts do
 
   defdelegate change_session(session), to: SessionContext, as: :change
   defdelegate create_session(attrs), to: SessionContext, as: :create
-  defdelegate sign_token(user), to: SessionContext, as: :sign_token
-  defdelegate verify_token(token), to: SessionContext, as: :verify_token
 end

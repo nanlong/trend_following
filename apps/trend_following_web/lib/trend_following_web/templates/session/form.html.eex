@@ -1,0 +1,28 @@
+<%= form_for @changeset, @action, fn f -> %>
+
+  <div class="field">
+    <%= label f, :email, "邮箱", class: "label" %>
+    <div class="control">
+      <%= text_input f, :email, class: "input" %>
+      <%= error_tag f, :email %>
+    </div>
+  </div>
+  
+  <div class="field">
+    <div class="is-clearfix">
+      <%= label f, :password, "密码", class: "label" %>
+    </div>
+    
+    <div class="control">
+      <%= password_input f, :password, class: "input" %>
+      <%= error_tag f, :password %>
+    </div>
+  </div>
+
+  <div class="field">
+    <div class="control">
+      <button class="button is-info is-fullwidth" type="submit">登录</button>
+    </div>
+  </div>
+  
+<% end %>
