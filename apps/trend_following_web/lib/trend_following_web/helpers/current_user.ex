@@ -1,7 +1,6 @@
 defmodule TrendFollowingWeb.Helpers.CurrentUser do
   import Plug.Conn, only: [assign: 3]
   
-  alias TrendFollowing.Accounts
   alias TrendFollowingWeb.Helpers.Guardian
 
   def init(opts \\ []), do: opts

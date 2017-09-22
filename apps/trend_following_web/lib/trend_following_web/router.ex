@@ -7,10 +7,16 @@ defmodule TrendFollowingWeb.Router do
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
-    plug TrendFollowingWeb.Helpers.CurrentUser
   end
 
   pipeline :browser_session do
+    plug Guardian.Plug.Pipeline, module: TrendFollowingWeb.Helpers.Guardian
+    plug Guardian.Plug.VerifySession
+    plug Guardian.Plug.LoadResource, allow_blank: true
+    plug TrendFollowingWeb.Helpers.CurrentUser
+  end
+
+  pipeline :browser_required_signin do
     plug Guardian.Plug.Pipeline, module: TrendFollowingWeb.Helpers.Guardian,
       error_handler: TrendFollowingWeb.Helpers.AuthErrorHandler
     plug Guardian.Plug.VerifySession
@@ -22,9 +28,8 @@ defmodule TrendFollowingWeb.Router do
     plug :accepts, ["json"]
   end
 
-
   scope "/", TrendFollowingWeb do
-    pipe_through [:browser]
+    pipe_through [:browser, :browser_session]
 
     get "/", PageController, :index
     
@@ -36,7 +41,7 @@ defmodule TrendFollowingWeb.Router do
   end
 
   scope "/", TrendFollowingWeb do
-    pipe_through [:browser, :browser_session] # Use the default browser stack
+    pipe_through [:browser, :browser_required_signin] # Use the default browser stack
 
     delete "/signout", SessionController, :delete
 
