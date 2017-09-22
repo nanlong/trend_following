@@ -107,4 +107,27 @@ defmodule TrendFollowing.AccountsTest do
       assert %Ecto.Changeset{} = Accounts.change_user_password_reset(user)
     end
   end
+
+  describe "session" do
+    alias TrendFollowing.Accounts.Session
+
+    @tag accounts_session: true
+    test "change_session/1" do
+      assert %Ecto.Changeset{} = Accounts.change_session(%Session{})
+    end
+
+    @tag accounts_session: true
+    test "create_session/1 when data is valid" do
+      user = user_fixture()
+      attrs = %{email: "test@trendfollowing.cc", password: "123456"}
+      assert {:ok, session_user} = Accounts.create_session(attrs)
+      assert user.id == session_user.id
+    end
+
+    @tag accounts_session: true
+    test "create_session/1 when data is invalid" do
+      attrs = %{email: "test@trendfollowing.cc", password: "errorpassword"}
+      assert {:error, %Ecto.Changeset{}} = Accounts.create_session(attrs)
+    end
+  end
 end
