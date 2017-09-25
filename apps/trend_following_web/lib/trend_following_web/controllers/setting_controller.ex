@@ -29,8 +29,6 @@ defmodule TrendFollowingWeb.SettingController do
         trend_config -> trend_config
       end
     
-    IO.inspect trend_config
-    
     title =
       case market do
         "cn_stock" -> "沪深市场配置"
@@ -88,7 +86,7 @@ defmodule TrendFollowingWeb.SettingController do
   def update(conn, %{"page" => "trend_config", "trend_config" => trend_config_params} = params) do
     market = Map.get(params, "tab", "cn_stock")
     current_user = current_user(conn)
-
+    
     result =
       case Markets.get_trend_config(current_user.id, market) do
         nil -> Markets.create_trend_config(Enum.into(trend_config_params, %{"user_id" => current_user.id, "market" => market}))
