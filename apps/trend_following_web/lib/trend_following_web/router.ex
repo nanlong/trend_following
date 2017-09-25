@@ -45,6 +45,9 @@ defmodule TrendFollowingWeb.Router do
 
     delete "/signout", SessionController, :delete
 
+    get "/settings", SettingController, :index
+    resources "/settings/:page", SettingController, only: [:show, :update], singleton: true
+
     resources "/market", MarketController, singleton: true, only: [:show] do
       resources "/CN_Stocks", CNStockController, param: "symbol", only: [:index, :show] do
         get "/position", PositionController, :show

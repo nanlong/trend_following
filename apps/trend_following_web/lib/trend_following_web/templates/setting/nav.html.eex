@@ -1,0 +1,13 @@
+<nav class="panel">
+  <p class="panel-heading">
+    设置
+  </p>
+
+  <%= for {name, caption, href} <- @data do %>
+    <%= if @page == caption do %>
+      <%= link name, to: href, class: "panel-block is-active" %>
+    <% else %>
+      <%= link name, to: href, class: "panel-block" %>
+    <% end %>
+  <% end %>
+</nav>

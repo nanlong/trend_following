@@ -10,11 +10,4 @@ defmodule TrendFollowingWeb.MarketView do
       {"外盘期货", "GFutureController", market_g_future_path(conn, :index)},
     ]
   end
-
-  def controller_module(conn) do
-    Phoenix.Controller.controller_module(conn)
-    |> to_string()
-    |> String.split(".")
-    |> List.last()
-  end
 end

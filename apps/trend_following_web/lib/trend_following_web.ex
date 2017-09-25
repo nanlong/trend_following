@@ -23,6 +23,7 @@ defmodule TrendFollowingWeb do
       import Plug.Conn
       import TrendFollowingWeb.Router.Helpers
       import TrendFollowingWeb.Gettext
+      import TrendFollowingWeb.Helpers.Controller
     end
   end
 

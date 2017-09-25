@@ -81,4 +81,11 @@ defmodule TrendFollowingWeb.TemplateHelpers do
   def float_to_string(float, precision \\ 2) do
     :erlang.float_to_binary(float, decimals: precision)
   end
+
+  def controller_module(conn) do
+    Phoenix.Controller.controller_module(conn)
+    |> to_string()
+    |> String.split(".")
+    |> List.last()
+  end
 end

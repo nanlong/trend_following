@@ -1,0 +1,17 @@
+<%= form_for @form, @action, fn f -> %>
+
+  <div class="field">
+    <%= label f, :nickname, "昵称", class: "label" %>
+    <div class="control">
+      <%= text_input f, :nickname, class: "input" %>
+      <%= error_tag f, :nickname %>
+    </div>
+  </div>
+
+  <div class="field">
+    <div class="control">
+      <button class="button is-info is-fullwidth" type="submit">确定</button>
+    </div>
+  </div>
+  
+<% end %>

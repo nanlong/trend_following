@@ -1,0 +1,17 @@
+<div class="columns">
+  <div class="column is-3">
+    <%= render "nav.html", data: nav_data(@conn), page: Map.get(@params, "page") %>
+  </div>
+  <div class="column is-6">
+    <div class="box">
+      <h3 class="title is-4">修改个人信息</h3>
+      <%= render "form_profile.html", form: @change_profile, action: setting_path(@conn, :update, "profile") %>
+    </div>
+    
+    <div class="box">
+      <h3 class="title is-4">修改密码</h3>
+      <%= render "form_password.html", form: @change_password, action: setting_path(@conn, :update, "password") %>
+    </div>
+    
+  </div>
+</div>
