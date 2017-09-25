@@ -4,23 +4,25 @@ defmodule TrendFollowingWeb.BacktestController do
   alias TrendFollowing.Markets
 
   def show(conn, params) do
-    {_symbol, product} = 
+    current_user = current_user(conn)
+    
+    {market, _symbol, product} = 
       cond do
         Map.has_key?(params, "cn_stock_symbol") -> 
           symbol = Map.get(params, "cn_stock_symbol")
-          {symbol, Markets.get_stock!(symbol)}
+          {"cn_stock", symbol, Markets.get_stock!(symbol)}
         Map.has_key?(params, "hk_stock_symbol") -> 
           symbol = Map.get(params, "hk_stock_symbol")
-          {symbol, Markets.get_stock!(symbol)}
+          {"hk_stock", symbol, Markets.get_stock!(symbol)}
         Map.has_key?(params, "us_stock_symbol") -> 
           symbol = Map.get(params, "us_stock_symbol")
-          {symbol, Markets.get_stock!(symbol)}
+          {"us_stock", symbol, Markets.get_stock!(symbol)}
         Map.has_key?(params, "i_future_symbol") -> 
           symbol = Map.get(params, "i_future_symbol")
-          {symbol, Markets.get_future(symbol)}
+          {"i_future", symbol, Markets.get_future(symbol)}
         Map.has_key?(params, "g_future_symbol") -> 
           symbol = Map.get(params, "g_future_symbol")
-          {symbol, Markets.get_future(symbol)}
+          {"g_future", symbol, Markets.get_future(symbol)}
       end
 
     system =
@@ -30,13 +32,13 @@ defmodule TrendFollowingWeb.BacktestController do
       end
 
 
-    config = %{
-      account: 1000000, 
-      atr_rate: 0.01, 
-      atr_add: 0.5,
-      stop_loss: 0.02,
-      position_max: 4,
-    }
+    config = 
+      case Markets.get_trend_config(current_user.id, market) do
+        nil -> Markets.default_trend_config(market)
+        trend_config -> trend_config
+      end
+      |> Map.update!(:atr_rate, &(&1 / 100))
+      |> Map.update!(:stop_loss, &(&1 / 100))
 
     backtest = TrendFollowingKernel.backtest(system, product, config)
     
