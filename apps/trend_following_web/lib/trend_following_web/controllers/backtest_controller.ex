@@ -5,7 +5,7 @@ defmodule TrendFollowingWeb.BacktestController do
 
   def show(conn, params) do
     current_user = current_user(conn)
-    
+
     {market, _symbol, product} = 
       cond do
         Map.has_key?(params, "cn_stock_symbol") -> 
@@ -37,10 +37,8 @@ defmodule TrendFollowingWeb.BacktestController do
         nil -> Markets.default_trend_config(market)
         trend_config -> trend_config
       end
-      |> Map.update!(:atr_rate, &(&1 / 100))
-      |> Map.update!(:stop_loss, &(&1 / 100))
 
-    backtest = TrendFollowingKernel.backtest(system, product, config)
+    backtest = TrendFollowingKernel.backtest(system, product, convert_trend_config(config))
     
     conn
     |> assign(:title, product.name <> "回测情况")

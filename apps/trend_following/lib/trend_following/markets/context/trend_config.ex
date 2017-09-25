@@ -26,10 +26,10 @@ defmodule TrendFollowing.Markets.Context.TrendConfig do
   def default(market \\ "cn_stock") do
     %TrendConfig{
       market: market, 
-      account: 1000000, 
-      atr_rate: 1.0, 
-      atr_add: 0.5, 
-      stop_loss: 2.0, 
+      account: Decimal.new(1000000), 
+      atr_rate: Decimal.new(1.0), 
+      atr_add: Decimal.new(0.5), 
+      stop_loss: Decimal.new(2.0), 
       position_max: 4
     }
   end

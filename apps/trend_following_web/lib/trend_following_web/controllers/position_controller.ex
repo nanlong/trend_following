@@ -42,12 +42,10 @@ defmodule TrendFollowingWeb.PositionController do
         nil -> Markets.default_trend_config(market)
         trend_config -> trend_config
       end
-      |> Map.update!(:atr_rate, &(&1 / 100))
-      |> Map.update!(:stop_loss, &(&1 / 100))
 
     history = Markets.list_dayk(symbol, 60)
 
-    position = TrendFollowingKernel.position(system, product, dayk, config)
+    position = TrendFollowingKernel.position(system, product, dayk, convert_trend_config(config))
     
     conn
     |> assign(:title, product.name <> "头寸方案")

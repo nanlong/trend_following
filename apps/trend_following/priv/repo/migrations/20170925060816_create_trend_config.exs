@@ -4,10 +4,10 @@ defmodule TrendFollowing.Repo.Migrations.CreateTrendConfig do
   def change do
     create table(:trend_config) do
       add :market, :string
-      add :account, :float
-      add :atr_rate, :float
-      add :atr_add, :float
-      add :stop_loss, :float
+      add :account, :decimal
+      add :atr_rate, :decimal
+      add :atr_add, :decimal
+      add :stop_loss, :decimal
       add :position_max, :integer
       add :user_id, references(:users, on_delete: :nothing)
 
