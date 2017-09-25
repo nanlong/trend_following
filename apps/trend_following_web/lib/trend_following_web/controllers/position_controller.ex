@@ -39,7 +39,7 @@ defmodule TrendFollowingWeb.PositionController do
 
     config = 
       case Markets.get_trend_config(current_user.id, market) do
-        nil -> Markets.default_trend_config()
+        nil -> Markets.default_trend_config(market)
         trend_config -> trend_config
       end
       |> Map.update!(:atr_rate, &(&1 / 100))
