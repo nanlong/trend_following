@@ -27,4 +27,12 @@ defmodule TrendFollowing.Markets do
   defdelegate list_dayk(symbol, limit), to: Dayk, as: :list
 
   def trend(dayk), do: if dayk.ma50 > dayk.ma300, do: "bull", else: "bear"
+
+  # trend config
+  alias TrendFollowing.Markets.Context.TrendConfig
+
+  defdelegate create_trend_config(attrs), to: TrendConfig, as: :create
+  defdelegate update_trend_config(trend_config, attrs), to: TrendConfig, as: :update
+  defdelegate get_trend_config(user_id, market), to: TrendConfig, as: :get
+  defdelegate change_trend_config(trend_config), to: TrendConfig, as: :change
 end

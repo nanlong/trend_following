@@ -2,7 +2,6 @@ defmodule TrendFollowingWeb.SettingController do
   use TrendFollowingWeb, :controller
 
   alias TrendFollowing.Accounts
-  alias TrendFollowing.Accounts.User
 
   def index(conn, _params), do: redirect(conn, to: setting_path(conn, :show, "profile"))
 

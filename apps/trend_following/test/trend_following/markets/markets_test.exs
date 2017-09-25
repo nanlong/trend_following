@@ -170,4 +170,102 @@ defmodule TrendFollowing.MarketsTest do
       assert dayk == Markets.get_dayk!(dayk.symbol, dayk.date)
     end
   end
+
+  describe "trend config" do
+    alias TrendFollowing.Accounts
+    alias TrendFollowing.Markets.TrendConfig
+
+    @valid_attrs %{
+      market: "cn_stock",
+      account: 1000000,
+      atr_rate: 0.5,
+      atr_add: 0.5,
+      stop_loss: 2.0,
+      position_max: 4,
+    }
+    @update_attrs %{
+      market: "hk_stock",
+      account: 500000,
+      atr_rate: 1.0,
+      atr_add: 1.0,
+      stop_loss: 4.0,
+      position_max: 8,
+    }
+    @invalid_attrs %{
+      user_id: nil,
+      market: nil,
+      account: nil,
+      atr_rate: nil,
+      atr_add: nil,
+      stop_loss: nil,
+      position_max: nil,
+    }
+
+    def user_fixture(attrs \\ %{}) do
+      valid_attrs = %{
+        email: "test@trendfollowing.cc",
+        password: "123456",
+        password_confirmation: "123456"
+      }
+
+      {:ok, user} =
+        attrs
+        |> Enum.into(valid_attrs)
+        |> Accounts.create_user()
+
+      user
+    end
+
+    def trend_config_fixture(attrs \\ %{}) do
+      {:ok, trend_config} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Markets.create_trend_config()
+
+      trend_config
+    end
+
+    @tag trend_following_markets: true
+    test "create_trend_config/1 when data is valid" do
+      user = user_fixture()
+      valid_attrs = @valid_attrs |> Enum.into(%{user_id: user.id})
+      assert {:ok, %TrendConfig{} = trend_config} = Markets.create_trend_config(valid_attrs)
+      assert trend_config.market == "cn_stock"
+      assert trend_config.account == 1000000
+      assert trend_config.atr_rate == 0.5
+      assert trend_config.atr_add == 0.5
+      assert trend_config.stop_loss == 2.0
+      assert trend_config.position_max == 4
+    end
+
+    @tag trend_following_markets: true
+    test "create_trend_config/1 when data is invalid" do
+      assert {:error, %Ecto.Changeset{}} = Markets.create_trend_config(@invalid_attrs)
+    end
+
+    @tag trend_following_markets: true
+    test "update_trend_config/2 when data is valid" do
+      user = user_fixture()
+      trend_config = trend_config_fixture(%{user_id: user.id})
+      assert {:ok, %TrendConfig{} = trend_config} = Markets.update_trend_config(trend_config, @update_attrs)
+      assert trend_config.market == "hk_stock"
+      assert trend_config.account == 500000
+      assert trend_config.atr_rate == 1.0
+      assert trend_config.atr_add == 1.0
+      assert trend_config.stop_loss == 4.0
+      assert trend_config.position_max == 8
+    end
+
+    @tag trend_following_markets: true
+    test "update_trend_config/2 when data is invalid" do
+      user = user_fixture()
+      trend_config = trend_config_fixture(%{user_id: user.id})
+      assert {:error, %Ecto.Changeset{}} = Markets.update_trend_config(trend_config, @invalid_attrs)
+    end
+
+    @tag trend_following_markets: true
+    test "change_trend_config/1" do
+      assert %Ecto.Changeset{} = Markets.change_trend_config(%TrendConfig{})
+    end
+  end
 end
