@@ -22,4 +22,15 @@ defmodule TrendFollowing.Markets.Context.TrendConfig do
   def change(%TrendConfig{} = trend_config) do
     TrendConfig.changeset(trend_config, %{})
   end
+
+  def default(market \\ "cn_stock") do
+    %TrendConfig{
+      market: market, 
+      account: 1000000, 
+      atr_rate: 1.0, 
+      atr_add: 0.5, 
+      stop_loss: 2.0, 
+      position_max: 4
+    }
+  end
 end

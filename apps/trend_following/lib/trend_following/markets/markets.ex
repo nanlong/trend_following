@@ -35,4 +35,5 @@ defmodule TrendFollowing.Markets do
   defdelegate update_trend_config(trend_config, attrs), to: TrendConfig, as: :update
   defdelegate get_trend_config(user_id, market), to: TrendConfig, as: :get
   defdelegate change_trend_config(trend_config), to: TrendConfig, as: :change
+  defdelegate default_trend_config(market), to: TrendConfig, as: :default
 end

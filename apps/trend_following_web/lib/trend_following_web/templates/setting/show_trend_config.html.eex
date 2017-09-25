@@ -1,0 +1,11 @@
+<div class="columns">
+  <div class="column is-3">
+    <%= render "nav.html", data: nav_data(@conn), page: Map.get(@params, "page") %>
+  </div>
+  <div class="column is-6">
+    <%= render "trend_config_tabs.html", data: trend_config_tabs_data(@conn), params: @params %>
+    <div class="box">
+      <%= render "form_trend_config.html", form: @changeset, action: setting_path(@conn, :update, "trend_config", tab: Map.get(@params, "tab", "cn_stock")) %>
+    </div>
+  </div>
+</div>

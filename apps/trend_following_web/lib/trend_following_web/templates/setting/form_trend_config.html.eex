@@ -1,0 +1,57 @@
+<%= form_for @form, @action, [method: "put"], fn f -> %>
+
+  <div class="field">
+    <%= label f, :account, "账户资金", class: "label" %>
+    <div class="control">
+      <%= text_input f, :account, class: "input" %>
+      <%= error_tag f, :account %>
+    </div>
+  </div>
+
+  <div class="field">
+    <%= label f, :atr_rate, "ATR对应账户资金净值 %", class: "label" %>
+    <div class="control">
+      <div class="select is-fullwidth">
+        <%= select f, :atr_rate, [0.5, 1.0, 1.5, 2.0] %>
+      </div>
+      <%= error_tag f, :atr_rate %>
+    </div>
+  </div>
+
+  <div class="field">
+    <%= label f, :atr_add, "ATR加仓", class: "label" %>
+    <div class="control">
+      <div class="select is-fullwidth">
+        <%= select f, :atr_add, [0.5, 1.0, 1.5, 2.0] %>
+      </div>
+      <%= error_tag f, :atr_add %>
+    </div>
+  </div>
+
+  <div class="field">
+    <%= label f, :stop_loss, "资金止损 %", class: "label" %>
+    <div class="control">
+      <div class="select is-fullwidth">
+        <%= select f, :stop_loss, [0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0] %>
+      </div>
+      <%= error_tag f, :stop_loss %>
+    </div>
+  </div>
+
+  <div class="field">
+    <%= label f, :position_max, "最大头寸规模", class: "label" %>
+    <div class="control">
+      <div class="select is-fullwidth">
+        <%= select f, :position_max, [1, 2, 3, 4, 5, 6, 7, 8] %>
+      </div>
+      <%= error_tag f, :position_max %>
+    </div>
+  </div>
+
+  <div class="field">
+    <div class="control">
+      <button class="button is-info is-fullwidth" type="submit">确定</button>
+    </div>
+  </div>
+  
+<% end %>
