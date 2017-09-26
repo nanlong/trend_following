@@ -67,15 +67,15 @@
     </div>
   </div>
   <div class="column">
+    <div style="padding-bottom: 20px;">
+      <strong style="font-size: 24px;">
+        <%= if is_nil(Map.get(@product, :cname)), do: @product.name, else: @product.cname %>
+        <%= @product.symbol %>
+      </strong>
+      <span>头寸方案</span>
+    </div>
     <div class="columns">
       <div class="column is-4">
-        <div style="padding-bottom: 20px;">
-          <strong style="font-size: 24px;">
-            <%= if is_nil(Map.get(@product, :cname)), do: @product.name, else: @product.cname %>
-            <%= @product.symbol %>
-          </strong>
-          <span>头寸方案</span>
-        </div>
         <form action="">
           <div class="field has-addons">
             <p class="control">
