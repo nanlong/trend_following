@@ -14,3 +14,24 @@ table {
 .bear {
   color: Green;
 }
+
+.backtest-create-position,
+.backtest-add-position,
+.backtest-stop-position,
+.backtest-close-position {
+  padding: 20px 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.backtest-create-position .date,
+.backtest-add-position .date,
+.backtest-stop-position .date,
+.backtest-close-position .date {
+  font-size: 20px;
+}
+.backtest-market {
+  margin-bottom: 10px;
+}
+.backtest-market span {
+  margin-right: 20px;
+}

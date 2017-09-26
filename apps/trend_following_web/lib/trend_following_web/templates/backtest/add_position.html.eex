@@ -1,9 +1,30 @@
-<div style="background: green; color: #fff;  margin: 10px 0;">
-  <p><%= @date %> <span>加仓</span></p>
-  <p>开盘: <%= @dayk.open %> 收盘: <%= @dayk.close %> 最高: <%= @dayk.high %> 最低: <%= @dayk.low %></p>
+<div class="backtest-create-position">
+  <p>
+    <span class="button is-success is-small">加仓</span>
+    <strong class="date"><%= @date %></strong>
+  </p>
   
-  <p>当前资金: <%= @before_state.account %></p>
-  <p>原因: 价格突破了第<%= @cur_state.position_num %>头寸的购买价</p>
-  <p>操作: 以<%= @price %>元价格加仓, 买入<%= @amount %>股, 花费<%= @price * @amount %>元</p>
-  <p>账户剩余: <%= @cur_state.account %>元。</p>
+  <p class="backtest-market">
+    <span>开盘: <strong><%= @dayk.open |> float_to_string() %></strong></span>
+    <span>收盘: <strong><%= @dayk.close |> float_to_string() %></strong></span>
+    <span>最高: <strong><%= @dayk.high |> float_to_string() %></strong></span>
+    <span>最低: <strong><%= @dayk.low |> float_to_string() %></strong></span>
+  </p>
+
+  <p>
+    <strong>资金：</strong>
+    <%= @before_state.account |> float_to_string() %>
+  </p>
+  <p>
+    <strong>理由：</strong>
+    价格突破了第 <%= @cur_state.position_num %> 头寸的买入价 <%= @price |> float_to_string() %>
+  </p>
+  <p>
+    <strong>操作：</strong>
+    以 <%= @price |> float_to_string() %> 元价格加仓, 买入 <%= @amount %> 股
+  </p>
+  <p>
+    <strong>剩余：</strong>
+    <%= @cur_state.account |> float_to_string() %>
+  </p>
 </div>

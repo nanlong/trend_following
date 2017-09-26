@@ -1,7 +1,7 @@
 
 <div class="columns">
   <div class="column is-3">
-    <ul>
+    <!-- <ul>
       <li>净盈</li>
       <li>交易数量</li>
       <li>持仓天数</li>
@@ -12,12 +12,19 @@
       <li>盈利亏损比</li>
       <li>胜率</li>
       <li>时间百分比</li>
-    </ul>
+    </ul> -->
   </div>
   <div class="column">
-    <div>资金曲线</div>
+    <!-- <div>资金曲线</div>
     <div>持仓曲线</div>
-    <div>收益率</div>
+    <div>收益率</div> -->
+    <div style="padding-bottom: 20px;">
+      <strong style="font-size: 24px;">
+        <%= if is_nil(Map.get(@product, :cname)), do: @product.name, else: @product.cname %> 
+        <%= @product.symbol %>
+      </strong>
+      <span>回测情况</span>
+    </div>
     <div>
       <%= for item <- @backtest.log do %>
         <%= render(TrendFollowingWeb.BacktestView, item[:action] <> ".html", item) %>
