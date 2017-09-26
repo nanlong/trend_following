@@ -2,14 +2,6 @@
   <div class="column is-3">
     <div class="field is-horizontal">
       <span class="field-label" style="flex-grow: 2">
-        <%= @product.name %>
-      </span>
-      <span class="field-body">
-        <%= @product.symbol %>
-      </span>
-    </div>
-    <div class="field is-horizontal">
-      <span class="field-label" style="flex-grow: 2">
         交易方向:
       </span>
       <span class="field-body">
@@ -18,41 +10,6 @@
         <% else %>
         <a class="button is-success is-hovered is-small">做空</a>
         <% end %>
-      </span>
-    </div>
-    <div class="field is-horizontal">
-      <span class="field-label" style="flex-grow: 2">
-        参考日期:
-      </span>
-      <span class="field-body">
-        <%= @dayk.date %>
-      </span>
-    </div>
-    <div class="field is-horizontal">
-      <span class="field-label" style="flex-grow: 2">
-        突破价:
-      </span>
-      <span class="field-body">
-        <%= @position.break_price |> float_to_string(2) %>
-        <%= @product.trading_unit %>
-      </span>
-    </div>
-    <div class="field is-horizontal">
-      <span class="field-label" style="flex-grow: 2">
-        平仓价:
-      </span>
-      <span class="field-body">
-        <%= @position.close_price |> float_to_string(2) %>
-        <%= @product.trading_unit %>
-      </span>
-    </div>
-    <div class="field is-horizontal">
-      <span class="field-label" style="flex-grow: 2">
-        每手:
-      </span>
-      <span class="field-body">
-        <%= @product.lot_size %>
-        <%= @product.price_quote %>
       </span>
     </div>
     <div class="field is-horizontal">
@@ -73,10 +30,52 @@
         <%= @product.trading_unit %>
       </span>
     </div>
+    <div class="field is-horizontal">
+      <span class="field-label" style="flex-grow: 2">
+        每手:
+      </span>
+      <span class="field-body">
+        <%= @product.lot_size %>
+        <%= @product.price_quote %>
+      </span>
+    </div>
+    <div class="field is-horizontal">
+      <span class="field-label" style="flex-grow: 2">
+        ATR:
+      </span>
+      <span class="field-body">
+        <%= @dayk.atr %>
+      </span>
+    </div>
+    <div class="field is-horizontal">
+      <span class="field-label" style="flex-grow: 2">
+        突破价:
+      </span>
+      <span class="field-body">
+        <%= @position.break_price |> float_to_string(2) %>
+        <%= @product.trading_unit %>
+      </span>
+    </div>
+    <div class="field is-horizontal">
+      <span class="field-label" style="flex-grow: 2">
+        平仓价:
+      </span>
+      <span class="field-body">
+        <%= @position.close_price |> float_to_string(2) %>
+        <%= @product.trading_unit %>
+      </span>
+    </div>
   </div>
   <div class="column">
     <div class="columns">
       <div class="column is-4">
+        <div style="padding-bottom: 20px;">
+          <strong style="font-size: 24px;">
+            <%= @product.cname || @product.name %> 
+            <%= @product.symbol %>
+          </strong>
+          <span>头寸方案</span>
+        </div>
         <form action="">
           <div class="field has-addons">
             <p class="control">
