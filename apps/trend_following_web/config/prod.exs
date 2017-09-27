@@ -15,6 +15,7 @@ use Mix.Config
 # which you typically run after static files are built.
 config :trend_following_web, TrendFollowingWeb.Endpoint,
   load_from_system_env: true,
+  http: [compress: true],
   url: [host: "trendfollowing.cc", port: 80],
   cache_static_manifest: "priv/static/cache_manifest.json"
 
