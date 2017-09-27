@@ -34,6 +34,11 @@ config :trend_following_web, TrendFollowingWeb.Helpers.Guardian,
   issuer: "trend_following_web",
   secret_key: "QsRsnw/6QHX8qrTgR3T511Go+2rXT4AMCoXgITRo24MgV837JmA3KEt+sbWX2I/5"
 
+config :trading_system_web, TrendFollowingWeb.Helpers.Mailer,
+  adapter: Bamboo.MailgunAdapter,
+  api_key: "key-bb2d3d19408d7ccf5abc25e0a9281cd7",
+  domain: "mg.trendfollowing.cc"
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env}.exs"

@@ -53,6 +53,7 @@ defmodule TrendFollowingWeb.Mixfile do
       {:quantum, ">= 2.1.0"},
       {:timex, "~> 3.0"},
       {:guardian, "~> 1.0-beta"},
+      {:bamboo, "~> 0.8"},
     ]
   end
 
