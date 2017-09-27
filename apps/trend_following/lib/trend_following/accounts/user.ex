@@ -2,6 +2,7 @@ defmodule TrendFollowing.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
   alias TrendFollowing.Accounts.User
+  alias TrendFollowing.Accounts
 
 
   schema "users" do
@@ -85,5 +86,19 @@ defmodule TrendFollowing.Accounts.User do
   defp put_vip(changeset, days) do
     vip_expire = Timex.add(Timex.now, Timex.Duration.from_days(days)) |> Timex.to_datetime()
     change(changeset, vip_expire: vip_expire)
+  end
+
+  defp validate_user_with_email(%{valid?: false} = changeset), do: changeset
+  defp validate_user_with_email(changeset) do
+    email = get_field(changeset, :email)
+    
+    case Accounts.get_user(email) do
+      nil -> add_error(changeset, :email, "用户不存在")
+      user -> put_change(changeset, :user, user)
+    end
+  end
+
+  def get_user(%Ecto.Changeset{} = changeset) do
+    get_field(changeset, :user)
   end
 end

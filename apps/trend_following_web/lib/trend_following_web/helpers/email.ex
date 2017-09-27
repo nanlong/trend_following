@@ -1,9 +1,8 @@
-defmodule TrendFollowingWeb.Helper.Email do
+defmodule TrendFollowingWeb.Helpers.Email do
   use Bamboo.Phoenix, view: TrendFollowingWeb.EmailView
 
-  alias TrendFollowing.Accounts
   alias TrendFollowing.Accounts.User
-  alias TrendFollowingWeb.Helper.Mailer
+  alias TrendFollowingWeb.Helpers.Mailer
 
   @from "趋势跟踪系统<support@mg.trendfollowing.cc>"
 
@@ -21,12 +20,12 @@ defmodule TrendFollowingWeb.Helper.Email do
   @doc """
   找回密码邮件
   """
-  def password_reset(%User{} = user) do 
+  def password_reset(%User{} = user, token) do 
     base_email()
-    |> to(user.email)
+    |> to({user.nickname, user.email})
     |> subject("找回您的账号密码")
     |> assign(:user, user)
-    |> assign(:token, Accounts.sign_token(user))
+    |> assign(:token, token)
     |> render(:password_reset)
     |> Mailer.deliver_later()
   end
@@ -34,6 +33,5 @@ defmodule TrendFollowingWeb.Helper.Email do
   defp base_email do
     new_email()
     |> from(@from)
-    |> put_html_layout({TrendFollowingWeb.LayoutView, "email.html"})
   end
 end

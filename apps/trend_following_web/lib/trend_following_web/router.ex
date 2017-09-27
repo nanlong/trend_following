@@ -38,6 +38,8 @@ defmodule TrendFollowingWeb.Router do
 
     get "/signin", SessionController, :new
     post "/signin", SessionController, :create
+
+    resources "/password_reset", PasswordResetController, only: [:show, :create, :update], singleton: true
   end
 
   scope "/", TrendFollowingWeb do

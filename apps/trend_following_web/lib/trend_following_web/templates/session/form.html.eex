@@ -9,10 +9,8 @@
   </div>
   
   <div class="field">
-    <div class="is-clearfix">
-      <%= label f, :password, "密码", class: "label" %>
-    </div>
-    
+    <%= link "忘记密码?", to: password_reset_path(@conn, :show), class: "is-pulled-right" %>
+    <%= label f, :password, "密码", class: "label" %>
     <div class="control">
       <%= password_input f, :password, class: "input" %>
       <%= error_tag f, :password %>
@@ -24,5 +22,4 @@
       <button class="button is-info is-fullwidth" type="submit">登录</button>
     </div>
   </div>
-  
 <% end %>

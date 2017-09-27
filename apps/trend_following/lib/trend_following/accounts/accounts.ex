@@ -12,9 +12,14 @@ defmodule TrendFollowing.Accounts do
   defdelegate change_user_profile(user), to: UserContext, as: :change_profile
   defdelegate change_user_password(user), to: UserContext, as: :change_password
   defdelegate change_user_password_reset(user), to: UserContext, as: :change_password_reset
-
+  
   alias TrendFollowing.Accounts.SessionContext
 
   defdelegate change_session(session), to: SessionContext, as: :change
   defdelegate create_session(attrs), to: SessionContext, as: :create
+
+  alias TrendFollowing.Accounts.PasswordResetContext
+
+  defdelegate change_password_reset(attrs), to: PasswordResetContext, as: :change
+  defdelegate create_password_reset(attrs), to: PasswordResetContext, as: :create
 end
