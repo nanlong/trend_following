@@ -49,6 +49,7 @@ defmodule TrendFollowingWeb.PositionController do
     
     conn
     |> assign(:title, product.name <> "头寸方案")
+    |> assign(:market, market)
     |> assign(:product, product)
     |> assign(:dayk, dayk)
     |> assign(:config, config)

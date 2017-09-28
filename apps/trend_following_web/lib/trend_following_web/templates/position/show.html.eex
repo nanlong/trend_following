@@ -19,6 +19,7 @@
       <span class="field-body">
         <%= @config.account %>
         <%= @product.trading_unit %>
+        <%= link "(修改)", to: setting_path(@conn, :show, "trend_config", tab: @market) %>
       </span>
     </div>
     <div class="field is-horizontal">
