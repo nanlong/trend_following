@@ -33,7 +33,7 @@
       </div>
     </div>
     <div>
-      <table id="market-list" class="table is-bordered is-striped is-narrow is-fullwidth">
+      <table class="table is-bordered is-striped is-narrow is-fullwidth">
         <tr>
           <th>代码</th>
           <th>名称</th>
