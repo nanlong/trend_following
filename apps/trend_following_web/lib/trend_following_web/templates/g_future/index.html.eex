@@ -16,7 +16,7 @@
           <th>昨收/今开盘</th>
           <th>最高价/最低价</th>
           <th>成交量</th>
-          <th>ATR</th>
+          <th>操作</th>
         </tr>
         <%= for future <- @data do %>
         <tr>
@@ -37,7 +37,29 @@
           <td><%= future.dayk.pre_close |> float_to_string(2) %>/<%= future.dayk.open |> float_to_string(2) %></td>
           <td><%= future.dayk.high |> float_to_string(2) %>/<%= future.dayk.low |> float_to_string(2) %></td>
           <td><%= future.dayk |> number_human(:volume) %></td>
-          <td><%= future.dayk.atr |> number_round() %></td>
+          <td>
+            <div class="dropdown is-right is-hoverable">
+              <div class="dropdown-trigger">
+                <button class="button is-danger is-small" aria-haspopup="true">
+                  
+                  <span class="icon is-small">
+                    <i class="fa fa-angle-down" aria-hidden="true"></i>
+                  </span>
+                </button>
+              </div>
+              <div class="dropdown-menu" role="menu">
+                <div class="dropdown-content">
+                  <div class="dropdown-item">
+                    <%= future.name %> (<%= future.symbol %>)
+                  </div>
+                  <hr class="dropdown-divider">
+                  <%= link "查看详情", to: market_g_future_path(@conn, :show, future.symbol), class: "dropdown-item" %>
+                  <%= link "头寸方案", to: market_g_future_position_path(@conn, :show, future.symbol), class: "dropdown-item" %>
+                  <%= link "回测情况", to: market_g_future_backtest_path(@conn, :show, future.symbol), class: "dropdown-item" %>
+                </div>
+              </div>
+            </div>
+          </td>
         </tr>
         <% end %>
       </table>

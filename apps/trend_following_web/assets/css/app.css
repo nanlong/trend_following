@@ -35,3 +35,9 @@ table {
 .backtest-market span {
   margin-right: 20px;
 }
+#market-list .dropdown-menu {
+  min-width: 12rem;
+}
+#market-list a.dropdown-item {
+  padding-right: 1rem;
+}

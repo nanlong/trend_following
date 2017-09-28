@@ -33,7 +33,7 @@
       </div>
     </div>
     <div>
-      <table class="table is-bordered is-striped is-narrow is-fullwidth">
+      <table id="market-list" class="table is-bordered is-striped is-narrow is-fullwidth">
         <tr>
           <th>代码</th>
           <th>名称</th>
@@ -46,7 +46,7 @@
           <th>成交量</th>
           <th>市值</th>
           <th>市盈率</th>
-          <th>ATR</th>
+          <th>操作</th>
         </tr>
         <%= for stock <- @page do %>
         <tr>
@@ -69,7 +69,29 @@
           <td><%= stock.dayk |> number_human(:volume) %></td>
           <td><%= stock |> number_human(:market_cap) %></td>
           <td><%= stock.pe |> number_round() %></td>
-          <td><%= stock.dayk.atr |> number_round() %></td>
+          <td>
+            <div class="dropdown is-right is-hoverable">
+              <div class="dropdown-trigger">
+                <button class="button is-danger is-small" aria-haspopup="true">
+                  
+                  <span class="icon is-small">
+                    <i class="fa fa-angle-down" aria-hidden="true"></i>
+                  </span>
+                </button>
+              </div>
+              <div class="dropdown-menu" role="menu">
+                <div class="dropdown-content">
+                  <div class="dropdown-item">
+                    <%= stock.cname %> (<%= stock.symbol %>)
+                  </div>
+                  <hr class="dropdown-divider">
+                  <%= link "查看详情", to: market_hk_stock_path(@conn, :show, stock.symbol), class: "dropdown-item" %>
+                  <%= link "头寸方案", to: market_hk_stock_position_path(@conn, :show, stock.symbol), class: "dropdown-item" %>
+                  <%= link "回测情况", to: market_hk_stock_backtest_path(@conn, :show, stock.symbol), class: "dropdown-item" %>
+                </div>
+              </div>
+            </div>
+          </td>
         </tr>
         <% end %>
       </table>
