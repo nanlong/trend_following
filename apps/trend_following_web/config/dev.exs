@@ -40,3 +40,7 @@ config :trend_following_web, TrendFollowingWeb.Endpoint,
       ~r{lib/trend_following_web/templates/.*(eex)$}
     ]
   ]
+
+config :trend_following_web, TrendFollowingWeb.Helpers.Guardian,
+  issuer: "trend_following_web",
+  secret_key: "QsRsnw/6QHX8qrTgR3T511Go+2rXT4AMCoXgITRo24MgV837JmA3KEt+sbWX2I/5"
