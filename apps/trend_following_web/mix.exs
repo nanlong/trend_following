@@ -45,6 +45,7 @@ defmodule TrendFollowingWeb.Mixfile do
       {:gettext, "~> 0.11"},
       {:trend_following, in_umbrella: true},
       {:trend_following_job, in_umbrella: true},
+      {:trend_following_kernel, in_umbrella: true},
       {:cowboy, "~> 1.0"},
       {:scrivener_html, "~> 1.7"},
       {:absinthe, "~> 1.3.1"},

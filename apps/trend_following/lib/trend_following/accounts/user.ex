@@ -2,7 +2,6 @@ defmodule TrendFollowing.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
   alias TrendFollowing.Accounts.User
-  alias TrendFollowing.Accounts
 
 
   schema "users" do
